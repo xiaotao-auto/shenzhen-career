@@ -1,0 +1,15 @@
+# 深圳青年职业图谱 - Robots
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://shenzhen-career.github.io/sitemap.xml
+
+# 百度爬虫特殊允许
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+# Google 爬虫
+User-agent: Googlebot
+Allow: /

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深圳青年职业图谱 - 小红书图文</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f0f0f0;
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+
+  /* 每张卡片 1080x1350 比例 (3:4 = 竖版小红书标准) */
+  .card {
+    width: 540px;
+    height: 675px;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+
+  .card-label {
+    text-align: center;
+    margin-top: -40px;
+    margin-bottom: 20px;
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  /* =================== 封面图 =================== */
+  .card-1 {
+    background: linear-gradient(160deg, #fff9f5 0%, #fff3eb 50%, #ffeedd 100%);
+  }
+  .card-1 .skyline {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 30px;
+  }
+  .skyline-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, #ffd4b8 0%, transparent 100%);
+  }
+  .building {
+    background: #ffb899;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    z-index: 1;
+  }
+  .card-1 .main-content {
+    position: absolute;
+    top: 190px;
+    left: 0; right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 40px;
+  }
+  .card-1 .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, #ff6b6b, #ffa94d);
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+  .card-1 .big-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: #e8503a;
+    text-align: center;
+    line-height: 1.3;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .card-1 .sub-title {
+    font-size: 16px;
+    color: #888;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .card-1 .tag-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .tag-coral { background: #ffe4de; color: #e8503a; }
+  .tag-yellow { background: #fff3cc; color: #d4900a; }
+  .tag-pink { background: #fce4ec; color: #c2185b; }
+  .tag-green { background: #e8f5e9; color: #388e3c; }
+  .card-1 .stats-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+  }
+  .card-1 .stat-item {
+    text-align: center;
+  }
+  .card-1 .stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: #e8503a;
+  }
+  .card-1 .stat-unit {
+    font-size: 13px;
+    color: #aaa;
+    display: block;
+    margin-top: 2px;
+  }
+  .card-1 .footer {
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: #bbb;
+  }
+
+  /* =================== 图2：薪资大数据 =================== */
+  .card-2 {
+    background: linear-gradient(150deg, #fff8f0 0%, #fff4e6 100%);
+  }
+  .card-header {
+    padding: 32px 36px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .card-header .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #ff6b6b;
+  }
+  .card-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #333;
+  }
+  .card-header .badge {
+    margin-left: auto;
+    background: #ffeedd;
+    color: #e8503a;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .card-2 .big-num-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px 36px 0;
+  }
+  .big-num-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .big-num-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    border-radius: 4px 0 0 4px;
+  }
+  .accent-coral::before { background: #ff6b6b; }
+  .accent-yellow::before { background: #ffa94d; }
+  .accent-pink::before { background: #e91e8c; }
+  .accent-blue::before { background: #4a9eff; }
+  .big-num-box .bnum {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .big-num-box .bnum .unit { font-size: 16px; font-weight: 600; }
+  .color-coral { color: #e8503a; }
+  .color-yellow { color: #d4900a; }
+  .color-pink { color: #c2185b; }
+  .color-blue { color: #1565c0; }
+  .big-num-box .blabel {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.4;
+  }
+  .card-2 .insight-box {
+    margin: 16px 36px 0;
+    background: linear-gradient(135deg, #ff6b6b15, #ffa94d15);
+    border: 1.5px solid #ffcba4;
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .card-2 .insight-icon { font-size: 22px; flex-shrink: 0; }
+  .card-2 .insight-text { font-size: 14px; color: #555; line-height: 1.6; }
+  .card-2 .insight-text strong { color: #e8503a; }
+  .card-2 .footer-tag {
+    position: absolute;
+    bottom: 20px;
+    left: 0; right: 0;
+    text-align: center;
+  }
+  .card-2 .footer-tag .tag-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  /* =================== 图3：行业薪资排行 =================== */
+  .card-3 {
+    background: linear-gradient(150deg, #fff8f0 0%, #fff4e6 100%);
+  }
+  .card-3 .rank-list {
+    padding: 12px 36px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .rank-no {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .rank-1 { background: #ffd700; color: #a07000; }
+  .rank-2 { background: #e8e8e8; color: #666; }
+  .rank-3 { background: #e8c5a0; color: #8a5c30; }
+  .rank-other { background: #f5f5f5; color: #aaa; }
+  .rank-name { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
+  .rank-bar-wrap { flex: 1.5; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+  .rank-bar { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #ff6b6b, #ffa94d); }
+  .rank-salary { font-size: 15px; font-weight: 800; color: #e8503a; width: 56px; text-align: right; flex-shrink: 0; }
+  .card-3 .note {
+    margin: 10px 36px 0;
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+  }
+
+  /* =================== 图4：起薪 vs 生活成本 =================== */
+  .card-4 {
+    background: linear-gradient(150deg, #fff8f0 0%, #fff4e6 100%);
+  }
+  .card-4 .vs-section {
+    padding: 16px 36px 0;
+  }
+  .vs-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .vs-box {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    padding: 18px 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+  .vs-box .vs-title {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 8px;
+  }
+  .vs-box .vs-num {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .vs-box .vs-sub { font-size: 12px; color: #bbb; }
+  .vs-income { border-top: 3px solid #ff6b6b; }
+  .vs-cost { border-top: 3px solid #ffa94d; }
+  .vs-save { border-top: 3px solid #66bb6a; }
+  .card-4 .breakdown {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin: 0 0 0 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .breakdown-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .breakdown-label { font-size: 13px; color: #777; width: 60px; flex-shrink: 0; }
+  .breakdown-bar-wrap { flex: 1; height: 10px; background: #f5f5f5; border-radius: 5px; overflow: hidden; }
+  .breakdown-bar { height: 100%; border-radius: 5px; }
+  .bar-rent { background: #ff6b6b; }
+  .bar-food { background: #ffa94d; }
+  .bar-traffic { background: #ffd54f; }
+  .bar-fun { background: #a5d6a7; }
+  .bar-save { background: #80cbc4; }
+  .breakdown-val { font-size: 12px; color: #aaa; width: 36px; text-align: right; flex-shrink: 0; }
+  .card-4 .warn-box {
+    margin-top: 12px;
+    background: #fff3cd;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #856404;
+    line-height: 1.5;
+  }
+
+  /* =================== 图5：5大赛道 =================== */
+  .card-5 {
+    background: linear-gradient(150deg, #fff8f0 0%, #fff4e6 100%);
+  }
+  .track-list {
+    padding: 12px 36px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .track-item {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .track-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: #fff3eb;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .track-info { flex: 1; }
+  .track-name { font-size: 16px; font-weight: 800; color: #333; margin-bottom: 2px; }
+  .track-salary { font-size: 13px; color: #e8503a; font-weight: 600; }
+  .track-right { text-align: right; flex-shrink: 0; }
+  .heat-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .heat-hot { background: #ffe4de; color: #e8503a; }
+  .heat-super { background: #ffd700; color: #a07000; }
+  .track-demand { font-size: 12px; color: #aaa; }
+  .card-5 .tip {
+    margin: 12px 36px 0;
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    line-height: 1.6;
+    background: #fff9f5;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  /* =================== 图6：引流卡片 =================== */
+  .card-6 {
+    background: linear-gradient(160deg, #fff9f5 0%, #ffeedd 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    text-align: center;
+  }
+  .card-6 .logo-circle {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b6b, #ffa94d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(255,107,107,0.3);
+  }
+  .card-6 .site-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .card-6 .site-sub {
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .card-6 .qr-placeholder {
+    width: 140px; height: 140px;
+    border: 3px solid #ffcba4;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    margin-bottom: 16px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card-6 .qr-placeholder .qr-icon { font-size: 48px; }
+  .card-6 .qr-placeholder .qr-text { font-size: 11px; color: #aaa; }
+  .card-6 .url-box {
+    background: white;
+    border: 2px solid #ffcba4;
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 13px;
+    color: #e8503a;
+    font-weight: 600;
+    margin-bottom: 24px;
+    word-break: break-all;
+  }
+  .card-6 .features {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .card-6 .feat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #888;
+  }
+  .card-6 .feat .feat-icon { font-size: 22px; }
+  .card-6 .author {
+    margin-top: 28px;
+    font-size: 13px;
+    color: #bbb;
+  }
+  .card-6 .author strong { color: #e8503a; }
+
+  /* 页面底部操作说明 */
+  .tip-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px 32px;
+    max-width: 580px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .tip-section h3 { font-size: 16px; color: #333; margin-bottom: 12px; }
+  .tip-section ol { padding-left: 20px; color: #666; font-size: 14px; line-height: 2; }
+  .tip-section code { background: #f5f5f5; padding: 2px 6px; border-radius: 4px; font-size: 13px; color: #e8503a; }
+</style>
+</head>
+<body>
+
+<!-- 封面图 -->
+<div class="card-label">📸 第1张 · 封面图（打印/截图时建议宽度540px）</div>
+<div class="card card-1">
+  <!-- 天际线装饰 -->
+  <div class="card-1 skyline">
+    <div class="skyline-bg"></div>
+    <div class="building" style="width:18px;height:60px"></div>
+    <div class="building" style="width:14px;height:90px"></div>
+    <div class="building" style="width:22px;height:120px"></div>
+    <div class="building" style="width:16px;height:80px"></div>
+    <div class="building" style="width:30px;height:150px"></div>
+    <div class="building" style="width:20px;height:130px"></div>
+    <div class="building" style="width:18px;height:100px"></div>
+    <div class="building" style="width:14px;height:70px"></div>
+    <div class="building" style="width:24px;height:110px"></div>
+    <div class="building" style="width:16px;height:85px"></div>
+    <div class="building" style="width:12px;height:65px"></div>
+    <div class="building" style="width:20px;height:95px"></div>
+    <div class="building" style="width:16px;height:75px"></div>
+    <div class="building" style="width:18px;height:55px"></div>
+  </div>
+
+  <div class="main-content">
+    <div class="divider"></div>
+    <div class="big-title">在深圳<br>月薪多少才够活？</div>
+    <div class="sub-title">2024 深圳青年职业数据全解析<br>15张图 · 看懂深圳职场真相</div>
+    <div class="tag-row">
+      <span class="tag tag-coral">📊 数据可视化</span>
+      <span class="tag tag-yellow">🏙️ 深圳</span>
+      <span class="tag tag-pink">💼 职业规划</span>
+      <span class="tag tag-green">🎓 应届生必看</span>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">10,800<span style="font-size:16px">元</span></div>
+        <span class="stat-unit">青年月薪中位数</span>
+      </div>
+      <div style="width:1px;background:#eee"></div>
+      <div class="stat-item">
+        <div class="stat-num">2176<span style="font-size:16px">万</span></div>
+        <span class="stat-unit">常住人口</span>
+      </div>
+      <div style="width:1px;background:#eee"></div>
+      <div class="stat-item">
+        <div class="stat-num">48<span style="font-size:16px">万</span></div>
+        <span class="stat-unit">年净流入人口</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">数据来源：深圳市统计局 · 唐小涛 整理</div>
+</div>
+
+<!-- 图2：薪资大数据 -->
+<div class="card-label">📸 第2张 · 薪资大数据</div>
+<div class="card card-2">
+  <div class="card-header">
+    <div class="dot"></div>
+    <h2>深圳青年薪资全貌</h2>
+    <div class="badge">2024 最新</div>
+  </div>
+  <div class="big-num-grid">
+    <div class="big-num-box accent-coral">
+      <div class="bnum color-coral">10,800<span class="unit">元</span></div>
+      <div class="blabel">青年月薪中位数</div>
+    </div>
+    <div class="big-num-box accent-yellow">
+      <div class="bnum color-yellow">7,200<span class="unit">元</span></div>
+      <div class="blabel">应届生起薪中位数</div>
+    </div>
+    <div class="big-num-box accent-pink">
+      <div class="bnum color-pink">25,000<span class="unit">元</span></div>
+      <div class="blabel">互联网P7薪资中位数</div>
+    </div>
+    <div class="big-num-box accent-blue">
+      <div class="bnum color-blue">8.6<span class="unit">%</span></div>
+      <div class="blabel">薪资同比涨幅</div>
+    </div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-icon">💡</div>
+    <div class="insight-text">
+      深圳是全国<strong>年轻人聚集度最高</strong>的城市，35岁以下占比高达 <strong>35%</strong>。每年净流入 <strong>48万人</strong>，其中应届生占近四成。
+    </div>
+  </div>
+  <div class="footer-tag" style="bottom:20px;left:0;right:0;position:absolute">
+    <div class="tag-row" style="display:flex;gap:8px;justify-content:center">
+      <span class="tag tag-coral">深圳统计局数据</span>
+      <span class="tag tag-yellow">招聘平台综合</span>
+    </div>
+  </div>
+</div>
+
+<!-- 图3：行业薪资排行 -->
+<div class="card-label">📸 第3张 · 行业薪资排行榜</div>
+<div class="card card-3">
+  <div class="card-header">
+    <div class="dot"></div>
+    <h2>各行业月薪中位数排行</h2>
+    <div class="badge">🏆 TOP 9</div>
+  </div>
+  <div class="rank-list">
+    <div class="rank-item">
+      <div class="rank-no rank-1">1</div>
+      <div class="rank-name">🤖 AI / 人工智能</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:100%"></div></div>
+      <div class="rank-salary">24,500</div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-no rank-2">2</div>
+      <div class="rank-name">💻 互联网技术</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:80%"></div></div>
+      <div class="rank-salary">19,500</div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-no rank-3">3</div>
+      <div class="rank-name">📱 移动开发</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:72%"></div></div>
+      <div class="rank-salary">17,500</div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-no rank-other">4</div>
+      <div class="rank-name">💰 金融证券</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:65%"></div></div>
+      <div class="rank-salary">16,000</div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-no rank-other">5</div>
+      <div class="rank-name">🔬 先进制造</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:53%"></div></div>
+      <div class="rank-salary">13,000</div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-no rank-other">6</div>
+      <div class="rank-name">🎨 设计创意</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:48%"></div></div>
+      <div class="rank-salary">11,800</div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-no rank-other">7</div>
+      <div class="rank-name">📦 供应链物流</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:41%"></div></div>
+      <div class="rank-salary">10,000</div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-no rank-other">8</div>
+      <div class="rank-name">🏪 新零售电商</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:36%"></div></div>
+      <div class="rank-salary">8,800</div>
+    </div>
+  </div>
+  <div class="note">※ 月薪中位数（元）· 数据来源：深圳主流招聘平台综合</div>
+</div>
+
+<!-- 图4：起薪 vs 生活成本 -->
+<div class="card-label">📸 第4张 · 起薪 vs 生活成本</div>
+<div class="card card-4">
+  <div class="card-header">
+    <div class="dot"></div>
+    <h2>7200元起薪能撑住吗？</h2>
+  </div>
+  <div class="vs-section">
+    <div class="vs-row">
+      <div class="vs-box vs-income">
+        <div class="vs-title">应届生月入</div>
+        <div class="vs-num color-coral">7,200<span style="font-size:14px">元</span></div>
+        <div class="vs-sub">起薪中位数</div>
+      </div>
+      <div class="vs-box vs-cost">
+        <div class="vs-title">月均支出</div>
+        <div class="vs-num color-yellow">5,400<span style="font-size:14px">元</span></div>
+        <div class="vs-sub">（保守估计）</div>
+      </div>
+      <div class="vs-box vs-save">
+        <div class="vs-title">剩余可支配</div>
+        <div class="vs-num" style="color:#388e3c">1,800<span style="font-size:14px">元</span></div>
+        <div class="vs-sub">约 25%</div>
+      </div>
+    </div>
+    <div class="breakdown">
+      <div class="breakdown-title">📊 月支出细项拆解</div>
+      <div class="breakdown-row">
+        <div class="breakdown-label">🏠 房租</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar bar-rent" style="width:65%"></div></div>
+        <div class="breakdown-val">3,500</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-label">🍱 餐饮</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar bar-food" style="width:22%"></div></div>
+        <div class="breakdown-val">1,200</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-label">🚇 交通</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar bar-traffic" style="width:9%"></div></div>
+        <div class="breakdown-val">500</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-label">🎮 娱乐</div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar bar-fun" style="width:6%"></div></div>
+        <div class="breakdown-val">200</div>
+      </div>
+    </div>
+  </div>
+  <div class="warn-box" style="margin:12px 36px 0">
+    ⚠️ 深圳一居室房租中位数 <strong>3,500元</strong>，占应届生起薪 <strong>近50%</strong>。建议合租分摊，或入职后尽快争取薪资增长。
+  </div>
+</div>
+
+<!-- 图5：5大热门赛道 -->
+<div class="card-label">📸 第5张 · 最值得进入的5大赛道</div>
+<div class="card card-5">
+  <div class="card-header">
+    <div class="dot"></div>
+    <h2>2024 深圳最热门赛道 TOP5</h2>
+    <div class="badge">🚀 推荐</div>
+  </div>
+  <div class="track-list">
+    <div class="track-item">
+      <div class="track-icon">🤖</div>
+      <div class="track-info">
+        <div class="track-name">AI / 大模型</div>
+        <div class="track-salary">¥25K – 50K · 需求指数 95</div>
+      </div>
+      <div class="track-right">
+        <div class="heat-badge heat-super">🔥 超热门</div>
+        <div class="track-demand">8,200个岗位</div>
+      </div>
+    </div>
+    <div class="track-item">
+      <div class="track-icon">⚡</div>
+      <div class="track-info">
+        <div class="track-name">新能源 / 储能</div>
+        <div class="track-salary">¥15K – 35K · 需求指数 72</div>
+      </div>
+      <div class="track-right">
+        <div class="heat-badge heat-super">🔥 超热门</div>
+        <div class="track-demand">16,200个岗位</div>
+      </div>
+    </div>
+    <div class="track-item">
+      <div class="track-icon">🔬</div>
+      <div class="track-info">
+        <div class="track-name">半导体芯片</div>
+        <div class="track-salary">¥20K – 45K · 需求指数 88</div>
+      </div>
+      <div class="track-right">
+        <div class="heat-badge heat-super">🔥 超热门</div>
+        <div class="track-demand">15,600个岗位</div>
+      </div>
+    </div>
+    <div class="track-item">
+      <div class="track-icon">🚗</div>
+      <div class="track-info">
+        <div class="track-name">智能汽车</div>
+        <div class="track-salary">¥18K – 40K · 需求指数 85</div>
+      </div>
+      <div class="track-right">
+        <div class="heat-badge heat-super">🔥 超热门</div>
+        <div class="track-demand">12,400个岗位</div>
+      </div>
+    </div>
+    <div class="track-item">
+      <div class="track-icon">📱</div>
+      <div class="track-info">
+        <div class="track-name">移动互联网</div>
+        <div class="track-salary">¥15K – 30K · 需求指数 75</div>
+      </div>
+      <div class="track-right">
+        <div class="heat-badge heat-hot">热门</div>
+        <div class="track-demand">22,500个岗位</div>
+      </div>
+    </div>
+  </div>
+  <div class="tip" style="margin:10px 36px 0">💬 完整15张图表 · 点击主页链接查看交互版本</div>
+</div>
+
+<!-- 图6：引流卡 -->
+<div class="card-label">📸 第6张 · 引流卡片</div>
+<div class="card card-6">
+  <div class="logo-circle">🏙️</div>
+  <div class="site-title">深圳青年职业图谱</div>
+  <div class="site-sub">15张交互图表 · 数据可视化<br>免费查看，无需注册</div>
+  <div class="qr-placeholder">
+    <div class="qr-icon">🔗</div>
+    <div class="qr-text">扫码访问</div>
+  </div>
+  <div class="url-box">xiaotao-auto.github.io/shenzhen-career</div>
+  <div class="features">
+    <div class="feat"><div class="feat-icon">📊</div>15张图表</div>
+    <div class="feat"><div class="feat-icon">📱</div>手机可看</div>
+    <div class="feat"><div class="feat-icon">🆓</div>完全免费</div>
+    <div class="feat"><div class="feat-icon">🔄</div>持续更新</div>
+  </div>
+  <div class="author">作者：<strong>唐小涛</strong> · 数据分析师 · 职业规划研究者</div>
+</div>
+
+<!-- 操作说明 -->
+<div class="tip-section">
+  <h3>📌 保存为图片的方法</h3>
+  <ol>
+    <li>在浏览器中打开此页面</li>
+    <li>右键点击每张卡片 → <code>检查</code>（或 F12 打开开发者工具）</li>
+    <li>或者直接 <strong>截图工具</strong>（macOS: <code>⌘ + Shift + 4</code>）框选每张卡片保存</li>
+    <li>建议每张单独截图，上传小红书时选「多图」发布</li>
+  </ol>
+</div>
+
+</body>
+</html>
