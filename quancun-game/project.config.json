@@ -1,0 +1,93 @@
+{
+  "description": "半生路 - 人生模拟器",
+  "projectname": "半生路",
+  "appid": "wxec56b6124ca18c16",
+  "compileType": "game",
+  "libVersion": "3.15.2",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": false,
+    "compileHotReLoad": false,
+    "postcss": false,
+    "minified": true,
+    "newFeature": true,
+    "autoAudits": false,
+    "coverView": true,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "README.md",
+        "type": "file"
+      },
+      {
+        "value": "上架指南.md",
+        "type": "file"
+      },
+      {
+        "value": "推广方案.md",
+        "type": "file"
+      },
+      {
+        "value": "preview.html",
+        "type": "file"
+      },
+      {
+        "value": "icon-generator.html",
+        "type": "file"
+      },
+      {
+        "value": "xiaohongshu-images.html",
+        "type": "file"
+      },
+      {
+        "value": "icon-方案1-三扇门.png",
+        "type": "file"
+      },
+      {
+        "value": "icon-方案2-好奇角色.png",
+        "type": "file"
+      },
+      {
+        "value": "icon-方案3-人生之路.png",
+        "type": "file"
+      },
+      {
+        "value": "icon-方案4-人生四阶段.png",
+        "type": "file"
+      },
+      {
+        "value": "icon-方案5-温暖家庭.png",
+        "type": "file"
+      }
+    ],
+    "include": []
+  },
+  "condition": {},
+  "simulatorPluginLibVersion": {},
+  "isGameTourist": false,
+  "editorSetting": {}
+}

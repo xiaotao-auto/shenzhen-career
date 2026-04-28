@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>城市房价地图 - 小红书图文套装</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a2e;
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+
+  .card {
+    width: 540px;
+    height: 675px;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+
+  .card-label {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    z-index: 10;
+  }
+
+  /* ===================== 封面 ===================== */
+  .card-cover {
+    background: linear-gradient(145deg, #050b1a 0%, #0d1b2e 50%, #0f2342 100%);
+  }
+  .card-cover .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(0,212,255,0.08) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,212,255,0.08) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .card-cover .glow-circle {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .card-cover .content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px;
+    text-align: center;
+  }
+  .card-cover .icon-wrap {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(124,58,237,0.2));
+    border: 2px solid rgba(0,212,255,0.4);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 28px;
+    box-shadow: 0 0 30px rgba(0,212,255,0.2);
+  }
+  .card-cover .tag {
+    display: inline-block;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: #00d4ff;
+    font-size: 12px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+  .card-cover h1 {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .card-cover .subtitle {
+    font-size: 16px;
+    color: #7ba3c4;
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 36px;
+  }
+  .card-cover .stats-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .card-cover .stat {
+    text-align: center;
+  }
+  .card-cover .stat-num {
+    font-size: 26px;
+    font-weight: 800;
+    color: #00d4ff;
+  }
+  .card-cover .stat-label {
+    font-size: 11px;
+    color: #5a8aaa;
+    margin-top: 2px;
+  }
+  .card-cover .cta {
+    background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(124,58,237,0.2));
+    border: 1px solid rgba(0,212,255,0.3);
+    color: #e8f4fd;
+    font-size: 14px;
+    padding: 12px 28px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-cover .author {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: #3a5a7a;
+  }
+
+  /* ===================== 数据页 ===================== */
+  .card-data {
+    background: linear-gradient(150deg, #050b1a, #0d1b2e);
+  }
+  .card-data .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(0,212,255,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,212,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .card-data .content {
+    position: relative;
+    z-index: 2;
+    padding: 32px 36px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-data .section-title {
+    font-size: 13px;
+    color: #00d4ff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-data h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 6px;
+  }
+  .card-data .desc {
+    font-size: 13px;
+    color: #5a8aaa;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .city-rank {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+  .city-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .rank-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .rank-1 { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+  .rank-2 { background: linear-gradient(135deg, #9ca3af, #6b7280); color: white; }
+  .rank-3 { background: linear-gradient(135deg, #cd7c3a, #a35c28); color: white; }
+  .rank-other { background: rgba(255,255,255,0.08); color: #7ba3c4; }
+  .city-name {
+    width: 48px;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .city-bar-wrap {
+    flex: 1;
+    height: 28px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .city-bar {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    transition: width 0.3s;
+  }
+  .bar-tier1 { background: linear-gradient(90deg, rgba(239,68,68,0.5), rgba(239,68,68,0.85)); }
+  .bar-new1  { background: linear-gradient(90deg, rgba(245,158,11,0.5), rgba(245,158,11,0.85)); }
+  .bar-tier2 { background: linear-gradient(90deg, rgba(34,197,94,0.5), rgba(34,197,94,0.85)); }
+  .city-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #00d4ff;
+    width: 70px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .card-data .footer-tip {
+    margin-top: 16px;
+    font-size: 11px;
+    color: #3a5a7a;
+    text-align: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0,212,255,0.08);
+  }
+
+  /* ===================== 核心观点页 ===================== */
+  .card-insight {
+    background: linear-gradient(145deg, #050b1a, #0d1b2e);
+  }
+  .card-insight .accent-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00d4ff, #7c3aed);
+  }
+  .card-insight .content {
+    position: relative;
+    z-index: 2;
+    padding: 36px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .insight-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.25);
+    color: #00d4ff;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    width: fit-content;
+  }
+  .insight-question {
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 28px;
+  }
+  .insight-question span {
+    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .insight-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+  }
+  .insight-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,212,255,0.1);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .insight-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .insight-text h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+  }
+  .insight-text p {
+    font-size: 13px;
+    color: #7ba3c4;
+    line-height: 1.6;
+  }
+  .insight-text .highlight {
+    color: #00d4ff;
+    font-weight: 600;
+  }
+  .card-insight .footer-cta {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #5a8aaa;
+  }
+  .card-insight .footer-cta strong {
+    color: #00d4ff;
+  }
+
+  /* ===================== 对比页 ===================== */
+  .card-compare {
+    background: linear-gradient(150deg, #050b1a, #0a1628);
+  }
+  .card-compare .content {
+    position: relative;
+    z-index: 2;
+    padding: 32px 36px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .compare-header {
+    margin-bottom: 22px;
+  }
+  .compare-header .tag {
+    font-size: 12px;
+    color: #00d4ff;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .compare-header h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: white;
+  }
+  .compare-table {
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 14px;
+    overflow: hidden;
+    flex: 1;
+  }
+  .compare-thead {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr;
+    background: rgba(0,212,255,0.08);
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #00d4ff;
+    font-weight: 600;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr;
+    padding: 14px 16px;
+    font-size: 13px;
+    border-top: 1px solid rgba(0,212,255,0.06);
+    align-items: center;
+  }
+  .compare-row:hover {
+    background: rgba(0,212,255,0.04);
+  }
+  .compare-city {
+    font-weight: 700;
+    color: white;
+    font-size: 14px;
+  }
+  .compare-val {
+    color: #7ba3c4;
+    font-size: 12px;
+  }
+  .val-red { color: #ef4444; font-weight: 600; }
+  .val-yellow { color: #f59e0b; font-weight: 600; }
+  .val-green { color: #22c55e; font-weight: 600; }
+  .score-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .score-high { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .score-mid { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .score-low { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .compare-note {
+    margin-top: 12px;
+    font-size: 11px;
+    color: #3a5a7a;
+    text-align: center;
+  }
+
+  /* ===================== 尾页/导流 ===================== */
+  .card-cta {
+    background: linear-gradient(145deg, #050b1a 0%, #0d1b2e 60%, #150a2a 100%);
+  }
+  .card-cta .glow1 {
+    position: absolute;
+    bottom: -100px;
+    left: -80px;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .card-cta .glow2 {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .card-cta .content {
+    position: relative;
+    z-index: 2;
+    padding: 40px 36px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .card-cta .emoji-big {
+    font-size: 60px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(0,212,255,0.4));
+  }
+  .card-cta h2 {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+  .card-cta p {
+    font-size: 15px;
+    color: #7ba3c4;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    max-width: 340px;
+  }
+  .step-list {
+    text-align: left;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 30px;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,212,255,0.07);
+  }
+  .step-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-text {
+    font-size: 14px;
+    color: #c8dff0;
+    line-height: 1.5;
+  }
+  .card-cta .author-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 360px;
+  }
+  .cta-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .cta-author-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 2px;
+  }
+  .cta-author-sub {
+    font-size: 12px;
+    color: #5a8aaa;
+  }
+  .cta-follow {
+    margin-left: auto;
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: #050b1a;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 20px;
+  }
+
+  .print-guide {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 24px 32px;
+    max-width: 540px;
+    width: 100%;
+    color: #ccc;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .print-guide h3 { color: #00d4ff; font-size: 16px; margin-bottom: 12px; }
+  .print-guide li { margin-left: 20px; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<!-- ===== 使用说明 ===== -->
+<div class="print-guide">
+  <h3>📋 截图说明</h3>
+  <ul>
+    <li>每张卡片尺寸 540×675px（对应 1080×1350 发布标准）</li>
+    <li>推荐截图工具：系统截图（Cmd+Shift+4）或右键「检查」→调整缩放</li>
+    <li>共 5 张，依次：封面 → 房价排行 → 核心观点 → 城市对比 → 导流尾页</li>
+    <li>发布顺序即为浏览顺序，文案见下方</li>
+  </ul>
+</div>
+
+<!-- ===== 第1张：封面 ===== -->
+<div class="card card-cover">
+  <div class="grid-bg"></div>
+  <div class="glow-circle"></div>
+  <div class="card-label">1 / 5</div>
+  <div class="content">
+    <div class="icon-wrap">🏙️</div>
+    <div class="tag">2025 · 数据可视化</div>
+    <h1>全国城市<br>房价地图</h1>
+    <p class="subtitle">34城均价 · 房价收入比 · 性价比评分<br>一个工具看清买房压力</p>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">34</div>
+        <div class="stat-label">城市数据</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">8</div>
+        <div class="stat-label">核心指标</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">免费</div>
+        <div class="stat-label">完全开放</div>
+      </div>
+    </div>
+    <div class="cta">🔍 见评论区链接</div>
+  </div>
+  <div class="author">by 唐小涛 · xiao.tao.123.ok@outlook.com</div>
+</div>
+
+<!-- ===== 第2张：房价排行 ===== -->
+<div class="card card-data">
+  <div class="grid-bg"></div>
+  <div class="card-label">2 / 5</div>
+  <div class="content">
+    <div class="section-title">TOP 城市排行</div>
+    <h2>哪些城市最贵？</h2>
+    <p class="desc">2025年主要城市二手房均价排行，单位：元/㎡</p>
+    <div class="city-rank">
+      <div class="city-row">
+        <div class="rank-num rank-1">1</div>
+        <div class="city-name">深圳</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-tier1" style="width:100%">一线</div>
+        </div>
+        <div class="city-price">6.5万/㎡</div>
+      </div>
+      <div class="city-row">
+        <div class="rank-num rank-2">2</div>
+        <div class="city-name">上海</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-tier1" style="width:92%">一线</div>
+        </div>
+        <div class="city-price">6.0万/㎡</div>
+      </div>
+      <div class="city-row">
+        <div class="rank-num rank-3">3</div>
+        <div class="city-name">北京</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-tier1" style="width:88%">一线</div>
+        </div>
+        <div class="city-price">5.8万/㎡</div>
+      </div>
+      <div class="city-row">
+        <div class="rank-num rank-other">4</div>
+        <div class="city-name">广州</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-tier1" style="width:62%">一线</div>
+        </div>
+        <div class="city-price">4.0万/㎡</div>
+      </div>
+      <div class="city-row">
+        <div class="rank-num rank-other">5</div>
+        <div class="city-name">杭州</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-new1" style="width:55%">新一线</div>
+        </div>
+        <div class="city-price">3.6万/㎡</div>
+      </div>
+      <div class="city-row">
+        <div class="rank-num rank-other">6</div>
+        <div class="city-name">南京</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-new1" style="width:46%">新一线</div>
+        </div>
+        <div class="city-price">3.0万/㎡</div>
+      </div>
+      <div class="city-row">
+        <div class="rank-num rank-other">7</div>
+        <div class="city-name">成都</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-new1" style="width:38%">新一线</div>
+        </div>
+        <div class="city-price">2.5万/㎡</div>
+      </div>
+      <div class="city-row">
+        <div class="rank-num rank-other">8</div>
+        <div class="city-name">武汉</div>
+        <div class="city-bar-wrap">
+          <div class="city-bar bar-tier2" style="width:31%">二线</div>
+        </div>
+        <div class="city-price">2.0万/㎡</div>
+      </div>
+    </div>
+    <div class="footer-tip">👆 深圳工具可查看全部34城市详细数据 · 见评论区</div>
+  </div>
+</div>
+
+<!-- ===== 第3张：核心观点 ===== -->
+<div class="card card-insight">
+  <div class="accent-top"></div>
+  <div class="card-label">3 / 5</div>
+  <div class="content">
+    <div class="insight-badge">📊 关键发现</div>
+    <div class="insight-question">
+      买房前，<span>你必须知道</span><br>这3件事
+    </div>
+    <div class="insight-cards">
+      <div class="insight-card">
+        <div class="insight-icon">⏳</div>
+        <div class="insight-text">
+          <h4>北上深 = 不吃不喝30年</h4>
+          <p>深圳房价收入比高达 <span class="highlight">30+年</span>，意味着即使不花钱，攒齐首付也要十几年。<span class="highlight">收入比才是真正的压力指标。</span></p>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">💡</div>
+        <div class="insight-text">
+          <h4>二线城市性价比更高</h4>
+          <p>西安、合肥、郑州等城市均价 <span class="highlight">1.2–1.8万/㎡</span>，房价收入比仅 8–12年，远低于一线压力。</p>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">📉</div>
+        <div class="insight-text">
+          <h4>高度依赖房产 = 风险信号</h4>
+          <p>房地产占GDP超过 <span class="highlight">18%</span> 的城市，产业结构单一，价格下行时缺乏支撑。</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-cta">🔗 完整34城数据见评论区 · by <strong>唐小涛</strong></div>
+  </div>
+</div>
+
+<!-- ===== 第4张：城市对比 ===== -->
+<div class="card card-compare">
+  <div class="card-label">4 / 5</div>
+  <div class="content">
+    <div class="compare-header">
+      <div class="tag">城市横向对比</div>
+      <h2>8城关键指标一览</h2>
+    </div>
+    <div class="compare-table">
+      <div class="compare-thead">
+        <span>城市</span>
+        <span>均价万/㎡</span>
+        <span>收入比</span>
+        <span>租金率</span>
+        <span>性价比</span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-city">🏆 成都</span>
+        <span class="compare-val val-green">2.5</span>
+        <span class="compare-val val-yellow">14年</span>
+        <span class="compare-val val-green">2.8%</span>
+        <span><div class="score-badge score-high">88分</div></span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-city">🏆 西安</span>
+        <span class="compare-val val-green">1.5</span>
+        <span class="compare-val val-green">10年</span>
+        <span class="compare-val val-green">3.1%</span>
+        <span><div class="score-badge score-high">85分</div></span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-city">杭州</span>
+        <span class="compare-val val-yellow">3.6</span>
+        <span class="compare-val val-yellow">18年</span>
+        <span class="compare-val val-yellow">2.2%</span>
+        <span><div class="score-badge score-mid">72分</div></span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-city">广州</span>
+        <span class="compare-val val-yellow">4.0</span>
+        <span class="compare-val val-yellow">19年</span>
+        <span class="compare-val val-yellow">2.0%</span>
+        <span><div class="score-badge score-mid">70分</div></span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-city">北京</span>
+        <span class="compare-val val-red">5.8</span>
+        <span class="compare-val val-red">28年</span>
+        <span class="compare-val val-red">1.5%</span>
+        <span><div class="score-badge score-low">48分</div></span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-city">上海</span>
+        <span class="compare-val val-red">6.0</span>
+        <span class="compare-val val-red">29年</span>
+        <span class="compare-val val-red">1.4%</span>
+        <span><div class="score-badge score-low">46分</div></span>
+      </div>
+      <div class="compare-row">
+        <span class="compare-city">深圳</span>
+        <span class="compare-val val-red">6.5</span>
+        <span class="compare-val val-red">32年</span>
+        <span class="compare-val val-red">1.3%</span>
+        <span><div class="score-badge score-low">42分</div></span>
+      </div>
+    </div>
+    <div class="compare-note">完整数据含房地产依赖度、GDP增速等指标 · 工具见评论区链接</div>
+  </div>
+</div>
+
+<!-- ===== 第5张：导流尾页 ===== -->
+<div class="card card-cta">
+  <div class="glow1"></div>
+  <div class="glow2"></div>
+  <div class="card-label">5 / 5</div>
+  <div class="content">
+    <div class="emoji-big">🔗</div>
+    <h2>免费工具<br>点就能用</h2>
+    <p>打开评论区链接，5秒加载<br>无需下载 · 无需注册</p>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-dot">1</div>
+        <div class="step-text">点评论区第一条链接</div>
+      </div>
+      <div class="step-item">
+        <div class="step-dot">2</div>
+        <div class="step-text">选城市等级/区域筛选</div>
+      </div>
+      <div class="step-item">
+        <div class="step-dot">3</div>
+        <div class="step-text">点城市名 → 查看详细分析+投资建议</div>
+      </div>
+      <div class="step-item">
+        <div class="step-dot">4</div>
+        <div class="step-text">勾选多个城市 → 生成对比图表</div>
+      </div>
+    </div>
+    <div class="author-row">
+      <div class="cta-avatar">涛</div>
+      <div>
+        <div class="cta-author-name">唐小涛</div>
+        <div class="cta-author-sub">数据可视化 · 城市研究</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== 小红书文案 ===== -->
+<div class="print-guide" style="margin-top:20px">
+  <h3>📝 小红书发布文案（直接复制）</h3>
+  <br>
+  <strong style="color:#f59e0b">【标题】</strong><br>
+  做了个工具：34个城市买房压力，一眼看懂 🏙️<br><br>
+  <strong style="color:#f59e0b">【正文】</strong><br>
+  买房到底贵不贵，光看均价是骗人的 ——<br>
+  深圳均价6.5万/㎡，但真正恐怖的是：<br>
+  按深圳收入，不吃不喝要攒30多年才够首付。<br><br>
+  我做了这个工具，把34个城市的数据全放进去：<br>
+  ✅ 均价 · 租金回报率 · 房价收入比<br>
+  ✅ 房地产依赖度（越高风险越大）<br>
+  ✅ 性价比评分，二线黑马一目了然<br>
+  ✅ 选多个城市生成对比图表<br><br>
+  结论：二线城市的性价比真的高很多，西安/成都/合肥可以认真看看。<br><br>
+  工具完全免费，见评论区 👇<br><br>
+  <strong style="color:#f59e0b">【标签】</strong><br>
+  #买房 #房价 #数据可视化 #城市对比 #买房攻略 #深圳 #北京 #上海 #成都 #西安 #置业指南 #房产投资
+</div>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>半生路 v3.1</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;background:#FFF8F0;display:flex;justify-content:center;align-items:center;overflow:hidden}canvas{display:block;touch-action:none}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const wx={
+  _cbs:[],
+  onTouchStart(cb){this._cbs.push(cb)},
+  getSystemInfoSync(){return{windowWidth:innerWidth,windowHeight:innerHeight,pixelRatio:devicePixelRatio||2}},
+  createCanvas(){
+    const c=document.getElementById('c'),si=this.getSystemInfoSync();
+    c.width=si.windowWidth*si.pixelRatio;c.height=si.windowHeight*si.pixelRatio;
+    c.style.width=si.windowWidth+'px';c.style.height=si.windowHeight+'px';
+    const pr=si.pixelRatio;
+    c.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];this._cbs.forEach(cb=>cb({touches:[{clientX:t.clientX,clientY:t.clientY}]}))});
+    c.addEventListener('mousedown',e=>{this._cbs.forEach(cb=>cb({touches:[{clientX:e.clientX,clientY:e.clientY}]}))});
+    return c;
+  }
+};
+</script>
+<script src="game.js"></script>
+</body>
+</html>
