@@ -376,41 +376,142 @@
       .industry-tags { justify-content: flex-start; }
     }
   </style>
+  <script>
+  // ══ i18n ══
+  const I18N = {
+    zh: {
+      navTitle:'🏠 城市房价地图',heroBadge:'🏙️ 一二线城市房价全景分析',heroTitle:'全国一二线城市<br>房价深度分析',heroDesc:'36座城市 · 5大维度 · 房价收入比 · 性价比评分 · 产业分析 · 投资风险评估',
+      statCities:'城市覆盖',statDims:'分析维度',statYear:'年度数据',statObj:'客观分析',
+      secOverview:'📊 数据总览',h2Metrics:'核心指标看板',pMetrics:'筛选城市等级与区域，快速定位目标城市',
+      tierLabel:'城市等级',regionLabel:'区域',searchLabel:'搜索城市',tierAll:'全部',tier1:'一线城市',tierStrong:'强一线城市',tierNormal:'普通一线城市',tierNew:'新一线城市',tier2:'二线城市',
+      regAll:'全部',regNorth:'华北',regEast:'华东',regSouth:'华南',regCentral:'华中',regSW:'西南',regNW:'西北',regNE:'东北',
+      secIndustry:'🏭 产业分析',h2Industry:'各城市最热门行业 & 最适合行业',pIndustry:'结合城市产业优势与个人发展潜力综合分析',
+      secRank:'🏆 综合排行',h2Rank:'城市综合评分排名',pRank:'综合房价、收入、产业、风险多维度评估',
+      secCompare:'⚖️ 城市对比',h2Compare:'选择2-4个城市进行横向对比',pCompare:'多维度对比目标城市的综合表现',
+      secCityDetail:'📍 城市详情',
+      secPromotion:'🎓 更多分析工具',
+      h3Promo:'大学毕业生选择指南',pPromo:'国内城市对比 + 出国留学打工完整数据',
+      h3Career:'🗺️ 深圳职业图谱',pCareer:'深圳年轻人职业规划、应届生薪资、行业收入排行',
+      footerDesc:'基于公开数据整理分析，不构成投资建议。数据截至2025年。',
+    },
+    zt: {
+      navTitle:'🏠 城市房價地圖',heroBadge:'🏙️ 一二線城市房價全景分析',heroTitle:'全國一二線城市<br>房價深度分析',heroDesc:'36座城市 · 5大維度 · 房價收入比 · 性價比評分 · 產業分析 · 投資風險評估',
+      statCities:'城市覆蓋',statDims:'分析維度',statYear:'年度數據',statObj:'客觀分析',
+      secOverview:'📊 數據總覽',h2Metrics:'核心指標看板',pMetrics:'篩選城市等級與區域，快速定位目標城市',
+      tierLabel:'城市等級',regionLabel:'區域',searchLabel:'搜索城市',tierAll:'全部',tier1:'一線城市',tierStrong:'強一線城市',tierNormal:'普通一線城市',tierNew:'新一線城市',tier2:'二線城市',
+      regAll:'全部',regNorth:'華北',regEast:'華東',regSouth:'華南',regCentral:'華中',regSW:'西南',regNW:'西北',regNE:'東北',
+      secIndustry:'🏭 產業分析',h2Industry:'各城市最熱門行業 & 最適合行業',pIndustry:'結合城市產業優勢與個人發展潛力綜合分析',
+      secRank:'🏆 綜合排行',h2Rank:'城市綜合評分排名',pRank:'綜合房價、收入產業、風險多維度評估',
+      secCompare:'⚖️ 城市對比',h2Compare:'選擇2-4個城市進行橫向對比',pCompare:'多維度對比目標城市的綜合表現',
+      secCityDetail:'📍 城市詳情',
+      secPromotion:'🎓 更多分析工具',
+      h3Promo:'大學畢業生選擇指南',pPromo:'國內城市對比 + 出國留學打工完整數據',
+      h3Career:'🗺️ 深圳職業圖譜',pCareer:'深圳年輕人職業規劃、應屆生薪資、行業收入排行',
+      footerDesc:'基於公開數據整理分析，不構成投資建議。數據截至2025年。',
+    },
+    en: {
+      navTitle:'🏠 Housing Price Map',heroBadge:'🏙️ Housing Price Analysis for 36 Cities',heroTitle:'National Housing Price<br>Deep Dive Analysis',heroDesc:'36 cities · 5 dimensions · Price-to-income ratio · Value score · Industry analysis · Investment risk',
+      statCities:'Cities',statDims:'Dimensions',statYear:'Year',statObj:'Objective',
+      secOverview:'📊 Data Overview',h2Metrics:'Core Metrics Dashboard',pMetrics:'Filter by city tier and region',
+      tierLabel:'City Tier',regionLabel:'Region',searchLabel:'Search City',tierAll:'All',tier1:'Tier-1',tierStrong:'Strong Tier-1',tierNormal:'Normal Tier-1',tierNew:'New Tier-1',tier2:'Tier-2',
+      regAll:'All',regNorth:'North',regEast:'East',regSouth:'South',regCentral:'Central',regSW:'SW',regNW:'NW',regNE:'NE',
+      secIndustry:'🏭 Industry Analysis',h2Industry:'Hot & Suitable Industries by City',pIndustry:'Analyze based on city industry advantages',
+      secRank:'🏆 Overall Ranking',h2Rank:'Comprehensive City Score Ranking',pRank:'Multi-dimensional assessment of price, income, industry, risk',
+      secCompare:'⚖️ City Comparison',h2Compare:'Compare 2-4 cities side by side',pCompare:'Multi-dimensional comparison of target cities',
+      secCityDetail:'📍 City Details',
+      secPromotion:'🎓 More Tools',
+      h3Promo:'Graduate Career Guide',pPromo:'Chinese city comparison + Study/work abroad guide',
+      h3Career:'🗺️ Shenzhen Career Atlas',pCareer:'Career planning, fresh grad salaries, industry income ranking',
+      footerDesc:'Based on public data. Not investment advice. Data as of 2025.',
+    }
+  };
+  let currentLang = 'zh';
+  function setLang(lang){
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.textContent.trim().toLowerCase().startsWith(lang==='zh'?'简':lang==='zt'?'繁':'e')));
+    applyLang();
+    renderAll();
+  }
+  function applyLang(){
+    const t = I18N[currentLang];
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      if(t[key] !== undefined) el.innerHTML = t[key];
+    });
+    // Update select options
+    const tierSel = document.getElementById('tierFilter');
+    if(tierSel){
+      const opts = tierSel.options;
+      opts[0].text = t.tierAll;
+      opts[1].text = t.tier1;
+      opts[2].text = t.tierStrong;
+      opts[3].text = t.tierNormal;
+      opts[4].text = t.tierNew;
+      opts[5].text = t.tier2;
+    }
+    const regSel = document.getElementById('regionFilter');
+    if(regSel){
+      const opts = regSel.options;
+      opts[0].text = t.regAll;
+      opts[1].text = t.regNorth;
+      opts[2].text = t.regEast;
+      opts[3].text = t.regSouth;
+      opts[4].text = t.regCentral;
+      opts[5].text = t.regSW;
+      opts[6].text = t.regNW;
+      opts[7].text = t.regNE;
+    }
+  }
+  </script>
 </head>
 <body>
-  <nav>
-    <div class="nav-logo"><span class="dot"></span>城市房价分析</div>
-    <div class="nav-links">
-      <a href="#overview">总览</a>
-      <a href="#charts">图表分析</a>
-      <a href="#industry">行业分析</a>
+  <!-- TOP BAR -->
+  <div id="topbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(5,11,26,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,212,255,.15);display:flex;align-items:center;gap:10px;padding:10px 16px;flex-wrap:wrap;">
+    <div class="site-name" data-i18n="navTitle" style="font-size:13px;font-weight:700;color:var(--primary);flex:1;white-space:nowrap;">🏠 城市房价地图</div>
+    <div id="search-box" style="display:flex;align-items:center;gap:6px;background:var(--bg-card);border:1px solid rgba(0,212,255,.15);border-radius:8px;padding:6px 12px;flex:1;max-width:280px;min-width:120px;">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#7ba3c4" stroke-width="1.5"/><path d="M11 11l3 3" stroke="#7ba3c4" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索城市…" autocomplete="off" style="background:none;border:none;outline:none;color:#e8f4fd;font-size:13px;width:100%;">
+      <span id="search-count" style="font-size:11px;color:#7ba3c4;white-space:nowrap;"></span>
     </div>
-    <span class="nav-tag">2025年度数据</span>
-  </nav>
+    <div class="lang-btns" style="display:flex;gap:4px;flex-shrink:0;">
+      <button class="lang-btn active" onclick="setLang('zh')" style="padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid rgba(0,212,255,.15);background:rgba(0,212,255,.15);color:#00d4ff;font-weight:700;">简体</button>
+      <button class="lang-btn" onclick="setLang('zt')" style="padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid rgba(0,212,255,.15);background:transparent;color:#7ba3c4;">繁體</button>
+      <button class="lang-btn" onclick="setLang('en')" style="padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid rgba(0,212,255,.15);background:transparent;color:#7ba3c4;">EN</button>
+    </div>
+  </div>
 
-  <div class="hero">
+  <style>
+    .lang-btn{transition:.15s;}
+    .lang-btn:hover:not(.active){border-color:#00d4ff!important;color:#00d4ff!important;}
+    @media(max-width:480px){
+      .lang-btn:nth-child(3),.lang-btn:nth-child(4){display:none;}
+      #search-box{max-width:150px;}
+    }
+  </style>
+
+  <div class="hero" style="padding-top:70px;">
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
     <div class="hero-content">
-      <div class="hero-badge">🏙️ 一二线城市房价全景分析</div>
-      <h1>全国一二线城市<br>房价深度分析</h1>
-      <p>36座城市 · 5大维度 · 房价收入比 · 性价比评分 · 产业分析 · 投资风险评估</p>
+      <div class="hero-badge" data-i18n="heroBadge">🏙️ 一二线城市房价全景分析</div>
+      <h1 data-i18n="heroTitle">全国一二线城市<br>房价深度分析</h1>
+      <p data-i18n="heroDesc">36座城市 · 5大维度 · 房价收入比 · 性价比评分 · 产业分析 · 投资风险评估</p>
       <div class="hero-stats">
         <div class="stat-card">
           <div class="stat-num">36</div>
-          <div class="stat-label">城市覆盖</div>
+          <div class="stat-label" data-i18n="statCities">城市覆盖</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">5</div>
-          <div class="stat-label">分析维度</div>
+          <div class="stat-label" data-i18n="statDims">分析维度</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">2025</div>
-          <div class="stat-label">年度数据</div>
+          <div class="stat-label" data-i18n="statYear">年度数据</div>
         </div>
         <div class="stat-card">
           <div class="stat-num">100%</div>
-          <div class="stat-label">客观分析</div>
+          <div class="stat-label" data-i18n="statObj">客观分析</div>
         </div>
       </div>
     </div>
@@ -425,7 +526,7 @@
 
     <div class="filters">
       <div class="filter-group">
-        <label>城市等级</label>
+        <label data-i18n="tierLabel">城市等级</label>
         <select id="tierFilter" onchange="renderAll()">
           <option value="all">全部</option>
           <option value="一线">一线城市</option>
@@ -436,7 +537,7 @@
         </select>
       </div>
       <div class="filter-group">
-        <label>区域</label>
+        <label data-i18n="regionLabel">区域</label>
         <select id="regionFilter" onchange="renderAll()">
           <option value="all">全部</option>
           <option value="华北">华北</option>
@@ -449,7 +550,7 @@
         </select>
       </div>
       <div class="filter-group" style="margin-left:auto;">
-        <label>搜索城市</label>
+        <label data-i18n="searchLabel">搜索城市</label>
         <select id="searchFilter" onchange="renderAll()">
           <option value="all">全部城市</option>
         </select>
@@ -1164,9 +1265,24 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       populateSearch();
+      applyLang();
       renderAll();
       renderIndustryAnalysis();
       document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+      
+      // 顶部搜索框功能
+      document.getElementById('searchInput').addEventListener('input', e => {
+        const q = e.target.value.trim().toLowerCase();
+        if (!q) {
+          document.getElementById('searchFilter').value = 'all';
+        } else {
+          const match = CITY_DATA.find(c => c.name.toLowerCase().includes(q));
+          if (match) {
+            document.getElementById('searchFilter').value = match.name;
+          }
+        }
+        renderAll();
+      });
     });
   </script>
 </body>

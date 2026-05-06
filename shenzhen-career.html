@@ -396,6 +396,37 @@
     .anim-d2 { animation-delay: 0.2s; }
     .anim-d3 { animation-delay: 0.3s; }
 
+    /* ========= 统一 Top Bar ========= */
+    #topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(5,11,26,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      height: 52px;
+    }
+    #topbar .site-name { font-size:13px; font-weight:700; color:var(--primary); flex:1; white-space:nowrap; }
+    #topbar #search-box {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 5px 10px; flex:1; max-width:280px;
+    }
+    #topbar #search-box svg { flex-shrink:0; }
+    #topbar #search-box input {
+      border:none; background:transparent; color:var(--text); font-size:13px; outline:none; width:100%;
+    }
+    #topbar #search-box input::placeholder { color:#4a6a8a; }
+    #topbar #search-count { font-size:11px; color:var(--primary); white-space:nowrap; min-width:30px; text-align:right; }
+    #topbar .lang-btns { display:flex; gap:4px; flex-shrink:0; }
+    #topbar .lang-btns .lang-btn {
+      background:transparent; border:1px solid rgba(255,255,255,0.12); color:#8b949e;
+      padding:4px 9px; border-radius:6px; font-size:12px; cursor:pointer;
+      transition: all 0.2s;
+    }
+    #topbar .lang-btns .lang-btn:hover { border-color:var(--primary); color:var(--primary); }
+    #topbar .lang-btns .lang-btn.active { background:rgba(0,212,255,0.12); border-color:var(--primary); color:var(--primary); }
+    .search-highlight { background:rgba(0,212,255,0.3); border-radius:2px; color:var(--primary); }
+
     /* ========= 响应式 ========= */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
@@ -403,39 +434,75 @@
       section { padding: 50px 20px; }
       .hero h1 { font-size: 36px; }
       .card-grid-2 { grid-template-columns: 1fr; }
+      #topbar .site-name { font-size:12px; }
+      #topbar #search-box { max-width:140px; }
+      .lang-btns .lang-btn:nth-child(3) { display:none; }
     }
+
+    /* ========= 统一 Top Bar ========= */
+    #topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(5,11,26,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      height: 52px;
+    }
+    #topbar .site-name { font-size:13px; font-weight:700; color:var(--primary); flex:1; white-space:nowrap; }
+    #topbar #search-box {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 5px 10px; flex:1; max-width:280px;
+    }
+    #topbar #search-box svg { flex-shrink:0; }
+    #topbar #search-box input {
+      border:none; background:transparent; color:var(--text); font-size:13px; outline:none; width:100%;
+    }
+    #topbar #search-box input::placeholder { color:#4a6a8a; }
+    #topbar #search-count { font-size:11px; color:var(--primary); white-space:nowrap; min-width:30px; text-align:right; }
+    #topbar .lang-btns { display:flex; gap:4px; flex-shrink:0; }
+    #topbar .lang-btns .lang-btn {
+      background:transparent; border:1px solid rgba(255,255,255,0.12); color:#8b949e;
+      padding:4px 9px; border-radius:6px; font-size:12px; cursor:pointer;
+      transition: all 0.2s;
+    }
+    #topbar .lang-btns .lang-btn:hover { border-color:var(--primary); color:var(--primary); }
+    #topbar .lang-btns .lang-btn.active { background:rgba(0,212,255,0.12); border-color:var(--primary); color:var(--primary); }
+    .search-highlight { background:rgba(0,212,255,0.3); border-radius:2px; color:var(--primary); }
+    @media (max-width: 768px) {
+      #topbar .site-name { font-size:12px; }
+      #topbar #search-box { max-width:140px; }
+    }
+
   </style>
 </head>
 <body>
 
-<!-- 导航 -->
-<nav>
-  <div class="nav-logo">
-    <div class="dot"></div>
-    深圳青年职业图谱
+<!-- ══ TOP BAR ══ -->
+<div id="topbar">
+  <div class="site-name" data-i18n="navTitle">🏙️ 深圳职业图谱</div>
+  <div id="search-box">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#8b949e" stroke-width="1.5"/><path d="M11 11l3 3" stroke="#8b949e" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input type="text" id="searchInput" placeholder="搜索关键词…" autocomplete="off" spellcheck="false">
+    <span id="search-count"></span>
   </div>
-  <div class="nav-links">
-    <a href="#overview">数据概览</a>
-    <a href="#income">收入分析</a>
-    <a href="#migration">人口流动</a>
-    <a href="#careers">就业赛道</a>
-    <a href="#advice">规划建议</a>
-    <a href="#compare">城市对比</a>
+  <div class="lang-btns">
+    <button class="lang-btn active" onclick="setLang('zh')">简体</button>
+    <button class="lang-btn" onclick="setLang('zt')">繁體</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
-  <span class="nav-tag">📊 2024 年度报告</span>
-  <span class="nav-tag" id="updateDate" style="margin-left:6px; border-color:rgba(34,197,94,0.3); color:#22c55e; background:rgba(34,197,94,0.08);">📡 数据定期更新</span>
-</nav>
+</div>
 
 <!-- 英雄区 -->
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-content">
-    <div class="hero-badge anim">
+    <div class="hero-badge anim" data-i18n="heroBadge">
       <span>🌟</span> 深圳 · 年轻人职业规划全景分析
     </div>
-    <h1 class="anim anim-d1">来深圳，<br/>你的未来在哪里？</h1>
-    <p class="anim anim-d2">
+    <h1 class="anim anim-d1" data-i18n="heroTitle">来深圳，<br/>你的未来在哪里？</h1>
+    <p class="anim anim-d2" data-i18n="heroDesc">
       聚焦深圳 22-35 岁应届与青年职场人群，<br/>
       从收入分布、职业路径到城市竞争力，<br/>
       用数据为你的职业规划提供参考。
@@ -443,19 +510,19 @@
     <div class="hero-stats anim anim-d3">
       <div class="stat-card">
         <div class="stat-num">2176<span style="font-size:18px">万</span></div>
-        <div class="stat-label">深圳常住人口</div>
+        <div class="stat-label" data-i18n="statPop">深圳常住人口</div>
       </div>
       <div class="stat-card">
         <div class="stat-num">~35<span style="font-size:18px">%</span></div>
-        <div class="stat-label">35岁以下青年占比</div>
+        <div class="stat-label" data-i18n="statYouth">35岁以下青年占比</div>
       </div>
       <div class="stat-card">
       <div class="stat-num">¥10,800</div>
-      <div class="stat-label">青年月薪中位数</div>
+      <div class="stat-label" data-i18n="statSalary">青年月薪中位数</div>
       </div>
       <div class="stat-card">
         <div class="stat-num">+48<span style="font-size:18px">万</span></div>
-        <div class="stat-label">年净流入人口</div>
+        <div class="stat-label" data-i18n="statMigrate">年净流入人口</div>
       </div>
     </div>
   </div>
@@ -464,9 +531,9 @@
 <!-- ======== 数据概览 ======== -->
 <section id="overview">
   <div class="section-header">
-    <span class="section-tag">📌 数据概览</span>
-    <h2>深圳年轻人全景画像</h2>
-    <p>基于 2023-2024 年招聘平台、统计局及行业报告综合数据</p>
+    <span class="section-tag" data-i18n="secTag1">📌 数据概览</span>
+    <h2 data-i18n="p1Title">深圳年轻人全景画像</h2>
+    <p data-i18n="p1Desc">基于 2023-2024 年招聘平台、统计局及行业报告综合数据</p>
   </div>
 
   <div class="card-grid card-grid-2">
@@ -474,9 +541,9 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(0,212,255,0.12);">👥</span>
-        深圳在职人员年龄结构
+        <span data-i18n="ageTitle">深圳在职人员年龄结构</span>
       </h3>
-      <p class="chart-desc">深圳是全国年龄结构最年轻的超大城市之一，35岁以下占绝对主体</p>
+      <p class="chart-desc" data-i18n="ageDesc">深圳是全国年龄结构最年轻的超大城市之一，35岁以下占绝对主体</p>
       <canvas id="ageChart" height="280"></canvas>
     </div>
 
@@ -484,9 +551,9 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(124,58,237,0.12);">🎓</span>
-        应届生学历结构（深圳落户）
+        <span data-i18n="eduTitle">应届生学历结构（深圳落户）</span>
       </h3>
-      <p class="chart-desc">本科是最主要的就业学历，研究生比例逐年提升</p>
+      <p class="chart-desc" data-i18n="eduDesc">本科是最主要的就业学历，研究生比例逐年提升</p>
       <canvas id="eduChart" height="280"></canvas>
     </div>
   </div>
@@ -496,9 +563,9 @@
     <div class="chart-card" style="grid-column: span 2;">
       <h3>
         <span class="icon" style="background:rgba(255,107,53,0.12);">🏭</span>
-        深圳青年就业行业分布
+        <span data-i18n="industryTitle">深圳青年就业行业分布</span>
       </h3>
-      <p class="chart-desc">科技互联网、先进制造、金融是三大核心就业赛道</p>
+      <p class="chart-desc" data-i18n="industryDesc">科技互联网、先进制造、金融是三大核心就业赛道</p>
       <div class="echarts-wrap" id="industryChart"></div>
     </div>
 
@@ -506,9 +573,9 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(34,197,94,0.12);">💼</span>
-        就业形式分布
+        <span data-i18n="jobTypeTitle">就业形式分布</span>
       </h3>
-      <p class="chart-desc">全职就业仍是主流，但灵活就业比例上升</p>
+      <p class="chart-desc" data-i18n="jobTypeDesc">全职就业仍是主流，但灵活就业比例上升</p>
       <canvas id="jobTypeChart" height="280"></canvas>
     </div>
   </div>
@@ -517,27 +584,27 @@
 <!-- ======== 收入分析 ======== -->
 <section id="income" style="background: linear-gradient(180deg, transparent, rgba(0,212,255,0.02), transparent); border-radius:40px;">
   <div class="section-header">
-    <span class="section-tag">💰 收入分析</span>
-    <h2>深圳年轻人的收入真相</h2>
-    <p>横向对比行业薪资，纵向追踪职业成长曲线</p>
+    <span class="section-tag" data-i18n="secTag2">💰 收入分析</span>
+    <h2 data-i18n="p2Title">深圳年轻人的收入真相</h2>
+    <p data-i18n="p2Desc">横向对比行业薪资，纵向追踪职业成长曲线</p>
   </div>
 
   <!-- 高亮数字 -->
   <div class="income-highlight">
     <div class="income-chip">
-      <strong>¥ 7,200</strong> 应届生起薪中位数
+      <strong>¥ 7,200</strong> <span data-i18n="chip1">应届生起薪中位数</span>
     </div>
     <div class="income-chip">
-      <strong>¥ 10,800</strong> 青年月薪中位数
+      <strong>¥ 10,800</strong> <span data-i18n="chip2">青年月薪中位数</span>
     </div>
     <div class="income-chip">
-      <strong>¥ 25,000+</strong> 互联网技术岗 P7 中位数
+      <strong>¥ 25,000+</strong> <span data-i18n="chip3">互联网技术岗 P7 中位数</span>
     </div>
     <div class="income-chip">
-      <strong>73%</strong> 愿意接受税后 1 万以下
+      <strong>73%</strong> <span data-i18n="chip4">愿意接受税后 1 万以下</span>
     </div>
     <div class="income-chip">
-      <strong>+8.6%</strong> 2024 年薪资同比涨幅
+      <strong>+8.6%</strong> <span data-i18n="chip5">2024 年薪资同比涨幅</span>
     </div>
   </div>
 
@@ -546,9 +613,9 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(0,212,255,0.12);">📊</span>
-        应届生月薪分布区间
+        <span data-i18n="salaryDistTitle">应届生月薪分布区间</span>
       </h3>
-      <p class="chart-desc">深圳应届生薪资明显高于全国中位数水平，主要集中在 6K-12K 区间</p>
+      <p class="chart-desc" data-i18n="salaryDistDesc">深圳应届生薪资明显高于全国中位数水平，主要集中在 6K-12K 区间</p>
       <canvas id="salaryDistChart" height="260"></canvas>
     </div>
 
@@ -556,10 +623,10 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(124,58,237,0.12);">🏆</span>
-        各行业薪资中位数排行
+        <span data-i18n="salaryRankTitle">各行业薪资中位数排行</span>
       </h3>
-      <p class="chart-desc">单位：元/月，数据来源：招聘平台及行业报告</p>
-      <div class="rank-list" style="margin-top:10px">
+      <p class="chart-desc" data-i18n="salaryRankUnit">单位：元/月，数据来源：招聘平台及行业报告</p>
+      <div class="rank-list" style="margin-top:10px" data-i18n="salaryRankList">
         <div class="rank-item">
           <div class="rank-header"><span class="rank-name">🤖 AI / 人工智能</span><span class="rank-val">24,500</span></div>
           <div class="rank-bar-bg"><div class="rank-bar" style="width:100%"></div></div>
@@ -605,9 +672,9 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(34,197,94,0.12);">📈</span>
-        互联网职业薪资成长曲线
+        <span data-i18n="growthTitle">互联网职业薪资成长曲线</span>
       </h3>
-      <p class="chart-desc">对标大厂 P5-P9 级别，展示 5 年典型成长轨迹</p>
+      <p class="chart-desc" data-i18n="growthDesc">对标大厂 P5-P9 级别，展示 5 年典型成长轨迹</p>
       <canvas id="growthChart" height="260"></canvas>
     </div>
 
@@ -615,9 +682,9 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(245,158,11,0.12);">🏠</span>
-        月薪 15K 青年支出结构
+        <span data-i18n="expenseTitle">月薪 15K 青年支出结构</span>
       </h3>
-      <p class="chart-desc">在深圳月薪 1.5 万元时的典型支出分配（税后约 12K）</p>
+      <p class="chart-desc" data-i18n="expenseDesc">在深圳月薪 1.5 万元时的典型支出分配（税后约 12K）</p>
       <canvas id="expenseChart" height="260"></canvas>
     </div>
   </div>
@@ -626,9 +693,9 @@
 <!-- ======== 人口流动 ======== -->
 <section id="migration">
   <div class="section-header">
-    <span class="section-tag">🌊 人口流动</span>
-    <h2>深圳人才的来与去</h2>
-    <p>深圳是全国人才净流入最多的城市之一，持续吸引全国各地青年</p>
+    <span class="section-tag" data-i18n="secTag3">🌊 人口流动</span>
+    <h2 data-i18n="p3Title">深圳人才的来与去</h2>
+    <p data-i18n="p3Desc">深圳是全国人才净流入最多的城市之一，持续吸引全国各地青年</p>
   </div>
 
   <!-- 核心流动数据 -->
@@ -636,32 +703,32 @@
     <div class="flow-card">
       <div class="flow-icon">📥</div>
       <div class="flow-num up">+82万</div>
-      <div class="flow-label">2023年流入人口</div>
-      <div class="flow-trend up">↑ 较上年 +6.2%</div>
+      <div class="flow-label" data-i18n="flow1Label">2023年流入人口</div>
+      <div class="flow-trend up" data-i18n="flow1Trend">↑ 较上年 +6.2%</div>
     </div>
     <div class="flow-card">
       <div class="flow-icon">📤</div>
       <div class="flow-num down">-34万</div>
-      <div class="flow-label">2023年流出人口</div>
-      <div class="flow-trend down">↑ 较上年 +3.1%</div>
+      <div class="flow-label" data-i18n="flow2Label">2023年流出人口</div>
+      <div class="flow-trend down" data-i18n="flow2Trend">↑ 较上年 +3.1%</div>
     </div>
     <div class="flow-card">
       <div class="flow-icon">✅</div>
       <div class="flow-num up">+48万</div>
-      <div class="flow-label">净流入（年）</div>
-      <div class="flow-trend up">↑ 持续正增长</div>
+      <div class="flow-label" data-i18n="flow3Label">净流入（年）</div>
+      <div class="flow-trend up" data-i18n="flow3Trend">↑ 持续正增长</div>
     </div>
     <div class="flow-card">
       <div class="flow-icon">🎓</div>
       <div class="flow-num up">+19.4万</div>
-      <div class="flow-label">应届生流入</div>
-      <div class="flow-trend up">↑ 较上年 +12%</div>
+      <div class="flow-label" data-i18n="flow4Label">应届生流入</div>
+      <div class="flow-trend up" data-i18n="flow4Trend">↑ 较上年 +12%</div>
     </div>
     <div class="flow-card">
       <div class="flow-icon">🌏</div>
       <div class="flow-num">38%</div>
-      <div class="flow-label">来自省外</div>
-      <div class="flow-trend up">湖南、湖北为主</div>
+      <div class="flow-label" data-i18n="flow5Label">来自省外</div>
+      <div class="flow-trend up" data-i18n="flow5Trend">湖南、湖北为主</div>
     </div>
   </div>
 
@@ -670,9 +737,9 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(0,212,255,0.12);">🗺️</span>
-        人才来源省份 TOP 10
+        <span data-i18n="provinceTitle">人才来源省份 TOP 10</span>
       </h3>
-      <p class="chart-desc">深圳人才高度多元，来自全国各省，湖南最多</p>
+      <p class="chart-desc" data-i18n="provinceDesc">深圳人才高度多元，来自全国各省，湖南最多</p>
       <div class="echarts-wrap" id="provinceChart"></div>
     </div>
 
@@ -680,7 +747,7 @@
     <div class="chart-card">
       <h3>
         <span class="icon" style="background:rgba(124,58,237,0.12);">📉</span>
-        近 5 年人口流入流出趋势
+        <span data-i18n="trendTitle">近 5 年人口流入流出趋势</span>
       </h3>
       <p class="chart-desc">深圳净流入稳定，流出趋势显示部分人才回流至二线城市</p>
       <canvas id="migrationChart" height="280"></canvas>
@@ -1569,6 +1636,232 @@ document.querySelectorAll('.chart-card, .advice-card, .track-card, .flow-card').
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
 });
+
+// ══════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// I18N - 多语言支持
+// ══════════════════════════════════════════════
+const I18N = {
+  zh: {
+    navTitle:'🏙️ 深圳职业图谱',
+    heroBadgeInner:'深圳 · 年轻人职业规划全景分析',
+    heroTitlePart2:'你的未来在哪里？',
+    heroDesc:'聚焦深圳 22-35 岁应届与青年职场人群，从收入分布、职业路径到城市竞争力，用数据为你的职业规划提供参考。',
+    statPop:'深圳常住人口', statYouth:'35岁以下青年占比', statSalary:'青年月薪中位数', statMigrate:'年净流入人口',
+    secTag1:'📌 数据概览', p1Title:'深圳年轻人全景画像', p1Desc:'基于 2023-2024 年招聘平台、统计局及行业报告综合数据',
+    ageTitle:'深圳在职人员年龄结构', ageDesc:'深圳是全国年龄结构最年轻的超大城市之一，35岁以下占绝对主体',
+    eduTitle:'应届生学历结构（深圳落户）', eduDesc:'本科是最主要的就业学历，研究生比例逐年提升',
+    industryTitle:'深圳青年就业行业分布', industryDesc:'科技互联网、先进制造、金融是三大核心就业赛道',
+    jobTypeTitle:'就业形式分布', jobTypeDesc:'全职就业仍是主流，但灵活就业比例上升',
+    secTag2:'💰 收入分析', p2Title:'深圳年轻人的收入真相', p2Desc:'横向对比行业薪资，纵向追踪职业成长曲线',
+    chip1:'应届生起薪中位数', chip2:'青年月薪中位数', chip3:'互联网技术岗 P7 中位数',
+    chip4:'愿意接受税后 1 万以下', chip5:'2024 年薪资同比涨幅',
+    salaryDistTitle:'应届生月薪分布区间', salaryDistDesc:'深圳应届生薪资明显高于全国中位数水平，主要集中在 6K-12K 区间',
+    salaryRankTitle:'各行业薪资中位数排行', salaryRankUnit:'单位：元/月，数据来源：招聘平台及行业报告',
+    growthTitle:'互联网职业薪资成长曲线', growthDesc:'对标大厂 P5-P9 级别，展示 5 年典型成长轨迹',
+    expenseTitle:'月薪 15K 青年支出结构', expenseDesc:'在深圳月薪 1.5 万元时的典型支出分配（税后约 12K）',
+    secTag3:'🌊 人口流动', p3Title:'深圳人才的来与去', p3Desc:'深圳是全国人才净流入最多的城市之一，持续吸引全国各地青年',
+    flow1Label:'2023年流入人口', flow1Trend:'↑ 较上年 +6.2%', flow2Label:'2023年流出人口', flow2Trend:'↑ 较上年 +3.1%',
+    flow3Label:'净流入（年）', flow3Trend:'↑ 持续正增长', flow4Label:'应届生流入', flow4Trend:'↑ 较上年 +12%',
+    flow5Label:'来自省外', flow5Trend:'湖南、湖北为主',
+    provinceTitle:'人才来源省份 TOP 10', provinceDesc:'深圳人才高度多元，来自全国各省，湖南最多',
+    trendTitle:'近 5 年人口流入流出趋势',
+    secTag4:'🚀 就业赛道', p4Title:'深圳最热门的就业方向', p4Desc:'综合薪资水平、招聘需求量，未来增长潜力三维度评估',
+    heat1:'超热门', heat2:'热门', heat3:'稳定',
+    bubbleTitle:'主要赛道招聘需求 vs 薪资对比（气泡大小代表需求量）',
+    bubbleDesc:'横轴：薪资中位数（K/月）；纵轴：需求热度指数；气泡大小：在招职位数',
+    secTag5:'🧭 规划建议', p5Title:'不同起点的职业规划路径', p5Desc:'针对深圳最核心的就业方向，提供分阶段成长路线',
+    advice1Title:'技术开发方向', advice1Desc:'选择互联网/AI/半导体等技术方向，深圳大厂云集，成长空间大。建议在校期间掌握 1-2 门主流语言，积累实习经验。',
+    searchPlaceholder:'搜索关键词…', searchZero:'0 结果',
+  },
+  zt: {
+    navTitle:'🏙️ 深圳職業圖譜',
+    heroBadgeInner:'深圳 · 年輕人職業規劃全景分析',
+    heroTitlePart2:'你的未來在哪裡？',
+    heroDesc:'聚焦深圳 22-35 歲應屆與青年職場人群，從收入分布、職業路徑到城市競爭力，用數據為你的職業規劃提供參考。',
+    statPop:'深圳常住人口', statYouth:'35歲以下青年占比', statSalary:'青年月薪中位數', statMigrate:'年凈流入人口',
+    secTag1:'📌 數據概覽', p1Title:'深圳年輕人全景畫像', p1Desc:'基於 2023-2024 年招聘平台、統計局及行業報告綜合數據',
+    ageTitle:'深圳在職人員年齡結構', ageDesc:'深圳是全國年齡結構最年輕的超大城市之一，35歲以下占絕對主體',
+    eduTitle:'應屆生學歷結構（深圳落戶）', eduDesc:'本科是最主要的就業學歷，研究生比例逐年提升',
+    industryTitle:'深圳青年就業行業分布', industryDesc:'科技互聯網、先進製造、金融是三大核心就業賽道',
+    jobTypeTitle:'就業形式分布', jobTypeDesc:'全職就業仍是主流，但靈活就業比例上升',
+    secTag2:'💰 收入分析', p2Title:'深圳年輕人的收入真相', p2Desc:'橫向對比行業薪資，縱向追蹤職業成長曲線',
+    chip1:'應屆生起薪中位數', chip2:'青年月薪中位數', chip3:'互聯網技術崗 P7 中位數',
+    chip4:'願意接受稅後 1 萬以下', chip5:'2024 年薪資同比漲幅',
+    salaryDistTitle:'應屆生月薪分布區間', salaryDistDesc:'深圳應屆生薪資明顯高於全國中位數水平，主要集中在 6K-12K 區間',
+    salaryRankTitle:'各行業薪資中位數排行', salaryRankUnit:'單位：元/月，數據來源：招聘平台及行業報告',
+    growthTitle:'互聯網職業薪資成長曲線', growthDesc:'對標大廠 P5-P9 級別，展示 5 年典型成長軌跡',
+    expenseTitle:'月薪 15K 青年支出結構', expenseDesc:'在深圳月薪 1.5 萬元时的典型支出分配（税後約 12K）',
+    secTag3:'🌊 人口流動', p3Title:'深圳人才的來與去', p3Desc:'深圳是全國人才凈流入最多的城市之一，持續吸引全國各地青年',
+    flow1Label:'2023年流入人口', flow1Trend:'↑ 較上年 +6.2%', flow2Label:'2023年流出人口', flow2Trend:'↑ 較上年 +3.1%',
+    flow3Label:'凈流入（年）', flow3Trend:'↑ 持續正增長', flow4Label:'應屆生流入', flow4Trend:'↑ 較上年 +12%',
+    flow5Label:'來自省外', flow5Trend:'湖南、湖北為主',
+    provinceTitle:'人才來源省份 TOP 10', provinceDesc:'深圳人才高度多元，來自全國各省，湖南最多',
+    trendTitle:'近 5 年人口流入流出趨勢',
+    secTag4:'🚀 就業賽道', p4Title:'深圳最受歡迎的就業方向', p4Desc:'綜合薪資水平、招聘需求量，未來增長潛力三維度評估',
+    heat1:'超熱門', heat2:'熱門', heat3:'穩定',
+    bubbleTitle:'主要賽道招聘需求 vs 薪資對比（氣泡大小代表需求量）',
+    bubbleDesc:'橫軸：薪資中位數（K/月）；縱軸：需求熱度指數；氣泡大小：在招生职位數',
+    secTag5:'🧭 規劃建議', p5Title:'不同起點的職業規劃路徑', p5Desc:'針對深圳最核心的就業方向，提供分階段成長路線',
+    advice1Title:'技術開發方向', advice1Desc:'選擇互聯網/AI/半導體等技術方向，深圳大廠雲集，成長空間大。建議在校期間掌握 1-2 門主流語言，積累實習經驗。',
+    searchPlaceholder:'搜索關鍵詞…', searchZero:'0 結果',
+  },
+  en: {
+    navTitle:'🏙️ Shenzhen Career Map',
+    heroBadgeInner:'Shenzhen · Youth Career Planning Analysis',
+    heroTitlePart2:'Where's Your Future?',
+    heroDesc:'Focusing on Shenzhen's 22-35 age group: income distribution, career paths, and city competitiveness. Let data guide your career planning.',
+    statPop:'Shenzhen Population', statYouth:'Youth Under 35 (%)', statSalary:'Median Youth Salary', statMigrate:'Annual Net Inflow',
+    secTag1:'📌 Overview', p1Title:'Shenzhen Youth Profile', p1Desc:'Based on 2023-2024 recruitment platforms, statistics bureau & industry reports',
+    ageTitle:'Age Structure of Shenzhen Employees', ageDesc:'Shenzhen is one of the youngest megacities in China, with under-35s being the majority',
+    eduTitle:'Education Structure of Fresh Grads', eduDesc:'Bachelor's degree is the main employment education, with increasing proportion of postgraduates',
+    industryTitle:'Shenzhen Youth Employment by Industry', industryDesc:'Tech, advanced manufacturing, and finance are the three core employment tracks',
+    jobTypeTitle:'Employment Type Distribution', jobTypeDesc:'Full-time employment remains dominant, but flexible employment is rising',
+    secTag2:'💰 Income Analysis', p2Title:'The Truth About Shenzhen Youth Income', p2Desc:'Horizontal comparison of industry salaries, vertical tracking of career growth curves',
+    chip1:'Median Starting Salary', chip2:'Median Youth Salary', chip3:'Internet Tech P7 Median',
+    chip4:'Willing to accept under 10K after tax', chip5:'2024 YoY Salary Increase',
+    salaryDistTitle:'Fresh Grad Monthly Salary Distribution', salaryDistDesc:'Shenzhen fresh grad salaries are significantly higher than the national median, mainly in the 6K-12K range',
+    salaryRankTitle:'Median Salary Ranking by Industry', salaryRankUnit:'Unit: CNY/month, Source: recruitment platforms & industry reports',
+    growthTitle:'Internet Career Salary Growth Curve', growthDesc:'Benchmarking big tech P5-P9 levels, showing typical 5-year growth trajectory',
+    expenseTitle:'15K Monthly Youth Expense Structure', expenseDesc:'Typical expense distribution at 15K monthly salary in Shenzhen (after tax ~12K)',
+    secTag3:'🌊 Population Flow', p3Title:'Talent Coming and Going in Shenzhen', p3Desc:'Shenzhen is one of the cities with the highest net talent inflow in China, continuously attracting youth from across the country',
+    flow1Label:'2023 Inflow Population', flow1Trend:'↑ +6.2% YoY', flow2Label:'2023 Outflow Population', flow2Trend:'↑ +3.1% YoY',
+    flow3Label:'Net Inflow (Annual)', flow3Trend:'↑ Sustained positive growth', flow4Label:'Fresh Grad Inflow', flow4Trend:'↑ +12% YoY',
+    flow5Label:'From Other Provinces', flow5Trend:'Mainly Hunan, Hubei',
+    provinceTitle:'Top 10 Talent Source Provinces', provinceDesc:'Shenzhen talent is highly diverse, from all provinces, most from Hunan',
+    trendTitle:'Population Inflow/Outflow Trend (Past 5 Years)',
+    secTag4:'🚀 Career Tracks', p4Title:'Shenzhen's Hottest Career Directions', p4Desc:'Evaluating from three dimensions: salary level, recruitment demand, and future growth potential',
+    heat1:'Super Hot', heat2:'Hot', heat3:'Stable',
+    bubbleTitle:'Major Track Recruitment Demand vs Salary Comparison (bubble size = demand)',
+    bubbleDesc:'X-axis: median salary (K/month); Y-axis: demand heat index; bubble size: number of open positions',
+    secTag5:'🧭 Planning Advice', p5Title:'Career Planning Paths for Different Starting Points', p5Desc:'Providing phased growth routes for Shenzhen's core employment directions',
+    advice1Title:'Technical Development Track', advice1Desc:'Choose internet/AI/semiconductor and other technical directions. Shenzhen has many tech giants with great growth potential. Master 1-2 mainstream languages during school and accumulate internship experience.',
+    searchPlaceholder:'Search keywords…', searchZero:'0 results',
+  }
+};
+
+let currentLang = 'zh';
+
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    const isActive = (b.textContent.trim() === '简体' && lang === 'zh') ||
+                     (b.textContent.trim() === '繁體' && lang === 'zt') ||
+                     (b.textContent.trim() === 'EN' && lang === 'en');
+    b.classList.toggle('active', isActive);
+  });
+  applyLang();
+  const inp = document.getElementById('searchInput');
+  if(inp) inp.placeholder = I18N[lang].searchPlaceholder || '搜索…';
+}
+
+function applyLang(){
+  const t = I18N[currentLang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+}
+
+// ══════════════════════════════════════════════
+// KEYWORD SEARCH
+// ══════════════════════════════════════════════
+let searchMatches = [];
+let searchIdx = 0;
+
+function clearHighlights(){
+  document.querySelectorAll('.search-highlight').forEach(el=>{
+    const parent = el.parentNode;
+    parent.replaceChild(document.createTextNode(el.textContent), el);
+    parent.normalize();
+  });
+  searchMatches = [];
+  searchIdx = 0;
+}
+
+function doSearch(q){
+  clearHighlights();
+  const countEl = document.getElementById('search-count');
+  if(!q){ countEl.textContent=''; return; }
+  const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node){
+      const p = node.parentNode;
+      if(!p) return NodeFilter.FILTER_REJECT;
+      const tag = p.tagName||'';
+      if(['SCRIPT','STYLE','NOSCRIPT','INPUT','TEXTAREA'].includes(tag)) return NodeFilter.FILTER_REJECT;
+      if(p.closest && p.closest('#topbar')) return NodeFilter.FILTER_REJECT;
+      return node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+  let n;
+  while((n=walker.nextNode())) nodes.push(n);
+  nodes.forEach(node=>{
+    if(!re.test(node.textContent)) return;
+    re.lastIndex=0;
+    const frag = document.createDocumentFragment();
+    let last=0, m;
+    re.lastIndex=0;
+    const txt=node.textContent;
+    while((m=re.exec(txt))!==null){
+      if(m.index>last) frag.appendChild(document.createTextNode(txt.slice(last,m.index)));
+      const span=document.createElement('span');
+      span.className='search-highlight';
+      span.textContent=m[0];
+      frag.appendChild(span);
+      searchMatches.push(span);
+      last=m.index+m[0].length;
+    }
+    if(last<txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  });
+  if(searchMatches.length){
+    countEl.textContent = `1/${searchMatches.length}`;
+    goToMatch(0);
+  } else {
+    countEl.textContent = I18N[currentLang].searchZero || '0 结果';
+  }
+}
+
+function goToMatch(idx){
+  if(!searchMatches.length) return;
+  searchIdx = idx;
+  const el = searchMatches[idx];
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.getElementById('search-count').textContent = `${idx+1}/${searchMatches.length}`;
+}
+
+// 初始化搜索
+document.addEventListener('DOMContentLoaded', function(){
+  applyLang();
+  const inp = document.getElementById('searchInput');
+  if(inp){
+    inp.addEventListener('input', function(){
+      doSearch(this.value.trim());
+    });
+    inp.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        if(searchMatches.length){
+          goToMatch((searchIdx + 1) % searchMatches.length);
+        }
+      } else if(e.key === 'Escape'){
+        this.value = '';
+        doSearch('');
+      }
+    });
+  }
+});
+
+// ══════════════════════════════════════════════
+// LEGACY NAV OVERRIDE (隐藏旧 nav)
+// ══════════════════════════════════════════════
+document.head.insertAdjacentHTML('beforeend', `<style>
+  nav { display:none !important; }
+  .hero { padding-top: 72px !important; }
+</style>`);
+
+
 </script>
 </body>
 </html>

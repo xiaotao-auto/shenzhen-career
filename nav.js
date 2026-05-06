@@ -229,7 +229,7 @@
   const panel = document.createElement('div');
   panel.id = 'snav-panel';
   panel.innerHTML = `
-    <div class="snav-panel-title">唐小涛 · 网站群</div>
+    <div class="snav-panel-title">📍 网站导航</div>
     ${PAGES.map((p, i) => `
       <a class="snav-item${p.key === cur ? ' active' : ''}"
          href="${p.url}"
