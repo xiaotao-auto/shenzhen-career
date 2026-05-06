@@ -20,7 +20,7 @@
 
   /* ── TOP BAR (Language + Search) ── */
   #topbar {
-    position:fixed; top:48px; left:0; right:0; z-index:1000;
+    position:fixed; top:0; left:0; right:0; z-index:1000;
     background:rgba(13,17,23,.92); backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
     display:flex; align-items:center; gap:10px;
@@ -55,7 +55,7 @@
     background: radial-gradient(ellipse at 20% 50%, rgba(88,166,255,.12) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 20%, rgba(247,129,102,.1) 0%, transparent 60%),
                 radial-gradient(ellipse at 50% 80%, rgba(63,185,80,.08) 0%, transparent 60%), var(--bg);
-    text-align:center; padding:130px 20px 40px;
+    text-align:center; padding:80px 20px 40px;
   }
   .hero-badge { display:inline-block; background:rgba(88,166,255,.15); border:1px solid rgba(88,166,255,.3); color:var(--blue); padding:6px 18px; border-radius:20px; font-size:13px; margin-bottom:24px; }
   .hero h1 { font-size:clamp(28px,5vw,68px); font-weight:800; line-height:1.15; margin-bottom:16px;
@@ -175,22 +175,27 @@
 
   /* ── FOOTER ── */
   footer {
-    text-align:center; padding:48px 20px 32px; color:var(--text2); font-size:13px;
-    border-top:1px solid var(--border);
-    background: linear-gradient(0deg, rgba(88,166,255,.04), transparent);
+    background: #0d1b2e; border-top: 1px solid rgba(88,166,255,0.12);
+    padding: 48px 30px 32px; text-align:center; font-size:13px; color:#7ba3c4;
   }
-  .footer-author { font-size:15px; font-weight:700; color:var(--text); margin-bottom:8px; }
-  .footer-email { color:var(--blue); text-decoration:none; font-size:13px; }
-  .footer-email:hover { text-decoration:underline; }
-  .footer-pv {
-    display:inline-flex; align-items:center; gap:8px;
-    background:var(--bg2); border:1px solid var(--border); border-radius:20px;
-    padding:6px 18px; margin:16px auto 0; font-size:12px;
+  .author-card {
+    display:inline-flex; align-items:center; gap:16px;
+    background: linear-gradient(135deg, rgba(88,166,255,0.10), rgba(188,140,255,0.10));
+    border: 1px solid rgba(88,166,255,0.25);
+    padding:16px 24px; border-radius:16px; margin-bottom:10px;
   }
-  .footer-pv .pv-num { font-size:15px; font-weight:800; color:var(--blue); }
-  .footer-divider { border:none; border-top:1px solid var(--border); margin:20px 0; }
-  .footer-sources { font-size:11px; color:var(--text2); line-height:1.7; max-width:700px; margin:0 auto; }
-  .footer-disclaimer { font-size:11px; color:rgba(139,148,158,.6); margin-top:10px; }
+  .author-avatar {
+    width:56px; height:56px; border-radius:50%;
+    background: linear-gradient(135deg,#58a6ff,#bc8cff);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:700; color:#0d1117; flex-shrink:0;
+  }
+  .author-info { text-align:left; }
+  .author-name { font-size:18px; font-weight:700; color:#e6edf3; margin-bottom:4px; }
+  .author-title { font-size:13px; color:#8b949e; margin-bottom:6px; }
+  .author-contact { font-size:13px; }
+  .author-contact a { color:#58a6ff; text-decoration:none; }
+  .author-contact a:hover { text-decoration:underline; }
 
   /* ── SCROLL ANIMATION ── */
   .fade-in { opacity:0; transform:translateY(16px); transition:.55s ease; }
@@ -205,7 +210,7 @@
   @media(max-width:768px){
     #topbar { padding:8px 12px; gap:8px; }
     #search-box { min-width:100px; }
-    .hero { padding-top:130px; }
+    .hero { padding-top:90px; }
     .section { padding:40px 12px; }
     .heatmap { grid-template-columns:44px repeat(12,1fr); }
     .hm-cell { height:22px; }
@@ -442,28 +447,45 @@
 
 <!-- ══ FOOTER ══ -->
 <footer>
-  <div class="footer-author">唐小涛 · 大学毕业生选择指南</div>
-  <div style="margin-bottom:4px;">
-    <a class="footer-email" href="mailto:xiao.tao.123.ok@outlook.com">📧 xiao.tao.123.ok@outlook.com</a>
-  </div>
-  <div class="footer-pv">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--blue)" stroke-width="1.5"/><circle cx="8" cy="8" r="3" fill="var(--blue)"/></svg>
-    <span data-i18n="pvLabel">本页浏览</span>
-    <span class="pv-num" id="pvCount">—</span>
-    <span data-i18n="pvUnit">次</span>
-  </div>
-  <div class="footer-divider"></div>
-  <div class="footer-sources">
-    <strong data-i18n="srcLabel">📌 数据来源：</strong>
-    <span data-i18n="srcContent">贝壳研究院（租金）· 猎聘/智联大数据（就业）· UNESCO/教育部（留学）· 美世生活成本调研（消费）· 第七次人口普查（人口）· 各城市统计年鉴</span>
-  </div>
-  <div class="footer-disclaimer" data-i18n="disclaimer">
-    ⚠️ 本网页所有数据均为公开信息的汇总整理，不涉及任何版权内容。数据截至2024-2025年，仅供参考，不构成任何投资或职业建议。
-  </div>
-  <div style="margin-top:14px;font-size:11px;color:rgba(139,148,158,.5);">
-    © 2025 Tang Xiaotao · CC BY-NC 4.0
+  <div style="max-width:800px; margin:0 auto;">
+    <!-- 作者信息卡片 -->
+    <div class="author-card">
+      <div class="author-avatar">涛</div>
+      <div class="author-info">
+        <div class="author-name">唐小涛</div>
+        <div class="author-title">数据研究者 · 毕业生选择指南作者</div>
+        <div class="author-contact">
+          <a href="mailto:xiao.tao.123.ok@outlook.com">📧 xiao.tao.123.ok@outlook.com</a>
+        </div>
+      </div>
+    </div>
+    <!-- 标题与来源 -->
+    <p style="margin-top:24px; margin-bottom:8px; font-size:15px; font-weight:600; color:#c9d1d9;">📊 2025 大学毕业生选择指南 · 国内城市 + 出国留学/打工</p>
+    <p style="font-size:12px; line-height:1.7;">
+      数据来源：贝壳研究院（租金）· 猎聘/智联大数据（就业）· UNESCO/教育部（留学）<br>
+      美世生活成本调研（消费）· 第七次人口普查（人口）· 各城市统计年鉴
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:#4a6a8a;">
+      ⚠️ 本网页数据均为公开信息汇总整理，数据截至2024-2025年，仅供参考，不构成任何投资或职业建议。
+    </p>
+    <p style="margin-top:10px; font-size:12px; color:#4a6a8a;">
+      © 2025 唐小涛 · 采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:#58a6ff;">CC BY-NC 4.0</a> 协议发布 · 转载请注明作者及来源
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:#4a6a8a;">Made with ❤️ by 唐小涛</p>
+    <!-- 访客计数 -->
+    <div style="margin-top:20px; font-size:11px; color:#3a5a7a; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <span id="busuanzi_container_site_uv" style="display:inline-flex;align-items:center;gap:4px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3a5a7a" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        访客 <span id="busuanzi_value_site_uv" style="color:#4a7a9a">--</span> 人
+      </span>
+      <span id="busuanzi_container_site_pv" style="display:inline-flex;align-items:center;gap:4px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3a5a7a" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        浏览 <span id="busuanzi_value_site_pv" style="color:#4a7a9a">--</span> 次
+      </span>
+    </div>
   </div>
 </footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <script>
 // ══════════════════════════════════════════════
@@ -659,15 +681,6 @@ function applyLang(){
 }
 
 // ══════════════════════════════════════════════
-//  VISIT COUNTER (localStorage-based)
-// ══════════════════════════════════════════════
-function initPVCounter(){
-  const KEY = 'gguide_pv_v1';
-  let pv = parseInt(localStorage.getItem(KEY)||'0') + 1;
-  localStorage.setItem(KEY, pv);
-  document.getElementById('pvCount').textContent = pv.toLocaleString();
-}
-
 // ══════════════════════════════════════════════
 //  KEYWORD SEARCH
 // ══════════════════════════════════════════════
@@ -1216,7 +1229,6 @@ window.addEventListener('scroll', onScroll, {passive:true});
 // ══ INIT ══
 document.addEventListener('DOMContentLoaded',()=>{
   applyLang();
-  initPVCounter();
   initCitySelector();
   renderRent();
   renderCommute();
