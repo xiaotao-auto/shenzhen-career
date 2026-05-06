@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="唐小涛的网站访客留言板 - 留下你的足迹，与来自各地的朋友交流">
+<title>💬 访客留言板 · 唐小涛</title>
+<script src="nav.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --border: #30363d;
+    --text: #e6edf3; --text2: #8b949e; --accent: #f78166;
+    --blue: #58a6ff; --green: #3fb950; --yellow: #d29922;
+    --purple: #bc8cff; --orange: #f0883e; --red: #f85149;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'PingFang SC','Helvetica Neue','Arial',sans-serif;
+    min-height: 100vh; overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 20px 50px;
+    background: radial-gradient(ellipse at 20% 50%, rgba(88,166,255,.1) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(247,129,102,.08) 0%, transparent 55%),
+                var(--bg);
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(88,166,255,.12); border: 1px solid rgba(88,166,255,.28);
+    color: var(--blue); padding: 6px 18px; border-radius: 20px;
+    font-size: 13px; margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 56px); font-weight: 800; line-height: 1.2;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #e6edf3 0%, #58a6ff 45%, #bc8cff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero p { font-size: 15px; color: var(--text2); max-width: 520px; margin: 0 auto 10px; line-height: 1.7; }
+  .hero-stats {
+    display: inline-flex; gap: 24px; margin-top: 24px;
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 28px;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-size: 22px; font-weight: 800; color: var(--blue); }
+  .hero-stat .lbl { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 16px 60px; }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 16px;
+    padding: 28px; margin-bottom: 40px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.25);
+  }
+  .form-card-title {
+    font-size: 17px; font-weight: 800; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .form-card-sub { font-size: 13px; color: var(--text2); margin-bottom: 22px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; color: var(--text2); font-weight: 600; letter-spacing: .03em; }
+  .form-input, .form-select, .form-textarea {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-size: 14px; padding: 10px 14px;
+    outline: none; transition: border-color .15s, box-shadow .15s;
+    font-family: inherit;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--text2); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--blue); box-shadow: 0 0 0 3px rgba(88,166,255,.12);
+  }
+  .form-select { cursor: pointer; }
+  .form-select option { background: var(--bg3); }
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  .form-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; flex-wrap: wrap; gap: 10px; }
+  .char-count { font-size: 12px; color: var(--text2); }
+  .char-count.warn { color: var(--yellow); }
+  .char-count.over { color: var(--red); }
+  .btn-submit {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: #0d1117; border: none;
+    padding: 10px 28px; border-radius: 10px; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: background .15s, transform .1s;
+  }
+  .btn-submit:hover { background: #79c0ff; transform: translateY(-1px); }
+  .btn-submit:active { transform: none; }
+  .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  /* ── MOOD SELECTOR ── */
+  .mood-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mood-btn {
+    padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--bg3); color: var(--text2);
+    transition: all .15s; user-select: none;
+  }
+  .mood-btn:hover { border-color: rgba(88,166,255,.5); color: var(--blue); }
+  .mood-btn.selected { background: rgba(88,166,255,.15); border-color: var(--blue); color: var(--blue); font-weight: 700; }
+
+  /* ── MESSAGES ── */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .section-header h2 { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .sort-btns { display: flex; gap: 6px; }
+  .sort-btn {
+    padding: 5px 12px; border-radius: 7px; font-size: 12px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--bg2); color: var(--text2); transition: .15s;
+  }
+  .sort-btn.active { background: var(--blue); border-color: var(--blue); color: #0d1117; font-weight: 700; }
+
+  .msg-list { display: flex; flex-direction: column; gap: 14px; }
+  .msg-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px; transition: border-color .2s;
+    animation: fadeUp .4s ease both;
+  }
+  .msg-card:hover { border-color: rgba(88,166,255,.3); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .msg-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .msg-avatar {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: #0d1117;
+  }
+  .msg-meta { flex: 1; min-width: 0; }
+  .msg-name { font-size: 14px; font-weight: 700; }
+  .msg-info { font-size: 11px; color: var(--text2); margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .msg-mood { font-size: 13px; }
+  .msg-body { font-size: 14px; line-height: 1.75; color: var(--text); word-break: break-word; }
+  .msg-actions { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .like-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 12px; border-radius: 8px; font-size: 12px; cursor: pointer;
+    border: 1px solid var(--border); background: transparent; color: var(--text2);
+    transition: all .15s; font-family: inherit;
+  }
+  .like-btn:hover { border-color: var(--red); color: var(--red); background: rgba(248,81,73,.08); }
+  .like-btn.liked { border-color: var(--red); color: var(--red); background: rgba(248,81,73,.12); font-weight: 700; }
+  .msg-time { font-size: 11px; color: rgba(139,148,158,.6); margin-left: auto; }
+  .badge-city {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: rgba(88,166,255,.1); color: var(--blue);
+    border: 1px solid rgba(88,166,255,.2); border-radius: 5px;
+    padding: 2px 7px; font-size: 11px;
+  }
+  .badge-mood {
+    background: rgba(63,185,80,.1); color: var(--green);
+    border: 1px solid rgba(63,185,80,.2); border-radius: 5px;
+    padding: 2px 7px; font-size: 11px;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text2); }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state p { font-size: 14px; line-height: 1.7; }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: #238636; color: #fff; padding: 10px 22px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; z-index: 9999;
+    opacity: 0; transition: all .3s; pointer-events: none; white-space: nowrap;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.error { background: #da3633; }
+
+  /* ── LOAD MORE ── */
+  .load-more-wrap { text-align: center; margin-top: 24px; }
+  .btn-load-more {
+    padding: 10px 32px; border-radius: 10px; font-size: 13px; font-weight: 600;
+    border: 1px solid var(--border); background: var(--bg2); color: var(--text2);
+    cursor: pointer; transition: .15s;
+  }
+  .btn-load-more:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 40px 20px; color: var(--text2); font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--blue); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .hero { padding: 70px 16px 36px; }
+    .hero-stats { gap: 16px; padding: 12px 20px; }
+    .form-card { padding: 18px; }
+    .form-row { grid-template-columns: 1fr; }
+    .container { padding: 24px 12px 50px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">💬 访客留言板</div>
+  <h1>留下你的足迹</h1>
+  <p>不管你从哪里来，因为什么找到这里<br>都欢迎留下一句话，和更多人相遇 ✨</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num" id="stat-total">0</div>
+      <div class="lbl">留言总数</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num" id="stat-cities">0</div>
+      <div class="lbl">来自城市</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num" id="stat-likes">0</div>
+      <div class="lbl">获得点赞</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-card-title">✍️ 写下留言</div>
+    <div class="form-card-sub">匿名友好，无需注册，留言保存在你的浏览器本地 · 对所有访客可见（同设备）</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">你的昵称 *</label>
+        <input type="text" class="form-input" id="inp-name" maxlength="20" placeholder="随便起个名字…" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">来自哪里</label>
+        <input type="text" class="form-input" id="inp-city" maxlength="20" placeholder="城市 / 地区（选填）" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:14px;">
+      <label class="form-label">当前心情</label>
+      <div class="mood-row" id="mood-row">
+        <span class="mood-btn" data-mood="🤩 超赞">🤩 超赞</span>
+        <span class="mood-btn" data-mood="😄 开心">😄 开心</span>
+        <span class="mood-btn" data-mood="🤔 思考中">🤔 思考中</span>
+        <span class="mood-btn" data-mood="😌 淡定">😌 淡定</span>
+        <span class="mood-btn" data-mood="😅 破防了">😅 破防了</span>
+        <span class="mood-btn" data-mood="🥺 迷茫">🥺 迷茫</span>
+        <span class="mood-btn" data-mood="🔥 燃起来了">🔥 燃起来了</span>
+      </div>
+    </div>
+
+    <div class="form-group full" style="margin-bottom:0;">
+      <label class="form-label">留言内容 *</label>
+      <textarea class="form-textarea" id="inp-msg" maxlength="300" placeholder="说点什么吧 — 来自深圳的感想、找工作的困惑、对某个城市的看法，或者仅仅是打个招呼 👋"></textarea>
+    </div>
+
+    <div class="form-footer">
+      <span class="char-count" id="char-count">0 / 300</span>
+      <button class="btn-submit" id="btn-submit" onclick="submitMsg()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 2a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .832.374l4.622-4.115L13 15.5a.5.5 0 0 0 .832-.374V2.5a.5.5 0 0 0-.5-.5h-12z"/></svg>
+        发布留言
+      </button>
+    </div>
+  </div>
+
+  <!-- MESSAGE LIST -->
+  <div class="section-header">
+    <h2>📋 所有留言 <span id="msg-count" style="font-size:13px;color:var(--text2);font-weight:400;"></span></h2>
+    <div class="sort-btns">
+      <button class="sort-btn active" id="sort-new" onclick="setSort('new')">最新</button>
+      <button class="sort-btn" id="sort-hot" onclick="setSort('hot')">最热</button>
+    </div>
+  </div>
+
+  <div class="msg-list" id="msg-list"></div>
+  <div class="load-more-wrap" id="load-more-wrap" style="display:none;">
+    <button class="btn-load-more" onclick="loadMore()">加载更多</button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:8px;">
+    <strong style="color:var(--text);">唐小涛</strong> · 深圳
+    <span style="margin:0 8px;">|</span>
+    <a href="mailto:xiao.tao.123.ok@outlook.com">📧 xiao.tao.123.ok@outlook.com</a>
+  </div>
+  <div style="font-size:11px;color:rgba(139,148,158,.5);margin-top:6px;">
+    留言数据存储在浏览器 localStorage，不会上传至任何服务器 · © 2025 Tang Xiaotao
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   GUESTBOOK · 访客留言板逻辑
+═══════════════════════════════════════ */
+
+const STORAGE_KEY = 'xtao_guestbook_v1';
+const PAGE_SIZE = 10;
+let sortMode = 'new';
+let displayCount = PAGE_SIZE;
+let selectedMood = '';
+
+/* ── 数据结构 ── */
+function loadMsgs() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch (e) { return []; }
+}
+function saveMsgs(msgs) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs)); }
+  catch (e) { showToast('存储空间不足，留言可能无法保存', true); }
+}
+
+/* ── 头像颜色 ── */
+const AVATAR_COLORS = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
+function avatarColor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
+  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
+}
+function avatarLetter(name) {
+  const ch = name.trim()[0] || '?';
+  return /[\u4e00-\u9fff]/.test(ch) ? ch : ch.toUpperCase();
+}
+
+/* ── 时间格式化 ── */
+function fmtTime(ts) {
+  const d = new Date(ts), now = new Date();
+  const diff = now - d;
+  if (diff < 60000) return '刚刚';
+  if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
+  if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+  if (diff < 2592000000) return Math.floor(diff / 86400000) + ' 天前';
+  return d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
+}
+
+/* ── 生成唯一 ID ── */
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+/* ── 心情按钮 ── */
+document.querySelectorAll('.mood-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const v = btn.dataset.mood;
+    if (selectedMood === v) {
+      selectedMood = '';
+      btn.classList.remove('selected');
+    } else {
+      selectedMood = v;
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+  });
+});
+
+/* ── 字数统计 ── */
+document.getElementById('inp-msg').addEventListener('input', function () {
+  const len = this.value.length;
+  const cc = document.getElementById('char-count');
+  cc.textContent = len + ' / 300';
+  cc.className = 'char-count' + (len >= 300 ? ' over' : len >= 240 ? ' warn' : '');
+});
+
+/* ── 提交留言 ── */
+function submitMsg() {
+  const nameEl = document.getElementById('inp-name');
+  const cityEl = document.getElementById('inp-city');
+  const msgEl  = document.getElementById('inp-msg');
+  const name = nameEl.value.trim();
+  const city = cityEl.value.trim();
+  const text = msgEl.value.trim();
+
+  if (!name) { showToast('请填写你的昵称 😊', true); nameEl.focus(); return; }
+  if (!text) { showToast('留言内容不能为空哦~', true); msgEl.focus(); return; }
+  if (text.length > 300) { showToast('内容超过300字啦，简短一点吧', true); return; }
+
+  const msgs = loadMsgs();
+  const newMsg = {
+    id: genId(),
+    name: name.slice(0, 20),
+    city: city.slice(0, 20),
+    mood: selectedMood,
+    text: text,
+    ts: Date.now(),
+    likes: 0,
+    likedBy: [],   // 存已点赞设备标识
+  };
+  msgs.unshift(newMsg);
+  saveMsgs(msgs);
+
+  // 重置表单
+  nameEl.value = '';
+  cityEl.value = '';
+  msgEl.value = '';
+  selectedMood = '';
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('char-count').textContent = '0 / 300';
+
+  displayCount = PAGE_SIZE;
+  renderAll();
+  showToast('留言发布成功！🎉');
+  // 滚动到留言列表
+  setTimeout(() => {
+    document.querySelector('.section-header').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 300);
+}
+
+/* ── 点赞 ── */
+function getDeviceId() {
+  let id = localStorage.getItem('_xtao_did');
+  if (!id) { id = genId(); localStorage.setItem('_xtao_did', id); }
+  return id;
+}
+function toggleLike(id) {
+  const msgs = loadMsgs();
+  const msg = msgs.find(m => m.id === id);
+  if (!msg) return;
+  const did = getDeviceId();
+  if (!msg.likedBy) msg.likedBy = [];
+  const idx = msg.likedBy.indexOf(did);
+  if (idx >= 0) {
+    msg.likedBy.splice(idx, 1);
+    msg.likes = Math.max(0, (msg.likes || 0) - 1);
+  } else {
+    msg.likedBy.push(did);
+    msg.likes = (msg.likes || 0) + 1;
+  }
+  saveMsgs(msgs);
+  renderAll();
+}
+function isLiked(msg) {
+  const did = getDeviceId();
+  return (msg.likedBy || []).includes(did);
+}
+
+/* ── 排序 ── */
+function setSort(mode) {
+  sortMode = mode;
+  displayCount = PAGE_SIZE;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sort-' + mode).classList.add('active');
+  renderAll();
+}
+
+function getSorted(msgs) {
+  const arr = [...msgs];
+  if (sortMode === 'hot') {
+    arr.sort((a, b) => (b.likes || 0) - (a.likes || 0) || b.ts - a.ts);
+  } else {
+    arr.sort((a, b) => b.ts - a.ts);
+  }
+  return arr;
+}
+
+/* ── 渲染留言 ── */
+function renderAll() {
+  const msgs = loadMsgs();
+  const sorted = getSorted(msgs);
+  const list = document.getElementById('msg-list');
+  const visible = sorted.slice(0, displayCount);
+
+  // 统计
+  const totalLikes = msgs.reduce((s, m) => s + (m.likes || 0), 0);
+  const cities = new Set(msgs.map(m => m.city).filter(Boolean));
+  document.getElementById('stat-total').textContent = msgs.length;
+  document.getElementById('stat-cities').textContent = cities.size;
+  document.getElementById('stat-likes').textContent = totalLikes;
+  document.getElementById('msg-count').textContent = msgs.length ? `（共 ${msgs.length} 条）` : '';
+
+  if (msgs.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <div class="icon">🌱</div>
+      <p>还没有任何留言，来做第一个留言的人吧！</p>
+    </div>`;
+    document.getElementById('load-more-wrap').style.display = 'none';
+    return;
+  }
+
+  list.innerHTML = visible.map((msg, idx) => {
+    const color = avatarColor(msg.name);
+    const letter = avatarLetter(msg.name);
+    const liked = isLiked(msg);
+    return `
+    <div class="msg-card" style="animation-delay:${Math.min(idx, 5) * 0.05}s">
+      <div class="msg-header">
+        <div class="msg-avatar" style="background:${color};">${letter}</div>
+        <div class="msg-meta">
+          <div class="msg-name">${escHtml(msg.name)}</div>
+          <div class="msg-info">
+            ${msg.city ? `<span class="badge-city">📍 ${escHtml(msg.city)}</span>` : ''}
+            ${msg.mood ? `<span class="badge-mood">${escHtml(msg.mood)}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="msg-body">${escHtml(msg.text).replace(/\n/g, '<br>')}</div>
+      <div class="msg-actions">
+        <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${msg.id}')">
+          ${liked ? '❤️' : '🤍'} <span>${msg.likes || 0}</span>
+        </button>
+        <span class="msg-time">${fmtTime(msg.ts)}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // 加载更多
+  document.getElementById('load-more-wrap').style.display =
+    sorted.length > displayCount ? 'block' : 'none';
+}
+
+function loadMore() {
+  displayCount += PAGE_SIZE;
+  renderAll();
+}
+
+/* ── HTML转义 ── */
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/* ── Toast ── */
+function showToast(msg, isErr = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (isErr ? ' error' : '');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => { t.className = ''; }, 2600);
+}
+
+/* ── 预置几条示例留言（首次访问） ── */
+function seedDemo() {
+  const msgs = loadMsgs();
+  if (msgs.length > 0) return;
+  const demo = [
+    { name:'来自杭州的小明', city:'杭州', mood:'🤩 超赞', text:'刚看完深圳职业图谱，数据真的太细了！互联网岗位的分布一目了然，对我选城市帮助很大 👍', likes:7, likedBy:[] },
+    { name:'应届生小红', city:'武汉', mood:'🥺 迷茫', text:'毕业找工作真的好难，看了毕业生指南之后感觉思路清晰了很多，谢谢博主的整理！', likes:12, likedBy:[] },
+    { name:'深漂三年老张', city:'深圳', mood:'😄 开心', text:'深圳确实是一座来了就不想走的城市，租金虽然贵但机会真的多，坚持住就好。', likes:5, likedBy:[] },
+    { name:'理财新手', city:'上海', mood:'🔥 燃起来了', text:'城市房价地图做得很专业，34个城市的数据对比一目了然，收藏了反复研究！', likes:9, likedBy:[] },
+  ];
+  const now = Date.now();
+  demo.forEach((d, i) => {
+    d.id = genId();
+    d.ts = now - (i + 1) * 86400000 * (i + 1);
+  });
+  saveMsgs(demo);
+}
+
+/* ── INIT ── */
+seedDemo();
+renderAll();
+
+// 定时刷新时间显示
+setInterval(() => {
+  document.querySelectorAll('.msg-time').forEach(el => {
+    // 无需重渲染，轻量刷新
+  });
+}, 60000);
+</script>
+
+</body>
+</html>
