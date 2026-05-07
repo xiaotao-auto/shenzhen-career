@@ -1248,7 +1248,7 @@ function onScroll(){
 window.addEventListener('scroll', onScroll, {passive:true});
 
 // ══ INIT ══
-document.addEventListener('DOMContentLoaded',()=>{
+(function(){
   applyLang();
   document.querySelectorAll('.lang-btn').forEach(b=>{
     b.classList.toggle('active', b.getAttribute('data-lang') === currentLang);
@@ -1270,7 +1270,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderCases();
   renderTimelines();
   setTimeout(onScroll,100);
-});
+})();
 </script>
 </body>
 </html>

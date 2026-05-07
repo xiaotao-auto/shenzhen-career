@@ -1119,7 +1119,6 @@ const COLORS = {
   teal: '#14b8a6'
 };
 
-document.addEventListener('DOMContentLoaded', function(){
 const mkGrad = (ctx, c1, c2) => {
   const g = ctx.createLinearGradient(0, 0, 0, 300);
   g.addColorStop(0, c1);
@@ -1637,8 +1636,7 @@ document.querySelectorAll('.chart-card, .advice-card, .track-card, .flow-card').
   el.style.transform = 'translateY(20px)';
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
-}); // end DOMContentLoaded
-}); // 图表初始化结束
+});
 
 // ══════════════════════════════════════════════
 // ══════════════════════════════════════════════

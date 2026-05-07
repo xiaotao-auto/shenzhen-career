@@ -1287,7 +1287,7 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    (function() {
       populateSearch();
       applyLang();
       document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.textContent.trim().toLowerCase().startsWith(currentLang==='zh'?'简':currentLang==='zt'?'繁':'e')));
@@ -1308,7 +1308,7 @@
         }
         renderAll();
       });
-    });
+    })();
   </script>
 </body>
 </html>
