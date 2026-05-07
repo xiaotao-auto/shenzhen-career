@@ -487,9 +487,9 @@
     <span id="search-count"></span>
   </div>
   <div class="lang-btns">
-    <button class="lang-btn active" onclick="setLang('zh')">简体</button>
-    <button class="lang-btn" onclick="setLang('zt')">繁體</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn active" data-lang="zh" onclick="setLang('zh')">简体</button>
+    <button class="lang-btn" data-lang="zt" onclick="setLang('zt')">繁體</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
   </div>
 </div>
 
@@ -1118,6 +1118,7 @@ const COLORS = {
   teal: '#14b8a6'
 };
 
+document.addEventListener('DOMContentLoaded', function(){
 const mkGrad = (ctx, c1, c2) => {
   const g = ctx.createLinearGradient(0, 0, 0, 300);
   g.addColorStop(0, c1);
@@ -1635,7 +1636,8 @@ document.querySelectorAll('.chart-card, .advice-card, .track-card, .flow-card').
   el.style.transform = 'translateY(20px)';
   el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(el);
-});
+}); // end DOMContentLoaded
+}); // 图表初始化结束
 
 // ══════════════════════════════════════════════
 // ══════════════════════════════════════════════
@@ -1745,10 +1747,7 @@ let currentLang = 'zh';
 function setLang(lang){
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b=>{
-    const isActive = (b.textContent.trim() === '简体' && lang === 'zh') ||
-                     (b.textContent.trim() === '繁體' && lang === 'zt') ||
-                     (b.textContent.trim() === 'EN' && lang === 'en');
-    b.classList.toggle('active', isActive);
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
   });
   applyLang();
   const inp = document.getElementById('searchInput');
