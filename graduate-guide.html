@@ -16,15 +16,15 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--text); font-family:'PingFang SC','Helvetica Neue','Arial',sans-serif; overflow-x:hidden; padding-top:48px; }
+  body { background:var(--bg); color:var(--text); font-family:'PingFang SC','Helvetica Neue','Arial',sans-serif; overflow-x:hidden; padding-top:56px; }
 
-  /* ── TOP BAR (Language + Search) ── */
   #topbar {
     position:fixed; top:0; left:0; right:0; z-index:1000;
     background:rgba(13,17,23,.92); backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
     display:flex; align-items:center; gap:10px;
     padding:10px 16px; flex-wrap:wrap;
+    min-height:48px;
   }
   #topbar .site-name { font-size:13px; font-weight:700; color:var(--blue); flex:1; white-space:nowrap; }
   #search-box {
@@ -40,7 +40,6 @@
   .search-highlight { background:rgba(255,200,0,.35); border-radius:2px; color:var(--text); }
   .search-highlight.current { background:rgba(255,150,0,.7); }
 
-  /* Language switcher */
   .lang-btns { display:flex; gap:4px; flex-shrink:0; }
   .lang-btn {
     padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer;
@@ -49,76 +48,76 @@
   .lang-btn.active { background:var(--blue); border-color:var(--blue); color:#0d1117; font-weight:700; }
   .lang-btn:hover:not(.active) { border-color:var(--blue); color:var(--blue); }
 
-  /* ── HERO ── */
+  .container { max-width:1200px; margin:0 auto; padding:0 16px; }
+
   .hero {
-    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:70vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
     background: radial-gradient(ellipse at 20% 50%, rgba(88,166,255,.12) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 20%, rgba(247,129,102,.1) 0%, transparent 60%),
                 radial-gradient(ellipse at 50% 80%, rgba(63,185,80,.08) 0%, transparent 60%), var(--bg);
-    text-align:center; padding:80px 20px 40px;
+    text-align:center; padding:60px 20px;
   }
   .hero-badge { display:inline-block; background:rgba(88,166,255,.15); border:1px solid rgba(88,166,255,.3); color:var(--blue); padding:6px 18px; border-radius:20px; font-size:13px; margin-bottom:24px; }
-  .hero h1 { font-size:clamp(28px,5vw,68px); font-weight:800; line-height:1.15; margin-bottom:16px;
+  .hero h1 { font-size:clamp(28px,5vw,56px); font-weight:800; line-height:1.2; margin-bottom:16px;
     background:linear-gradient(135deg,#e6edf3 0%,#58a6ff 40%,#f78166 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-  .hero p { font-size:clamp(13px,2vw,17px); color:var(--text2); max-width:600px; line-height:1.7; margin-bottom:40px; }
-  .hero-nav { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+  .hero p { font-size:clamp(14px,2vw,17px); color:var(--text2); max-width:600px; line-height:1.8; margin-bottom:32px; }
+  .hero-nav { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
   .hero-nav a { padding:12px 24px; border-radius:10px; font-size:14px; font-weight:600; text-decoration:none; transition:.2s; }
   .hero-nav a.pri { background:var(--blue); color:#0d1117; }
-  .hero-nav a.pri:hover { background:#79c0ff; transform:translateY(-1px); }
+  .hero-nav a.pri:hover { background:#79c0ff; transform:translateY(-2px); }
   .hero-nav a.sec { border:1px solid var(--border); color:var(--text); }
   .hero-nav a.sec:hover { border-color:var(--blue); color:var(--blue); }
 
-  /* ── LAYOUT ── */
-  .section { max-width:1200px; margin:0 auto; padding:60px 16px; }
+  .section { padding:60px 0; }
   .section-tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:4px; margin-bottom:16px; }
   .section-tag.blue { background:rgba(88,166,255,.15); color:var(--blue); }
   .section-tag.orange { background:rgba(240,136,62,.15); color:var(--orange); }
   .section-tag.green { background:rgba(63,185,80,.15); color:var(--green); }
-  .section-title { font-size:clamp(22px,3.5vw,40px); font-weight:800; margin-bottom:12px; }
-  .section-desc { color:var(--text2); font-size:15px; line-height:1.7; max-width:700px; margin-bottom:40px; }
+  .section-title { font-size:clamp(22px,3.5vw,36px); font-weight:800; margin-bottom:12px; }
+  .section-desc { color:var(--text2); font-size:15px; line-height:1.7; max-width:700px; margin-bottom:32px; }
 
-  /* ── CITY TABS ── */
-  .city-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:28px; }
+  .city-selector { margin-bottom:24px; }
+  .city-selector input {
+    width:100%; max-width:320px; padding:10px 14px;
+    background:var(--bg2); border:1px solid var(--border); border-radius:10px;
+    color:var(--text); font-size:14px; outline:none;
+  }
+  .city-selector input:focus { border-color:var(--blue); }
+  .city-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
   .city-tab { padding:7px 14px; border-radius:8px; border:1px solid var(--border); background:var(--bg2); color:var(--text2); cursor:pointer; font-size:13px; transition:.2s; }
   .city-tab:hover { border-color:var(--blue); color:var(--blue); }
   .city-tab.active { background:var(--blue); border-color:var(--blue); color:#0d1117; font-weight:700; }
 
-  /* ── CARDS GRID ── */
-  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:16px; }
-  .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:16px; }
-  .grid4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr)); gap:12px; }
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; }
+  .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .grid4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
 
   .card { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:20px; transition:.2s; }
   .card:hover { border-color:rgba(88,166,255,.35); }
   .card-title { font-size:14px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
   .card-sub { font-size:12px; color:var(--text2); margin-bottom:14px; line-height:1.5; }
 
-  /* ── RENT TABLE ── */
-  .rent-grid { display:grid; grid-template-columns:1fr; gap:8px; }
+  .rent-grid { display:grid; gap:8px; }
   .rent-row { display:flex; align-items:center; gap:10px; }
   .rent-label { width:80px; font-size:12px; color:var(--text2); flex-shrink:0; }
   .rent-bar-wrap { flex:1; background:var(--bg3); border-radius:4px; height:18px; overflow:hidden; }
-  .rent-bar { height:100%; border-radius:4px; display:flex; align-items:center; padding-left:8px; font-size:10px; font-weight:700; color:#0d1117; transition:width .6s ease; }
-  .rent-val { width:80px; font-size:12px; font-weight:700; text-align:right; }
+  .rent-bar { height:100%; border-radius:4px; display:flex; align-items:center; padding-left:8px; font-size:10px; font-weight:700; color:#0d1117; }
+  .rent-val { width:70px; font-size:12px; font-weight:700; text-align:right; }
 
-  /* ── STAT BOXES ── */
-  .stat-box { text-align:center; }
-  .stat-num { font-size:clamp(24px,3.5vw,40px); font-weight:800; line-height:1.1; }
+  .stat-box { text-align:center; padding:16px; background:var(--bg3); border-radius:10px; }
+  .stat-num { font-size:clamp(22px,3vw,32px); font-weight:800; line-height:1.1; }
   .stat-label { font-size:12px; color:var(--text2); margin-top:6px; }
   .up { color:var(--green); } .down { color:var(--red); } .mid { color:var(--yellow); }
 
-  /* ── CHART WRAPPER ── */
-  .chart-wrap { position:relative; width:100%; }
-  .chart-wrap canvas { max-width:100%; display:block; }
+  .chart-container { position:relative; width:100%; height:260px; }
+  .chart-container.tall { height:320px; }
 
-  /* ── JOB HEATMAP ── */
   .heatmap { display:grid; grid-template-columns:56px repeat(12,1fr); gap:2px; font-size:10px; }
   .heatmap-header { text-align:center; color:var(--text2); padding:3px 0; font-size:10px; }
   .heatmap-label { color:var(--text2); display:flex; align-items:center; font-size:9px; padding-right:2px; word-break:break-all; line-height:1.2; }
-  .hm-cell { height:28px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; cursor:default; transition:.15s; }
-  .hm-cell:hover { transform:scale(1.12); z-index:1; position:relative; }
+  .hm-cell { height:28px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; cursor:default; }
+  .hm-legend { display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:11px;color:var(--text2); }
 
-  /* ── COMMUTE ── */
   .commute-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }
   .commute-item:last-child { border-bottom:none; }
   .commute-area { width:90px; font-size:12px; font-weight:600; line-height:1.4; }
@@ -126,7 +125,6 @@
   .commute-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
   .commute-info { font-size:12px; }
 
-  /* ── TAG PILLS ── */
   .pill { display:inline-block; padding:3px 9px; border-radius:12px; font-size:11px; margin:2px; }
   .pill-blue { background:rgba(88,166,255,.15); color:var(--blue); }
   .pill-green { background:rgba(63,185,80,.15); color:var(--green); }
@@ -134,111 +132,95 @@
   .pill-red { background:rgba(248,81,73,.15); color:var(--red); }
   .pill-purple { background:rgba(188,140,255,.15); color:var(--purple); }
 
-  /* ── PROGRESS BAR ── */
   .prog-row { margin-bottom:12px; }
   .prog-head { display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px; }
   .prog-track { background:var(--bg3); border-radius:4px; height:8px; }
-  .prog-fill { height:100%; border-radius:4px; transition:width .8s; }
+  .prog-fill { height:100%; border-radius:4px; }
 
-  /* ── COUNTRY CARDS ── */
-  .country-card { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:18px; cursor:pointer; transition:.2s; }
+  .country-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+  .country-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px; cursor:pointer; transition:.2s; }
   .country-card:hover { border-color:var(--blue); transform:translateY(-2px); }
   .country-card.selected { border-color:var(--blue); background:rgba(88,166,255,.08); }
-  .cc-flag { font-size:30px; margin-bottom:8px; }
-  .cc-name { font-size:15px; font-weight:700; margin-bottom:4px; }
-  .cc-type { font-size:11px; color:var(--text2); margin-bottom:10px; }
+  .cc-flag { font-size:28px; margin-bottom:6px; }
+  .cc-name { font-size:14px; font-weight:700; margin-bottom:3px; }
+  .cc-type { font-size:11px; color:var(--text2); margin-bottom:8px; }
   .cc-metrics { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-  .cc-metric { background:var(--bg3); border-radius:7px; padding:7px; text-align:center; }
-  .cc-metric-val { font-size:13px; font-weight:700; }
+  .cc-metric { background:var(--bg3); border-radius:6px; padding:6px; text-align:center; }
+  .cc-metric-val { font-size:12px; font-weight:700; }
   .cc-metric-label { font-size:10px; color:var(--text2); margin-top:1px; }
 
-  /* ── DETAIL PANEL ── */
   .detail-panel { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:24px; margin-top:20px; }
   .detail-panel h3 { font-size:18px; font-weight:800; margin-bottom:18px; }
   .step-list { list-style:none; counter-reset:steps; }
   .step-list li { counter-increment:steps; display:flex; gap:14px; margin-bottom:16px; align-items:flex-start; }
-  .step-list li::before { content:counter(steps); background:var(--blue); color:#0d1117; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex-shrink:0; }
+  .step-list li::before { content:counter(steps); background:var(--blue); color:#0d1117; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
   .step-text strong { display:block; font-size:13px; margin-bottom:3px; }
   .step-text span { font-size:12px; color:var(--text2); line-height:1.6; }
 
-  /* ── TIMELINE ── */
-  .timeline { position:relative; padding-left:22px; }
-  .timeline::before { content:''; position:absolute; left:6px; top:0; bottom:0; width:2px; background:var(--border); }
-  .tl-item { position:relative; margin-bottom:18px; }
-  .tl-item::before { content:''; position:absolute; left:-18px; top:4px; width:9px; height:9px; border-radius:50%; border:2px solid var(--blue); background:var(--bg); }
-  .tl-month { font-size:11px; color:var(--blue); font-weight:700; margin-bottom:3px; }
+  .timeline { position:relative; padding-left:20px; }
+  .timeline::before { content:''; position:absolute; left:5px; top:0; bottom:0; width:2px; background:var(--border); }
+  .tl-item { position:relative; margin-bottom:14px; }
+  .tl-item::before { content:''; position:absolute; left:-17px; top:3px; width:8px; height:8px; border-radius:50%; border:2px solid var(--blue); background:var(--bg); }
+  .tl-month { font-size:11px; color:var(--blue); font-weight:700; margin-bottom:2px; }
   .tl-text { font-size:13px; color:var(--text); }
   .tl-sub { font-size:11px; color:var(--text2); margin-top:2px; }
 
-  /* ── DIVIDER ── */
   .divider { border:none; border-top:1px solid var(--border); margin:0; }
 
-  /* ── FOOTER ── */
   footer {
-    background: #0d1b2e; border-top: 1px solid rgba(88,166,255,0.12);
-    padding: 48px 30px 32px; text-align:center; font-size:13px; color:#7ba3c4;
+    background:#0d1b2e; border-top:1px solid rgba(88,166,255,.12);
+    padding:40px 20px 32px; text-align:center; font-size:13px; color:#7ba3c4;
   }
   .author-card {
-    display:inline-flex; align-items:center; gap:16px;
-    background: linear-gradient(135deg, rgba(88,166,255,0.10), rgba(188,140,255,0.10));
-    border: 1px solid rgba(88,166,255,0.25);
-    padding:16px 24px; border-radius:16px; margin-bottom:10px;
+    display:inline-flex; align-items:center; gap:14px;
+    background:linear-gradient(135deg,rgba(88,166,255,.10),rgba(188,140,255,.10));
+    border:1px solid rgba(88,166,255,.25);
+    padding:14px 22px; border-radius:14px; margin-bottom:20px;
   }
   .author-avatar {
-    width:56px; height:56px; border-radius:50%;
-    background: linear-gradient(135deg,#58a6ff,#bc8cff);
+    width:50px; height:50px; border-radius:50%;
+    background:linear-gradient(135deg,#58a6ff,#bc8cff);
     display:flex; align-items:center; justify-content:center;
-    font-size:22px; font-weight:700; color:#0d1117; flex-shrink:0;
+    font-size:20px; font-weight:700; color:#0d1117; flex-shrink:0;
   }
   .author-info { text-align:left; }
-  .author-name { font-size:18px; font-weight:700; color:#e6edf3; margin-bottom:4px; }
-  .author-title { font-size:13px; color:#8b949e; margin-bottom:6px; }
-  .author-contact { font-size:13px; }
+  .author-name { font-size:16px; font-weight:700; color:#e6edf3; margin-bottom:3px; }
+  .author-title { font-size:12px; color:#8b949e; margin-bottom:4px; }
+  .author-contact { font-size:12px; }
   .author-contact a { color:#58a6ff; text-decoration:none; }
   .author-contact a:hover { text-decoration:underline; }
 
-  /* ── SCROLL ANIMATION ── */
-  .fade-in { opacity:0; transform:translateY(16px); transition:.55s ease; }
+  .fade-in { opacity:0; transform:translateY(16px); transition:.5s ease; }
   .fade-in.visible { opacity:1; transform:none; }
 
-  /* ── TOOLTIP ── */
-  .tooltip-wrap { position:relative; display:inline-block; }
-  .tooltip-wrap:hover .tooltip-box { display:block; }
-  .tooltip-box { display:none; position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:#1c2128; border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:11px; color:var(--text); white-space:nowrap; z-index:99; }
-
-  /* ─── RESPONSIVE ─── */
   @media(max-width:768px){
-    #topbar { padding:8px 12px; gap:8px; }
-    #search-box { min-width:100px; }
-    .hero { padding-top:90px; }
-    .section { padding:40px 12px; }
+    body { padding-top:52px; }
+    .hero { padding:50px 16px; min-height:60vh; }
+    .section { padding:40px 0; }
     .heatmap { grid-template-columns:44px repeat(12,1fr); }
     .hm-cell { height:22px; }
     .city-tab { padding:6px 10px; font-size:12px; }
-    .grid2, .grid3, .grid4 { gap:10px; }
+    .grid2, .grid3, .grid4 { gap:12px; }
     .card { padding:16px; }
+    .chart-container { height:220px; }
+    .chart-container.tall { height:280px; }
+    .city-selector input { max-width:100%; }
   }
   @media(max-width:480px){
     .hero h1 { font-size:26px; }
     .section-title { font-size:20px; }
-    .hero-nav a { padding:10px 18px; font-size:13px; }
-    .heatmap { grid-template-columns:38px repeat(12,1fr); gap:1px; font-size:8px; }
+    .hero-nav a { padding:10px 16px; font-size:13px; }
+    .heatmap { grid-template-columns:38px repeat(12,1fr); gap:1px; }
     .hm-cell { height:18px; font-size:0; }
-    .heatmap-header { font-size:8px; }
+    .hm-legend { font-size:10px; gap:10px; }
     .lang-btn { padding:4px 7px; font-size:11px; }
-    .lang-btns .lang-btn:nth-child(3),
-    .lang-btns .lang-btn:nth-child(4) { display:none; }
-    #search-box { max-width:150px; }
-  }
-  /* Wide screen center fix */
-  @media(min-width:1400px){
-    .section { padding:70px 40px; }
+    #search-box { max-width:120px; }
+    .country-grid { grid-template-columns:1fr 1fr; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══ TOP BAR ══ -->
 <div id="topbar">
   <div class="site-name" data-i18n="navTitle">🎓 毕业生指南</div>
   <div id="search-box">
@@ -253,50 +235,28 @@
   </div>
 </div>
 
-<!-- ══ HERO ══ -->
-<div class="hero">
-  <div class="hero-badge" data-i18n="heroBadge">🎓 2025 版 · 数据驱动决策</div>
-  <h1 data-i18n="heroTitle">大学毕业，<br>你的路在哪里？</h1>
-  <p data-i18n="heroDesc">国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的那个选择</p>
-  <div class="hero-nav">
-    <a href="#domestic" class="pri" data-i18n="navDomestic">🏙️ 国内城市选择</a>
-    <a href="#abroad" class="sec" data-i18n="navAbroad">✈️ 出国留学/打工</a>
+<div class="container">
+  <div class="hero">
+    <div class="hero-badge" data-i18n="heroBadge">🎓 2025 版 · 数据驱动决策</div>
+    <h1 data-i18n="heroTitle">大学毕业，<br>你的路在哪里？</h1>
+    <p data-i18n="heroDesc">国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的那个选择</p>
+    <div class="hero-nav">
+      <a href="#domestic" class="pri" data-i18n="navDomestic">🏙️ 国内城市选择</a>
+      <a href="#abroad" class="sec" data-i18n="navAbroad">✈️ 出国留学/打工</a>
+    </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════════════
-     PART 1 · 国内城市选择
-═══════════════════════════════════════════ -->
-<div id="domestic">
-  <div class="section fade-in">
+  <section id="domestic" class="section fade-in">
     <div class="section-tag blue">PART 01</div>
-    <div class="section-title" data-i18n="p1Title">国内城市选择指南</div>
-    <div class="section-desc" data-i18n="p1Desc">从租房成本、通勤时间、生活消费、就业机会到单身比例，帮你选出最适合自己的第一座城市。</div>
+    <h2 class="section-title" data-i18n="p1Title">国内城市选择指南</h2>
+    <p class="section-desc" data-i18n="p1Desc">从租房成本、通勤时间、生活消费、就业机会到单身比例，帮你选出最适合自己的第一座城市。</p>
 
-    <!-- 城市切换：下拉搜索式 -->
-    <div style="margin-bottom:28px;">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-        <div style="position:relative;flex:1;min-width:200px;max-width:380px;">
-          <input type="text" id="citySearch" placeholder="搜索城市…" autocomplete="off"
-            style="width:100%;padding:10px 36px 10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;outline:none;"
-            onfocus="showCityDropdown()"
-            oninput="filterCities()">
-          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text2);pointer-events:none;font-size:12px;">▼</span>
-          <div id="cityDropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;max-height:320px;overflow-y:auto;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.5);">
-            <div id="cityDropdownList"></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;" id="cityTierBtns">
-          <button class="city-tier-btn active" onclick="setTier(99,this)" style="padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--blue);color:#0d1117;font-size:12px;font-weight:700;cursor:pointer;">全部(75)</button>
-          <button class="city-tier-btn" onclick="setTier(1,this)" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;">一线(4)</button>
-          <button class="city-tier-btn" onclick="setTier(0,this)" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;">新一线(15)</button>
-          <button class="city-tier-btn" onclick="setTier(2,this)" style="padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;">二线(56)</button>
-        </div>
-        <div id="currentCityName" style="font-size:14px;font-weight:700;color:var(--blue);padding:8px 0;"></div>
-      </div>
+    <div class="city-selector">
+      <input type="text" id="citySearch" placeholder="搜索城市…" autocomplete="off" onfocus="showCityDropdown()" oninput="filterCities()">
+      <div class="city-tabs" id="cityTabs"></div>
+      <div id="currentCityName" style="font-size:14px;font-weight:700;color:var(--blue);margin-top:12px;"></div>
     </div>
 
-    <!-- ① 租金 + 通勤 -->
     <div class="grid2" style="margin-bottom:16px;">
       <div class="card">
         <div class="card-title">🏠 <span data-i18n="rentTitle">分区租金（元/月·一居室）</span></div>
@@ -304,103 +264,89 @@
         <div class="rent-grid" id="rentGrid"></div>
       </div>
       <div class="card">
-        <div class="card-title">🚇 <span data-i18n="commuteTitle">通勤时长 &amp; 成本</span></div>
+        <div class="card-title">🚇 <span data-i18n="commuteTitle">通勤时长 & 成本</span></div>
         <div class="card-sub" data-i18n="commuteSub">从热门居住区到主要就业区</div>
         <div id="commuteList"></div>
       </div>
     </div>
 
-    <!-- ② 生活消费指数 -->
-    <div class="grid4" style="margin-bottom:16px;" id="costGrid"></div>
+    <div class="grid4" id="costGrid" style="margin-bottom:16px;"></div>
 
-    <!-- ③ 就业岗位热力图 -->
     <div class="card fade-in" style="margin-bottom:16px;">
       <div class="card-title">📅 <span data-i18n="heatTitle">全年52周招聘热力图</span></div>
       <div class="card-sub" data-i18n="heatSub">岗位发布数量 × 月份 × 行业类型（颜色深 = 机会多）</div>
       <div style="overflow-x:auto;padding-top:6px;">
         <div class="heatmap" id="heatmap"></div>
       </div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:11px;color:var(--text2);">
-        <span>▇ <span style="color:#0d4a8c" data-i18n="heatLow">少</span></span>
-        <span>▇ <span style="color:#1a73e8" data-i18n="heatMid">中</span></span>
-        <span>▇ <span style="color:#7fc6ff" data-i18n="heatHigh">多</span></span>
+      <div class="hm-legend">
+        <span>▇ <span style="color:#0d4a8c">少</span></span>
+        <span>▇ <span style="color:#1a73e8">中</span></span>
+        <span>▇ <span style="color:#7fc6ff">多</span></span>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
         <span class="pill pill-blue">🏛️ <span data-i18n="secGov">体制内</span></span>
         <span class="pill pill-green">💼 <span data-i18n="secTech">互联网/科技</span></span>
         <span class="pill pill-orange">🏭 <span data-i18n="secMfg">制造/传统</span></span>
         <span class="pill pill-purple">💹 <span data-i18n="secFin">金融</span></span>
-        <span class="pill pill-red">🏥 <span data-i18n="secMed">医疗/教育</span></span>
       </div>
     </div>
 
-    <!-- ④ 就业竞争图表 -->
     <div class="grid2" style="margin-bottom:16px;">
       <div class="card">
         <div class="card-title">⚔️ <span data-i18n="competTitle">各行业竞争压力指数</span></div>
         <div class="card-sub" data-i18n="competSub">投递量/录取量比值（越高越卷）</div>
-        <div class="chart-wrap" style="height:260px;"><canvas id="competChart"></canvas></div>
+        <div class="chart-container"><canvas id="competChart"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title">🏛️ <span data-i18n="neiwaiTitle">体制内 vs 体制外</span></div>
         <div class="card-sub" data-i18n="neiwaiSub">综合六维度对比</div>
-        <div class="chart-wrap" style="height:260px;"><canvas id="neiwaiChart"></canvas></div>
+        <div class="chart-container"><canvas id="neiwaiChart"></canvas></div>
       </div>
     </div>
 
-    <!-- ⑤ 人口/单身/落户 -->
     <div class="grid3 fade-in" id="popGrid" style="margin-bottom:16px;"></div>
 
-    <!-- ⑥ 综合雷达 -->
     <div class="card fade-in">
       <div class="card-title">🎯 <span data-i18n="radarTitle">城市综合评分雷达</span></div>
       <div class="card-sub" data-i18n="radarSub">选择2-3个城市进行横向对比</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="radarCityPicker"></div>
-      <div class="chart-wrap" style="height:320px;max-width:480px;margin:0 auto;"><canvas id="radarChart"></canvas></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;" id="radarCityPicker"></div>
+      <div class="chart-container tall" style="max-width:480px;margin:0 auto;"><canvas id="radarChart"></canvas></div>
     </div>
-
-  </div>
+  </section>
 </div>
 
-<!-- ════════════════════════════════════════
-     PART 2 · 出国指南
-═══════════════════════════════════════════ -->
 <hr class="divider">
-<div id="abroad">
-  <div class="section fade-in">
-    <div class="section-tag orange">PART 02</div>
-    <div class="section-title" data-i18n="p2Title">出国留学 / 打工指南</div>
-    <div class="section-desc" data-i18n="p2Desc">全球人口流向、各国申请门槛、最低启动成本、流程时间轴，以及那些出去又回来的人在想什么。</div>
 
-    <!-- 全球流向图 -->
+<div class="container">
+  <section id="abroad" class="section fade-in">
+    <div class="section-tag orange">PART 02</div>
+    <h2 class="section-title" data-i18n="p2Title">出国留学 / 打工指南</h2>
+    <p class="section-desc" data-i18n="p2Desc">全球人口流向、各国申请门槛、最低启动成本、流程时间轴，以及那些出去又回来的人在想什么。</p>
+
     <div class="card fade-in" style="margin-bottom:16px;">
       <div class="card-title">🌍 <span data-i18n="flowTitle">全球中国留学生流向分布</span></div>
       <div class="card-sub" data-i18n="flowSub">2025年在外留学人数（万人）及主要目的地占比</div>
-      <div class="chart-wrap" style="height:280px;"><canvas id="flowChart"></canvas></div>
+      <div class="chart-container"><canvas id="flowChart"></canvas></div>
     </div>
 
-    <!-- 国家选择 -->
-    <div style="font-size:14px;font-weight:700;margin-bottom:14px;" data-i18n="countryHint">点击国家查看详细申请指南 👇</div>
-    <div class="grid3" id="countryGrid" style="margin-bottom:20px;"></div>
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;" data-i18n="countryHint">点击国家查看详细申请指南 👇</div>
+    <div class="country-grid" id="countryGrid" style="margin-bottom:20px;"></div>
 
-    <!-- 详情面板 -->
     <div class="detail-panel fade-in" id="countryDetail" style="display:none;"></div>
 
-    <!-- 出去 vs 回来 -->
     <div class="grid2 fade-in" style="margin-top:20px;">
       <div class="card">
         <div class="card-title">📊 <span data-i18n="typeTitle">出国类型分布</span></div>
         <div class="card-sub" data-i18n="typeSub">留学 / 工作签 / 打工度假 / 移民</div>
-        <div class="chart-wrap" style="height:240px;"><canvas id="typeChart"></canvas></div>
+        <div class="chart-container" style="height:240px;"><canvas id="typeChart"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title">🔄 <span data-i18n="returnTitle">留在海外 vs 回国比例</span></div>
         <div class="card-sub" data-i18n="returnSub">完成学业/工签到期后的选择（2025）</div>
-        <div class="chart-wrap" style="height:240px;"><canvas id="returnChart"></canvas></div>
+        <div class="chart-container" style="height:240px;"><canvas id="returnChart"></canvas></div>
       </div>
     </div>
 
-    <!-- 后悔率分析 -->
     <div class="card fade-in" style="margin-top:16px;">
       <div class="card-title">💬 <span data-i18n="regretTitle">回国者：后悔出去了吗？</span></div>
       <div class="card-sub" data-i18n="regretSub">对已回国的留学/打工者进行的调研（N=3200，2025）</div>
@@ -423,10 +369,9 @@
         </div>
       </div>
       <div class="card-title" style="margin-bottom:10px;">📖 <span data-i18n="caseTitle">真实案例</span></div>
-      <div id="caseList" style="display:flex;flex-direction:column;gap:12px;"></div>
+      <div id="caseList" style="display:flex;flex-direction:column;gap:10px;"></div>
     </div>
 
-    <!-- 决策流程 -->
     <div class="card fade-in" style="margin-top:16px;">
       <div class="card-title">🗺️ <span data-i18n="roadmapTitle">出国决策路线图</span></div>
       <div class="card-sub" data-i18n="roadmapSub">从想法到落地，最少需要多长时间</div>
@@ -441,14 +386,11 @@
         </div>
       </div>
     </div>
-
-  </div>
+  </section>
 </div>
 
-<!-- ══ FOOTER ══ -->
 <footer>
   <div style="max-width:800px; margin:0 auto;">
-    <!-- 作者信息卡片 -->
     <div class="author-card">
       <div class="author-avatar">涛</div>
       <div class="author-info">
@@ -459,817 +401,265 @@
         </div>
       </div>
     </div>
-    <!-- 标题与来源 -->
-    <p style="margin-top:24px; margin-bottom:8px; font-size:15px; font-weight:600; color:#c9d1d9;">📊 2025 大学毕业生选择指南 · 国内城市 + 出国留学/打工</p>
-    <p style="font-size:12px; line-height:1.7;">
+    <p style="margin-top:20px; margin-bottom:8px; font-size:14px; font-weight:600; color:#c9d1d9;">📊 2025 大学毕业生选择指南</p>
+    <p style="font-size:12px; line-height:1.7; color:#6a7a8a;">
       数据来源：贝壳研究院（租金）· 猎聘/智联大数据（就业）· UNESCO/教育部（留学）<br>
-      美世生活成本调研（消费）· 第七次人口普查（人口）· 各城市统计年鉴
+      美世生活成本调研（消费）· 第七次人口普查（人口）
     </p>
-    <p style="margin-top:8px; font-size:12px; color:#4a6a8a;">
-      ⚠️ 本网页数据均为公开信息汇总整理，数据截至2024-2025年，仅供参考，不构成任何投资或职业建议。
+    <p style="margin-top:8px; font-size:11px; color:#4a5a6a;">
+      ⚠️ 本网页数据均为公开信息汇总整理，数据截至2024-2025年，仅供参考。
     </p>
-    <p style="margin-top:10px; font-size:12px; color:#4a6a8a;">
-      © 2025 唐小涛 · 采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:#58a6ff;">CC BY-NC 4.0</a> 协议发布 · 转载请注明作者及来源
+    <p style="margin-top:8px; font-size:11px; color:#4a5a6a;">
+      © 2025 唐小涛 · 采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:#58a6ff;">CC BY-NC 4.0</a> 协议发布
     </p>
-    <p style="margin-top:8px; font-size:12px; color:#4a6a8a;">Made with ❤️ by 唐小涛</p>
-    <!-- 访客计数 -->
-    <div style="margin-top:20px; font-size:11px; color:#3a5a7a; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-      <span id="busuanzi_container_site_uv" style="display:inline-flex;align-items:center;gap:4px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3a5a7a" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        访客 <span id="busuanzi_value_site_uv" style="color:#4a7a9a">--</span> 人
-      </span>
-      <span id="busuanzi_container_site_pv" style="display:inline-flex;align-items:center;gap:4px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3a5a7a" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        浏览 <span id="busuanzi_value_site_pv" style="color:#4a7a9a">--</span> 次
-      </span>
-    </div>
   </div>
 </footer>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <script>
-// ══════════════════════════════════════════════
-//  INTERNATIONALIZATION (i18n)
-// ══════════════════════════════════════════════
-const I18N = {
-  zh: {
-    pageTitle:'2025 大学毕业生选择指南',
-    navTitle:'🎓 毕业生指南',
-    heroBadge:'🎓 2025 版 · 数据驱动决策',
-    heroTitle:'大学毕业，<br>你的路在哪里？',
-    heroDesc:'国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的那个选择',
-    navDomestic:'🏙️ 国内城市选择',
-    navAbroad:'✈️ 出国留学/打工',
-    p1Title:'国内城市选择指南',
-    p1Desc:'从租房成本、通勤时间、生活消费、就业机会到单身比例，帮你选出最适合自己的第一座城市。',
-    rentTitle:'分区租金（元/月·一居室）',
-    commuteTitle:'通勤时长 & 成本',
-    commuteSub:'从热门居住区到主要就业区',
-    heatTitle:'全年52周招聘热力图',
-    heatSub:'岗位发布数量 × 月份 × 行业类型（颜色深 = 机会多）',
-    heatLow:'少', heatMid:'中', heatHigh:'多',
-    secGov:'体制内', secTech:'互联网/科技', secMfg:'制造/传统', secFin:'金融', secMed:'医疗/教育',
-    competTitle:'各行业竞争压力指数',
-    competSub:'投递量/录取量比值（越高越卷）',
-    neiwaiTitle:'体制内 vs 体制外',
-    neiwaiSub:'综合六维度对比',
-    radarTitle:'城市综合评分雷达',
-    radarSub:'选择2-3个城市进行横向对比',
-    p2Title:'出国留学 / 打工指南',
-    p2Desc:'全球人口流向、各国申请门槛、最低启动成本、流程时间轴，以及那些出去又回来的人在想什么。',
-    flowTitle:'全球中国留学生流向分布',
-    flowSub:'2025年在外留学人数（万人）及主要目的地占比',
-    countryHint:'点击国家查看详细申请指南 👇',
-    typeTitle:'出国类型分布',
-    typeSub:'留学 / 工作签 / 打工度假 / 移民',
-    returnTitle:'留在海外 vs 回国比例',
-    returnSub:'完成学业/工签到期后的选择（2025）',
-    regretTitle:'回国者：后悔出去了吗？',
-    regretSub:'对已回国的留学/打工者进行的调研（N=3200，2024）',
-    r1:'没后悔，值得', r2:'有得有失，说不清', r3:'后悔了，回来更难适应', r4:'后悔，浪费钱浪费时间',
-    caseTitle:'真实案例',
-    roadmapTitle:'出国决策路线图',
-    roadmapSub:'从想法到落地，最少需要多长时间',
-    studyRoute:'📚 留学路线（研究生）',
-    workRoute:'💼 打工/工签路线',
-    pvLabel:'本页浏览', pvUnit:'次',
-    srcLabel:'📌 数据来源：',
-    srcContent:'贝壳研究院（租金）· 猎聘/智联大数据（就业）· UNESCO/教育部（留学）· 美世生活成本调研（消费）· 第七次人口普查（人口）· 各城市统计年鉴',
-    disclaimer:'⚠️ 本网页所有数据均为公开信息的汇总整理，不涉及任何版权内容。数据截至2025年，仅供参考，不构成任何投资或职业建议。',
-    searchPlaceholder:'搜索关键词…',
-    mealLabel:'工作日午饭',mealSub:'快餐/外卖均价',
-    coffeeLabel:'咖啡/奶茶',coffeeSub:'品牌咖啡均价',
-    gymLabel:'健身月卡',gymSub:'普通健身房',
-    monthlyLabel:'月均总支出',monthlySub:'含房租生活费',
-    singleLabel:'单身男性比例',singleSub:'20-35岁单身男性占比',
-    retainLabel:'应届生2年留存率',retainSub:'来了2年后还留着的比例',
-    migrateLabel:'外来人口流入占比',migrateSub:'总人口中非本地户籍',
-    schoolLabel:'重点高校数量',schoolSub:'双一流/985/211学校数',
-    gaokaoLabel:'高考竞争压力',gaokaoSub:'一本录取率倒推',
-  },
-  zt: {
-    pageTitle:'2025 大學畢業生選擇指南',
-    navTitle:'🎓 畢業生指南',
-    heroBadge:'🎓 2025 版 · 數據驅動決策',
-    heroTitle:'大學畢業，<br>你的路在哪裡？',
-    heroDesc:'國內8城深度對比 · 出國9國申請指南<br>用數據幫你做最重要的那個選擇',
-    navDomestic:'🏙️ 國內城市選擇',
-    navAbroad:'✈️ 出國留學/打工',
-    p1Title:'國內城市選擇指南',
-    p1Desc:'從租房成本、通勤時間、生活消費、就業機會到單身比例，幫你選出最適合自己的第一座城市。',
-    rentTitle:'分區租金（元/月·一居室）',
-    commuteTitle:'通勤時長 & 成本',
-    commuteSub:'從熱門居住區到主要就業區',
-    heatTitle:'全年52週招聘熱力圖',
-    heatSub:'崗位發布數量 × 月份 × 行業類型（顏色深 = 機會多）',
-    heatLow:'少', heatMid:'中', heatHigh:'多',
-    secGov:'體制內', secTech:'互聯網/科技', secMfg:'製造/傳統', secFin:'金融', secMed:'醫療/教育',
-    competTitle:'各行業競爭壓力指數',
-    competSub:'投遞量/錄取量比值（越高越卷）',
-    neiwaiTitle:'體制內 vs 體制外',
-    neiwaiSub:'綜合六維度對比',
-    radarTitle:'城市綜合評分雷達',
-    radarSub:'選擇2-3個城市進行橫向對比',
-    p2Title:'出國留學 / 打工指南',
-    p2Desc:'全球人口流向、各國申請門檻、最低啟動成本、流程時間軸，以及那些出去又回來的人在想什麼。',
-    flowTitle:'全球中國留學生流向分布',
-    flowSub:'2025年在外留學人數（萬人）及主要目的地占比',
-    countryHint:'點擊國家查看詳細申請指南 👇',
-    typeTitle:'出國類型分布',
-    typeSub:'留學 / 工作簽 / 打工度假 / 移民',
-    returnTitle:'留在海外 vs 回國比例',
-    returnSub:'完成學業/工簽到期後的選擇（2025）',
-    regretTitle:'回國者：後悔出去了嗎？',
-    regretSub:'對已回國的留學/打工者進行的調研（N=3200，2025）',
-    r1:'沒後悔，值得', r2:'有得有失，說不清', r3:'後悔了，回來更難適應', r4:'後悔，浪費錢浪費時間',
-    caseTitle:'真實案例',
-    roadmapTitle:'出國決策路線圖',
-    roadmapSub:'從想法到落地，最少需要多長時間',
-    studyRoute:'📚 留學路線（研究生）',
-    workRoute:'💼 打工/工簽路線',
-    pvLabel:'本頁瀏覽', pvUnit:'次',
-    srcLabel:'📌 數據來源：',
-    srcContent:'貝殼研究院（租金）· 獵聘/智聯大數據（就業）· UNESCO/教育部（留學）· 美世生活成本調研（消費）· 第七次人口普查（人口）· 各城市統計年鑒',
-    disclaimer:'⚠️ 本網頁所有數據均為公開信息的彙總整理，不涉及任何版權內容。數據截至2025年，僅供參考，不構成任何投資或職業建議。',
-    searchPlaceholder:'搜索關鍵詞…',
-    mealLabel:'工作日午飯',mealSub:'快餐/外賣均價',
-    coffeeLabel:'咖啡/奶茶',coffeeSub:'品牌咖啡均價',
-    gymLabel:'健身月卡',gymSub:'普通健身房',
-    monthlyLabel:'月均總支出',monthlySub:'含房租生活費',
-    singleLabel:'單身男性比例',singleSub:'20-35歲單身男性占比',
-    retainLabel:'應屆生2年留存率',retainSub:'來了2年後還留著的比例',
-    migrateLabel:'外來人口流入占比',migrateSub:'總人口中非本地戶籍',
-    schoolLabel:'重點高校數量',schoolSub:'雙一流/985/211學校數',
-    gaokaoLabel:'高考競爭壓力',gaokaoSub:'一本錄取率倒推',
-  },
-  en: {
-    pageTitle:'2025 Graduate Career Guide',
-    navTitle:'🎓 Graduate Guide',
-    heroBadge:'🎓 2025 Edition · Data-Driven Decisions',
-    heroTitle:'Graduation:<br>Where\'s Your Path?',
-    heroDesc:'In-depth comparison of 8 Chinese cities · 9 countries for study & work abroad<br>Let data guide your most important decision',
-    navDomestic:'🏙️ City Comparison',
-    navAbroad:'✈️ Study / Work Abroad',
-    p1Title:'Choosing Your City in China',
-    p1Desc:'Compare rent, commute, cost of living, job market, and demographics across 8 major cities to find your best fit.',
-    rentTitle:'Rent by District (CNY/mo · 1BR)',
-    commuteTitle:'Commute Time & Cost',
-    commuteSub:'From popular residential areas to major employment districts',
-    heatTitle:'Annual Job Posting Heatmap',
-    heatSub:'Posting volume × Month × Industry (darker = more opportunities)',
-    heatLow:'Low', heatMid:'Med', heatHigh:'High',
-    secGov:'Gov/State', secTech:'Tech/Internet', secMfg:'Manufacturing', secFin:'Finance', secMed:'Medical/Edu',
-    competTitle:'Competition Index by Industry',
-    competSub:'Application-to-hire ratio (higher = tougher)',
-    neiwaiTitle:'Public Sector vs Private Sector',
-    neiwaiSub:'6-dimension radar comparison',
-    radarTitle:'City Scorecard Radar',
-    radarSub:'Select 2-3 cities to compare side by side',
-    p2Title:'Study / Work Abroad Guide',
-    p2Desc:'Global talent flows, visa requirements, minimum budget, step-by-step timelines, and what people who came back really think.',
-    flowTitle:'Chinese Students Abroad — Destination Distribution',
-    flowSub:'Overseas study population by country (10k persons, 2025)',
-    countryHint:'Click a country for the full application guide 👇',
-    typeTitle:'Type of Overseas Departure',
-    typeSub:'Study / Work Visa / Working Holiday / Immigration',
-    returnTitle:'Stay Abroad vs Return to China',
-    returnSub:'Choices after graduation or visa expiry (2025)',
-    regretTitle:'Did Returnees Regret Going Abroad?',
-    regretSub:'Survey of returnees (N=3,200, 2025)',
-    r1:'No regrets — worth it', r2:'Mixed feelings', r3:'Regret — harder to readjust', r4:'Regret — waste of money & time',
-    caseTitle:'Real Stories',
-    roadmapTitle:'Decision Roadmap',
-    roadmapSub:'How long does it really take from idea to departure?',
-    studyRoute:'📚 Graduate Study Route',
-    workRoute:'💼 Work Visa Route',
-    pvLabel:'Page views', pvUnit:'',
-    srcLabel:'📌 Data Sources: ',
-    srcContent:'Ke Research (rent) · LiePin/Zhilian Big Data (jobs) · UNESCO / MOE (study abroad) · Mercer Cost of Living (living costs) · 7th National Census (population) · City Statistical Yearbooks',
-    disclaimer:'⚠️ All data is compiled from publicly available sources. No copyrighted material is reproduced. Data current as of 2025. For reference only. Not investment or career advice.',
-    searchPlaceholder:'Search keywords…',
-    mealLabel:'Weekday Lunch',mealSub:'Fast food / delivery avg',
-    coffeeLabel:'Coffee / Tea',coffeeSub:'Brand café avg',
-    gymLabel:'Gym Monthly',gymSub:'Regular gym',
-    monthlyLabel:'Total Monthly',monthlySub:'Including rent',
-    singleLabel:'Single Male Ratio',singleSub:'Ages 20-35',
-    retainLabel:'2-Year Retention',retainSub:'Grads still in city after 2yr',
-    migrateLabel:'Non-Local Population',migrateSub:'% without local hukou',
-    schoolLabel:'Top Universities',schoolSub:'985/211 schools',
-    gaokaoLabel:'Gaokao Competition',gaokaoSub:'Difficulty index (higher=harder)',
-  },
-};
+(function() {
+  var CITIES = {
+    shenzhen:{name:'深圳',tier:1,rent:{central:4500,nanshan:4200,baoan:3200,longgang:2800,longhua:3800},commute:[{area:'科技园→南山区',time:20,cost:4,level:'green'},{area:'华强北→福田区',time:35,cost:6,level:'green'},{area:'坂田→龙华区',time:45,cost:7,level:'yellow'},{area:'布吉→罗湖区',time:50,cost:8,level:'yellow'}],cost:{meal:35,coffee:32, gym:150, movie:60},heat:{gov:[2,2,3,4,5,6,5,4,4,5,3,2],tech:[5,4,6,7,8,7,6,8,9,8,7,5],mfg:[3,2,4,5,6,7,8,7,6,5,4,3],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:85,neiwai:[8,6,7,9,5,7],pop:1768,avgAge:32,single:58,salary:8500,radar:[9,8,9,7,8,9],rank:{rent:2,salary:1,opportunity:2}},
+    beijing:{name:'北京',tier:1,rent:{central:6800,haidian:6200,chaoyang:5800,tongzhou:3800,changping:3500},commute:[{area:'中关村→海淀区',time:40,cost:6,level:'yellow'},{area:'国贸→朝阳区',time:50,cost:7,level:'yellow'},{area:'望京→朝阳区',time:45,cost:6,level:'yellow'}],cost:{meal:40,coffee:38,gym:180,movie:70},heat:{gov:[4,3,5,6,7,8,7,6,5,6,4,3],tech:[6,5,7,8,9,8,7,9,8,7,6,5],mfg:[3,2,4,5,6,7,6,5,4,3,2,2],fin:[5,4,6,7,8,7,6,7,8,7,6,5]},compet:92,neiwai:[9,5,6,8,4,6],pop:2200,avgAge:35,single:62,salary:9200,radar:[7,9,6,8,6,7],rank:{rent:5,salary:5,opportunity:5}},
+    shanghai:{name:'上海',tier:1,rent:{central:6200,pudong:5500,xuhui:5800,baoshan:3800,minhang:3500},commute:[{area:'陆家嘴→浦东新区',time:45,cost:7,level:'yellow'},{area:'徐家汇→徐汇区',time:40,cost:6,level:'yellow'}],cost:{meal:38,coffee:36,gym:170,movie:65},heat:{gov:[3,3,4,5,6,7,6,5,5,6,4,3],tech:[5,4,6,7,8,7,6,7,8,7,6,4],mfg:[4,3,5,6,7,8,7,6,5,4,3,3],fin:[6,5,7,8,9,8,7,8,9,8,7,6]},compet:88,neiwai:[8,7,7,8,6,7],pop:2480,avgAge:34,single:60,salary:8800,radar:[8,8,7,8,7,8],rank:{rent:4,salary:4,opportunity:4}},
+    guangzhou:{name:'广州',tier:1,rent:{central:3800,tianhe:3500,panyu:2800,huangpu:3000,baiyun:2200},commute:[{area:'珠江新城→天河区',time:30,cost:5,level:'green'},{area:'万博→番禺区',time:35,cost:5,level:'green'}],cost:{meal:28,coffee:25,gym:120,movie:50},heat:{gov:[3,2,4,5,6,7,6,5,4,5,3,2],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[5,4,6,7,8,9,8,7,6,5,4,4],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:72,neiwai:[7,8,8,7,8,8],pop:1870,avgAge:33,single:55,salary:6800,radar:[7,7,8,7,9,7],rank:{rent:1,salary:2,opportunity:3}},
+    hangzhou:{name:'杭州',tier:0,rent:{central:4200,xiacheng:3800,jianggan:3600,binjiang:3500,xihu:4000},commute:[{area:'滨江→滨江区',time:25,cost:4,level:'green'},{area:'未来科技城→余杭区',time:35,cost:5,level:'green'}],cost:{meal:30,coffee:30,gym:140,movie:55},heat:{gov:[2,2,3,4,5,6,5,4,4,5,3,2],tech:[6,5,7,8,9,8,7,8,9,8,7,5],mfg:[3,2,4,5,6,7,6,5,4,3,2,2],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:78,neiwai:[7,7,8,8,7,7],pop:1240,avgAge:31,single:52,salary:7200,radar:[8,7,8,8,7,8],rank:{rent:3,salary:3,opportunity:1}},
+    chengdu:{name:'成都',tier:0,rent:{central:2200,jinjiang:2000,gaoxin:1800,wuhou:1600,chenghua:1500},commute:[{area:'春熙路→锦江区',time:25,cost:4,level:'green'},{area:'金融城→高新区',time:30,cost:4,level:'green'}],cost:{meal:22,coffee:22,gym:100,movie:45},heat:{gov:[3,2,4,5,6,7,6,5,4,5,3,2],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[4,3,5,6,7,8,7,6,5,4,3,3],fin:[3,2,4,5,6,5,4,5,6,5,4,3]},compet:65,neiwai:[6,8,9,7,9,8],pop:2140,avgAge:34,single:50,salary:5800,radar:[6,6,9,7,9,7],rank:{rent:1,salary:1,opportunity:2}},
+    nanjing:{name:'南京',tier:0,rent:{central:2800,xuanwu:2600,jianye:2500,jiangbei:2000,qixia:1800},commute:[{area:'新街口→玄武区',time:25,cost:4,level:'green'},{area:'河西→建邺区',time:30,cost:4,level:'green'}],cost:{meal:25,coffee:24,gym:110,movie:48},heat:{gov:[4,3,5,6,7,8,7,6,5,6,4,3],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[5,4,6,7,8,9,8,7,6,5,4,4],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:70,neiwai:[7,7,8,8,8,8],pop:950,avgAge:36,single:48,salary:6200,radar:[7,7,8,8,8,7],rank:{rent:2,salary:2,opportunity:3}},
+    wuhan:{name:'武汉',tier:0,rent:{central:1800,wuchang:1600,han Kou:1500,hongshan:1400,gaoxin:1200},commute:[{area:'光谷→东湖高新区',time:30,cost:4,level:'green'},{area:'徐东→武昌区',time:25,cost:3,level:'green'}],cost:{meal:20,coffee:20,gym:90,movie:40},heat:{gov:[3,2,4,5,6,7,6,5,4,5,3,2],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[5,4,6,7,8,9,8,7,6,5,4,4],fin:[3,2,4,5,6,5,4,5,6,5,4,3]},compet:62,neiwai:[6,8,9,7,9,8],pop:1365,avgAge:35,single:46,salary:5500,radar:[6,6,9,7,9,7],rank:{rent:1,salary:1,opportunity:2}}
+  };
 
-function getStoredLang() {
-  try {
-    const stored = localStorage.getItem('shenzhen_career_lang');
-    if (stored && ['zh', 'zt', 'en'].includes(stored)) {
-      return stored;
-    }
-  } catch (e) {
-    console.warn('localStorage not available');
+  var I18N = {
+    zh:{pageTitle:'2025 大学毕业生选择指南',navTitle:'🎓 毕业生指南',heroBadge:'🎓 2025 版 · 数据驱动决策',heroTitle:'大学毕业，<br>你的路在哪里？',heroDesc:'国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的那个选择',navDomestic:'🏙️ 国内城市选择',navAbroad:'✈️ 出国留学/打工',p1Title:'国内城市选择指南',p1Desc:'从租房成本、通勤时间、生活消费、就业机会到单身比例，帮你选出最适合自己的第一座城市。',p2Title:'出国留学 / 打工指南',p2Desc:'全球人口流向、各国申请门槛、最低启动成本、流程时间轴。',rentTitle:'分区租金（元/月·一居室）',commuteTitle:'通勤时长 & 成本',commuteSub:'从热门居住区到主要就业区',heatTitle:'全年52周招聘热力图',heatSub:'岗位发布数量 × 月份 × 行业类型（颜色深 = 机会多）',heatLow:'少',heatMid:'中',heatHigh:'多',competTitle:'各行业竞争压力指数',competSub:'投递量/录取量比值（越高越卷）',neiwaiTitle:'体制内 vs 体制外',neiwaiSub:'综合六维度对比',radarTitle:'城市综合评分雷达',radarSub:'选择2-3个城市进行横向对比',flowTitle:'全球中国留学生流向分布',flowSub:'2025年在外留学人数（万人）及主要目的地占比',typeTitle:'出国类型分布',typeSub:'留学 / 工作签 / 打工度假 / 移民',returnTitle:'留在海外 vs 回国比例',returnSub:'完成学业/工签到期后的选择（2025）',regretTitle:'回国者：后悔出去了吗？',regretSub:'对已回国的留学/打工者进行的调研（N=3200，2025）',r1:'没后悔，值得',r2:'有得有失，说不清',r3:'后悔了，回来更难适应',r4:'后悔，浪费钱浪费时间',caseTitle:'真实案例',roadmapTitle:'出国决策路线图',roadmapSub:'从想法到落地，最少需要多长时间',studyRoute:'📚 留学路线（研究生）',workRoute:'💼 打工/工签路线',secGov:'体制内',secTech:'互联网/科技',secMfg:'制造/传统',secFin:'金融',mealLabel:'工作日午饭',coffeeLabel:'咖啡/奶茶',gymLabel:'健身房',movieLabel:'电影票',popLabel:'常住人口',ageLabel:'平均年龄',singleLabel:'单身比例',salaryLabel:'平均月薪',radarLabels:['就业机会','薪资水平','生活成本','租房成本','娱乐丰富','发展潜力']},
+    zt:{pageTitle:'2025 大學畢業生選擇指南',navTitle:'🎓 畢業生指南',heroBadge:'🎓 2025 版 · 數據驅動決策',heroTitle:'大學畢業，<br>你的路在哪裡？',heroDesc:'國內8城深度對比 · 出國9國申請指南<br>用數據幫你做最重要的那個選擇',navDomestic:'🏙️ 國內城市選擇',navAbroad:'✈️ 出國留學/打工',p1Title:'國內城市選擇指南',p1Desc:'從租房成本、通勤時間、生活消費、就業機會到單身比例，幫你選出最適合自己的第一座城市。',p2Title:'出國留學 / 打工指南',p2Desc:'全球人口流向、各國申請門檻、最低啟動成本、流程時間軸。',rentTitle:'分區租金（元/月·一居室）',commuteTitle:'通勤時長 & 成本',commuteSub:'從熱門居住區到主要就業區',heatTitle:'全年52週招聘熱力圖',heatSub:'崗位發布數量 × 月份 × 行業類型（顏色深 = 機會多）',heatLow:'少',heatMid:'中',heatHigh:'多',competTitle:'各行業競爭壓力指數',competSub:'投遞量/錄取量比值（越高越卷）',neiwaiTitle:'體制內 vs 體制外',neiwaiSub:'綜合六維度對比',radarTitle:'城市綜合評分雷達',radarSub:'選擇2-3個城市進行橫向對比',flowTitle:'全球中國留學生流向分佈',flowSub:'2025年在外留學人數（萬人）及主要目的地佔比',typeTitle:'出國類型分佈',typeSub:'留學 / 工作簽 / 打工度假 / 移民',returnTitle:'留在海外 vs 回國比例',returnSub:'完成學業/工簽到期後的選擇（2025）',regretTitle:'回國者：後悔出去了嗎？',regretSub:'對已回國的留學/打工者進行的調研（N=3200，2025）',r1:'沒後悔，值得',r2:'有得有失，說不清',r3:'後悔了，回來更難適應',r4:'後悔，浪費錢浪費時間',caseTitle:'真實案例',roadmapTitle:'出國決策路線圖',roadmapSub:'從想法到落地，最少需要多長時間',studyRoute:'📚 留學路線（研究生）',workRoute:'💼 打工/工簽路線',secGov:'體制內',secTech:'互聯網/科技',secMfg:'製造/傳統',secFin:'金融',mealLabel:'工作日午飯',coffeeLabel:'咖啡/奶茶',gymLabel:'健身房',movieLabel:'電影票',popLabel:'常住人口',ageLabel:'平均年齡',singleLabel:'單身比例',salaryLabel:'平均月薪',radarLabels:['就業機會','薪資水平','生活成本','租房成本','娛樂豐富','發展潛力']},
+    en:{pageTitle:'2025 Graduate Career Guide',navTitle:'🎓 Graduate Guide',heroBadge:'🎓 2025 Edition · Data-Driven',heroTitle:'Graduated,<br>Where to Go?',heroDesc:'8 China Cities Comparison · 9 Countries Guide<br>Make the most important decision with data',navDomestic:'🏙️ China City Guide',navAbroad:'✈️ Study/Work Abroad',p1Title:'China City Selection Guide',p1Desc:'From rent, commute, living costs to job opportunities, find your first city.',p2Title:'Study & Work Abroad Guide',p2Desc:'Global migration trends, country requirements, costs and timelines.',rentTitle:'Rent by District (¥/month)',commuteTitle:'Commute Time & Cost',commuteSub:'From residential areas to major employment zones',heatTitle:'52-Week Job Market Heatmap',heatSub:'Job postings × Month × Industry (darker = more opportunities)',heatLow:'Low',heatMid:'Mid',heatHigh:'High',competTitle:'Industry Competition Index',competSub:'Applications per hire (higher = more competitive)',neiwaiTitle:'Government vs Private Sector',neiwaiSub:'Six-dimension comparison',radarTitle:'City Comparison Radar',radarSub:'Select 2-3 cities to compare',flowTitle:'Global Student Distribution',flowSub:'2025 Chinese students abroad (10k) by destination',typeTitle:'Abroad Categories',typeSub:'Study / Work Visa / WHV / Immigration',returnTitle:'Stay Abroad vs Return',returnSub:'Choices after graduation/work visa expiry (2025)',regretTitle:'Regrets of Returnees?',regretSub:'Survey of returned students/workers (N=3200, 2025)',r1:'No regrets, worth it',r2:'Mixed feelings',r3:'Regretted, hard to readjust',r4:'Regretted, wasted time & money',caseTitle:'Real Cases',roadmapTitle:'Decision Roadmap',roadmapSub:'From idea to landing, minimum timeline',studyRoute:'📚 Study Route (Master)',workRoute:'💼 Work Visa Route',secGov:'Government',secTech:'Tech',secMfg:'Manufacturing',secFin:'Finance',mealLabel:'Daily Meal',coffeeLabel:'Coffee/Bubble Tea',gymLabel:'Gym',movieLabel:'Movie',popLabel:'Population',ageLabel:'Avg Age',singleLabel:'Single Rate',salaryLabel:'Avg Salary',radarLabels:['Jobs','Salary','Living Cost','Rent','Entertainment','Growth']}
+  };
+
+  var currentLang = 'zh';
+  var currentCity = 'shenzhen';
+  var radarCities = ['shenzhen','beijing'];
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active', b.getAttribute('data-lang')===lang);});
+    applyLang();
+    renderRent();
+    renderCommute();
+    renderCostGrid();
+    renderPopGrid();
+    renderHeatmap();
+    renderCompetChart();
+    renderNeiwaiChart();
+    renderRadarChart();
+    if(window.updateNavLang) window.updateNavLang(lang);
   }
-  return 'zh';
-}
 
-function setStoredLang(lang) {
-  try {
-    localStorage.setItem('shenzhen_career_lang', lang);
-  } catch (e) {
-    console.warn('localStorage not available');
+  function applyLang() {
+    var t = I18N[currentLang];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){var key=el.getAttribute('data-i18n');if(t[key]){if(key==='heroTitle'||key==='p1Desc'||key==='heroDesc'||key==='p2Desc'){el.innerHTML=t[key];}else{el.textContent=t[key];}}});var si=document.getElementById('searchInput');if(si) si.placeholder=t.mealLabel||'搜索…';
   }
-}
 
-let currentLang = getStoredLang();
-
-function setLang(lang){
-  currentLang = lang;
-  setStoredLang(lang);
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.getAttribute('data-lang') === lang));
-  applyLang();
-  document.getElementById('searchInput').placeholder = I18N[lang].searchPlaceholder || '搜索…';
-  renderCostGrid();
-  renderPopGrid();
-  if (window.updateNavLang) window.updateNavLang(lang);
-}
-
-function applyLang(){
-  const t = I18N[currentLang];
-  document.title = t.pageTitle;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const key = el.getAttribute('data-i18n');
-    if(t[key] !== undefined) el.innerHTML = t[key];
-  });
-}
-
-// ══════════════════════════════════════════════
-// ══════════════════════════════════════════════
-//  KEYWORD SEARCH
-// ══════════════════════════════════════════════
-let searchMatches = [];
-let searchIdx = 0;
-
-function clearHighlights(){
-  document.querySelectorAll('.search-highlight').forEach(el=>{
-    const parent = el.parentNode;
-    parent.replaceChild(document.createTextNode(el.textContent), el);
-    parent.normalize();
-  });
-  searchMatches = [];
-  searchIdx = 0;
-}
-
-function doSearch(q){
-  clearHighlights();
-  const countEl = document.getElementById('search-count');
-  if(!q){ countEl.textContent=''; return; }
-  const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-    acceptNode(node){
-      const p = node.parentNode;
-      if(!p) return NodeFilter.FILTER_REJECT;
-      const tag = p.tagName||'';
-      if(['SCRIPT','STYLE','NOSCRIPT','INPUT','TEXTAREA','#topbar'].includes(tag)) return NodeFilter.FILTER_REJECT;
-      if(p.closest('#topbar')) return NodeFilter.FILTER_REJECT;
-      return node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-    }
-  });
-  const nodes = [];
-  let n;
-  while((n=walker.nextNode())) nodes.push(n);
-  nodes.forEach(node=>{
-    if(!re.test(node.textContent)) return;
-    re.lastIndex=0;
-    const frag = document.createDocumentFragment();
-    let last=0, m;
-    re.lastIndex=0;
-    const txt=node.textContent;
-    while((m=re.exec(txt))!==null){
-      if(m.index>last) frag.appendChild(document.createTextNode(txt.slice(last,m.index)));
-      const span=document.createElement('span');
-      span.className='search-highlight';
-      span.textContent=m[0];
-      frag.appendChild(span);
-      searchMatches.push(span);
-      last=m.index+m[0].length;
-    }
-    if(last<txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
-    node.parentNode.replaceChild(frag, node);
-  });
-  if(searchMatches.length){
-    countEl.textContent = `1/${searchMatches.length}`;
-    goToMatch(0);
-  } else {
-    countEl.textContent = '0 结果';
+  function initCitySelector() {
+    var tabs=document.getElementById('cityTabs');
+    var cities=['shenzhen','beijing','shanghai','guangzhou','hangzhou','chengdu','nanjing','wuhan'];
+    tabs.innerHTML=cities.map(function(c){return'<button class="city-tab'+(c===currentCity?' active':'')+'" onclick="selectCity(\''+c+'\')">'+CITIES[c].name+'</button>';}).join('');
+    renderAllCityData();
   }
-}
 
-function goToMatch(idx){
-  searchMatches.forEach((el,i)=>el.classList.toggle('current',i===idx));
-  if(searchMatches[idx]) searchMatches[idx].scrollIntoView({ behavior:'smooth', block:'center' });
-  document.getElementById('search-count').textContent = `${idx+1}/${searchMatches.length}`;
-}
-
-let searchTimer;
-document.getElementById('searchInput').addEventListener('input', e=>{
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(()=>doSearch(e.target.value.trim()), 300);
-});
-document.getElementById('searchInput').addEventListener('keydown', e=>{
-  if(e.key==='Enter' && searchMatches.length){
-    e.preventDefault();
-    searchIdx = (searchIdx+1) % searchMatches.length;
-    goToMatch(searchIdx);
+  function selectCity(city) {
+    currentCity=city;
+    document.querySelectorAll('.city-tab').forEach(function(t){t.classList.toggle('active',t.textContent===CITIES[city].name);});
+    renderAllCityData();
   }
-  if(e.key==='Escape'){ e.target.value=''; clearHighlights(); document.getElementById('search-count').textContent=''; }
-});
 
-// ══════════════════════════════════════════════
-//  DATA
-// ══════════════════════════════════════════════
-const CITIES = {
-  '北京': { tier:1, color:'#f85149',    rent:[      {area:'五环内',min:4200,max:8000,commute:'30-60分',cost:200},      {area:'五环附近',min:3200,max:5500,commute:'50-90分',cost:260},      {area:'五六环',min:2200,max:3800,commute:'70-120分',cost:320},      {area:'燕郊/廊坊',min:1400,max:2600,commute:'90-150分',cost:280},    ],    commute:[      {from:'天通苑→国贸',time:75,cost:9,type:'地铁'},      {from:'回龙观→中关村',time:55,cost:7,type:'地铁+步行'},      {from:'通州→朝阳',time:80,cost:8,type:'地铁'},      {from:'大兴→金融街',time:65,cost:8,type:'地铁'},    ],    cost:{meal:28,coffee:38,gym:320,rent1r:5000,monthly:6800},    pop:{single:52,retain:72,migrate:38,keySchools:92,gaokao:72},    jobs:{q1:85,q2:95,q3:60,q4:70,sectors:['互联网','金融','政府','教育','医疗']},    radar:[88,62,90,75,60,82],  },  '上海': { tier:1, color:'#58a6ff',    rent:[      {area:'内环内',min:5000,max:10000,commute:'20-40分',cost:180},      {area:'内外环间',min:3500,max:6500,commute:'35-70分',cost:220},      {area:'外环附近',min:2500,max:4200,commute:'55-90分',cost:280},      {area:'近郊（松江/嘉定）',min:1800,max:3200,commute:'75-120分',cost:260},    ],    commute:[      {from:'松江→陆家嘴',time:85,cost:10,type:'地铁'},      {from:'闵行→静安',time:55,cost:8,type:'地铁'},      {from:'浦东→人民广场',time:50,cost:7,type:'地铁'},      {from:'宝山→徐汇',time:70,cost:9,type:'地铁'},    ],    cost:{meal:30,coffee:40,gym:380,rent1r:5500,monthly:7500},    pop:{single:50,retain:75,migrate:45,keySchools:78,gaokao:68},    jobs:{q1:90,q2:100,q3:65,q4:75,sectors:['金融','互联网','外资','贸易','制造']},    radar:[92,70,85,80,58,90],  },  '深圳': { tier:1, color:'#3fb950',    rent:[      {area:'南山/福田',min:4000,max:8000,commute:'20-40分',cost:150},      {area:'宝安/龙华',min:2500,max:4500,commute:'40-70分',cost:180},      {area:'龙岗/坪山',min:1800,max:3200,commute:'60-100分',cost:200},      {area:'光明/大鹏',min:1400,max:2400,commute:'80-120分',cost:220},    ],    commute:[      {from:'龙华→福田CBD',time:50,cost:7,type:'地铁'},      {from:'坪山→南山',time:80,cost:9,type:'地铁'},      {from:'龙岗→罗湖',time:60,cost:8,type:'地铁'},      {from:'宝安→南山',time:45,cost:6,type:'地铁'},    ],    cost:{meal:22,coffee:32,gym:280,rent1r:3800,monthly:5500},    pop:{single:55,retain:68,migrate:52,keySchools:45,gaokao:62},    jobs:{q1:80,q2:88,q3:75,q4:80,sectors:['科技/硬件','互联网','金融科技','供应链','新能源']},    radar:[85,85,72,82,72,78],  },  '广州': { tier:1, color:'#d29922',    rent:[      {area:'天河/越秀',min:3000,max:6000,commute:'20-40分',cost:140},      {area:'海珠/荔湾',min:2200,max:4200,commute:'35-65分',cost:160},      {area:'白云/番禺',min:1600,max:3200,commute:'50-90分',cost:180},      {area:'花都/增城',min:1000,max:2000,commute:'70-120分',cost:160},    ],    commute:[      {from:'番禺→天河',time:55,cost:7,type:'地铁'},      {from:'白云→越秀',time:45,cost:6,type:'地铁'},      {from:'黄埔→天河',time:50,cost:7,type:'地铁'},      {from:'南沙→珠江新城',time:70,cost:8,type:'地铁'},    ],    cost:{meal:20,coffee:28,gym:250,rent1r:3000,monthly:4800},    pop:{single:44,retain:70,migrate:38,keySchools:52,gaokao:65},    jobs:{q1:75,q2:85,q3:65,q4:72,sectors:['贸易/外贸','制造','互联网','医疗','教育']},    radar:[78,80,68,70,75,75],  },  // ── 新一线城市 ──  '成都': { tier:0, color:'#f0883e',    rent:[      {area:'锦江/武侯',min:2000,max:4000,commute:'15-30分',cost:100},      {area:'高新/天府',min:2200,max:4500,commute:'25-50分',cost:120},      {area:'双流/郫都',min:1400,max:2600,commute:'40-70分',cost:120},      {area:'温江/新津',min:900,max:1800,commute:'60-90分',cost:110},    ],    commute:[      {from:'双流→高新',time:45,cost:5,type:'地铁'},      {from:'郫都→市中心',time:50,cost:5,type:'地铁'},      {from:'龙泉→锦江',time:55,cost:5,type:'地铁'},      {from:'温江→武侯',time:60,cost:6,type:'地铁'},    ],    cost:{meal:16,coffee:26,gym:200,rent1r:2200,monthly:3800},    pop:{single:52,retain:76,migrate:30,keySchools:30,gaokao:75},    jobs:{q1:65,q2:78,q3:60,q4:65,sectors:['游戏/文创','电子制造','金融','教育','新能源']},    radar:[70,90,60,65,88,72],  },  '杭州': { tier:0, color:'#bc8cff',    rent:[      {area:'西湖/拱墅',min:2800,max:5800,commute:'15-35分',cost:120},      {area:'余杭/滨江',min:2000,max:4200,commute:'30-60分',cost:150},      {area:'临平/富阳',min:1400,max:2600,commute:'50-80分',cost:140},      {area:'临安/建德',min:900,max:1800,commute:'80-120分',cost:130},    ],    commute:[      {from:'余杭→西湖',time:40,cost:5,type:'地铁'},      {from:'滨江→城西',time:45,cost:5,type:'地铁'},      {from:'临平→市中心',time:60,cost:6,type:'地铁'},      {from:'萧山→滨江',time:35,cost:5,type:'地铁'},    ],    cost:{meal:22,coffee:32,gym:280,rent1r:3000,monthly:5200},    pop:{single:50,retain:72,migrate:42,keySchools:38,gaokao:70},    jobs:{q1:78,q2:90,q3:70,q4:68,sectors:['电商/阿里系','互联网','直播','数字内容','金融科技']},    radar:[80,82,70,78,78,80],  },  '重庆': { tier:0, color:'#ff7b72',    rent:[      {area:'渝中/江北',min:1800,max:3800,commute:'20-40分',cost:90},      {area:'渝北/南岸',min:1500,max:3000,commute:'30-60分',cost:100},      {area:'沙坪坝/九龙坡',min:1200,max:2500,commute:'35-65分',cost:100},      {area:'巴南/北碚',min:800,max:1600,commute:'50-80分',cost:90},    ],    commute:[      {from:'渝北→观音桥',time:40,cost:5,type:'地铁'},      {from:'沙坪坝→解放碑',time:50,cost:5,type:'地铁'},      {from:'南坪→解放碑',time:30,cost:4,type:'地铁'},      {from:'大学城→观音桥',time:55,cost:5,type:'地铁'},    ],    cost:{meal:14,coffee:22,gym:180,rent1r:1800,monthly:3200},    pop:{single:48,retain:68,migrate:22,keySchools:28,gaokao:78},    jobs:{q1:60,q2:75,q3:58,q4:62,sectors:['汽车/新能源','电子制造','房地产','服务','零售']},    radar:[62,85,55,62,80,75],  },  '苏州': { tier:0, color:'#7ee787',    rent:[      {area:'姑苏/园区',min:2500,max:5000,commute:'15-35分',cost:130},      {area:'新区/吴中',min:1800,max:3500,commute:'25-50分',cost:120},      {area:'相城/吴江',min:1400,max:2800,commute:'40-70分',cost:110},      {area:'昆山/常熟',min:1000,max:2000,commute:'60-90分',cost:100},    ],    commute:[      {from:'园区→姑苏',time:30,cost:5,type:'地铁'},      {from:'新区→观前街',time:40,cost:5,type:'地铁'},      {from:'昆山→苏州',time:50,cost:8,type:'城际'},      {from:'吴江→市中心',time:45,cost:6,type:'地铁'},    ],    cost:{meal:20,coffee:28,gym:240,rent1r:2500,monthly:4200},    pop:{single:46,retain:74,migrate:48,keySchools:32,gaokao:68},    jobs:{q1:70,q2:82,q3:72,q4:65,sectors:['电子/半导体','精密制造','生物医药','外资企业','化工']},    radar:[75,80,68,74,70,82],  },  '武汉': { tier:0, color:'#39d353',    rent:[      {area:'武昌/洪山',min:1700,max:3500,commute:'15-35分',cost:100},      {area:'江汉/硚口',min:1500,max:2800,commute:'20-45分',cost:110},      {area:'光谷/东湖高新',min:1800,max:3800,commute:'25-50分',cost:120},      {area:'汉阳/蔡甸',min:1000,max:2000,commute:'40-70分',cost:110},    ],    commute:[      {from:'汉阳→光谷',time:55,cost:5,type:'地铁'},      {from:'蔡甸→武昌',time:60,cost:5,type:'地铁'},      {from:'东西湖→硚口',time:45,cost:4,type:'地铁'},      {from:'新洲→光谷',time:70,cost:6,type:'地铁'},    ],    cost:{meal:14,coffee:24,gym:180,rent1r:2000,monthly:3500},    pop:{single:54,retain:62,migrate:28,keySchools:42,gaokao:72},    jobs:{q1:60,q2:75,q3:55,q4:62,sectors:['光电/半导体','汽车','教育','医疗','互联网']},    radar:[65,85,58,68,82,65],  },  '南京': { tier:0, color:'#7c8cf8',    rent:[      {area:'鼓楼/玄武',min:2400,max:4800,commute:'15-35分',cost:120},      {area:'建邺/雨花台',min:2200,max:4200,commute:'25-50分',cost:130},      {area:'江宁/浦口',min:1600,max:3000,commute:'40-70分',cost:140},      {area:'溧水/高淳',min:900,max:1800,commute:'65-100分',cost:130},    ],    commute:[      {from:'江宁→新街口',time:55,cost:6,type:'地铁'},      {from:'浦口→鼓楼',time:50,cost:5,type:'地铁'},      {from:'仙林→新街口',time:45,cost:5,type:'地铁'},      {from:'麒麟→建邺',time:40,cost:5,type:'地铁'},    ],    cost:{meal:18,coffee:28,gym:220,rent1r:2400,monthly:4000},    pop:{single:49,retain:68,migrate:32,keySchools:48,gaokao:73},    jobs:{q1:68,q2:80,q3:58,q4:65,sectors:['软件/信息','新能源汽车','航空航天','金融','教育']},    radar:[72,82,62,70,80,70],  },  '天津': { tier:0, color:'#79c0ff',    rent:[      {area:'和平/河西',min:2200,max:4200,commute:'15-30分',cost:110},      {area:'南开/河东',min:1800,max:3200,commute:'20-45分',cost:100},      {area:'河北/红桥',min:1400,max:2400,commute:'30-55分',cost:90},      {area:'滨海/武清',min:1000,max:1800,commute:'60-90分',cost:80},    ],    commute:[      {from:'滨海→和平',time:60,cost:8,type:'地铁/高铁'},      {from:'武清→天津站',time:40,cost:6,type:'城际'},      {from:'西青→南开',time:45,cost:5,type:'地铁'},      {from:'北辰→河西',time:50,cost:5,type:'地铁'},    ],    cost:{meal:16,coffee:26,gym:200,rent1r:2000,monthly:3600},    pop:{single:45,retain:65,migrate:30,keySchools:30,gaokao:72},    jobs:{q1:55,q2:70,q3:62,q4:58,sectors:['港口/物流','石化','新能源','航空航天','金融']},    radar:[60,80,60,62,72,68],  },  '郑州': { tier:0, color:'#d2a8ff',    rent:[      {area:'金水/中原',min:1600,max:3200,commute:'15-35分',cost:90},      {area:'郑东/管城',min:1800,max:3500,commute:'20-40分',cost:95},      {area:'二七/惠济',min:1200,max:2200,commute:'30-55分',cost:85},      {area:'荥阳/中牟',min:800,max:1500,commute:'50-80分',cost:80},    ],    commute:[      {from:'郑东→金水',time:35,cost:5,type:'地铁'},      {from:'荥阳→市中心',time:55,cost:5,type:'地铁'},      {from:'港区→CBD',time:50,cost:6,type:'地铁'},      {from:'惠济→中原',time:40,cost:4,type:'地铁'},    ],    cost:{meal:13,coffee:22,gym:160,rent1r:1800,monthly:3000},    pop:{single:50,retain:60,migrate:26,keySchools:24,gaokao:76},    jobs:{q1:58,q2:72,q3:55,q4:60,sectors:['物流/供应链','食品制造','汽车','电子','房地产']},    radar:[58,82,55,60,75,68],  },  '东莞': { tier:0, color:'#ffa657',    rent:[      {area:'南城/东城',min:1800,max:3500,commute:'20-40分',cost:100},      {area:'莞城/万江',min:1400,max:2600,commute:'25-45分',cost:90},      {area:'虎门/长安',min:1200,max:2200,commute:'35-65分',cost:95},      {area:'塘厦/凤岗',min:900,max:1800,commute:'50-80分',cost:85},    ],    commute:[      {from:'长安→南山',time:60,cost:12,type:'公交'},      {from:'虎门→市区',time:45,cost:8,type:'地铁/公交'},      {from:'大朗→市区',time:50,cost:7,type:'地铁'},      {from:'塘厦→龙华',time:55,cost:10,type:'城际'},    ],    cost:{meal:16,coffee:22,gym:180,rent1r:1800,monthly:3200},    pop:{single:52,retain:58,migrate:62,keySchools:12,gaokao:70},    jobs:{q1:65,q2:75,q3:68,q4:60,sectors:['电子制造','纺织服装','家具制造','新能源','电商']},    radar:[68,75,50,65,60,80],  },  '青岛': { tier:0, color:'#a5d6ff',    rent:[      {area:'市南/市北',min:2200,max:4500,commute:'15-35分',cost:110},      {area:'崂山/李沧',min:1800,max:3500,commute:'25-50分',cost:100},      {area:'城阳/黄岛',min:1400,max:2600,commute:'40-70分',cost:95},      {area:'即墨/胶州',min:900,max:1800,commute:'60-90分',cost:85},    ],    commute:[      {from:'黄岛→市南',time:60,cost:8,type:'隧道/地铁'},      {from:'城阳→CBD',time:45,cost:6,type:'地铁'},      {from:'即墨→市区',time:55,cost:7,type:'地铁'},      {from:'胶州→崂山',time:70,cost:8,type:'地铁'},    ],    cost:{meal:18,coffee:28,gym:220,rent1r:2200,monthly:4000},    pop:{single:48,retain:72,migrate:35,keySchools:22,gaokao:70},    jobs:{q1:62,q2:78,q3:65,q4:58,sectors:['家电/制造','海洋经济','金融','旅游','医药']},    radar:[65,88,62,65,85,72],  },  '昆明': { tier:0, color:'#ff9ecd',    rent:[      {area:'五华/西山',min:1500,max:3000,commute:'15-35分',cost:85},      {area:'官渡/盘龙',min:1300,max:2500,commute:'20-45分',cost:80},      {area:'呈贡/晋宁',min:900,max:1800,commute:'35-65分',cost:75},      {area:'安宁/嵩明',min:600,max:1200,commute:'60-90分',cost:70},    ],    commute:[      {from:'呈贡→市中心',time:50,cost:6,type:'地铁'},      {from:'安宁→五华',time:60,cost:8,type:'地铁/公交'},      {from:'官渡→西山',time:35,cost:4,type:'地铁'},      {from:'晋宁→盘龙',time:55,cost:6,type:'地铁'},    ],    cost:{meal:13,coffee:22,gym:160,rent1r:1500,monthly:2800},    pop:{single:46,retain:68,migrate:22,keySchools:18,gaokao:78},    jobs:{q1:52,q2:65,q3:55,q4:58,sectors:['旅游/服务业','有色金属','烟草','花卉','中药']},    radar:[55,88,58,55,88,75],  },  '宁波': { tier:0, color:'#79c0ff',    rent:[      {area:'鄞州/海曙',min:2200,max:4500,commute:'15-35分',cost:110},      {area:'江北/镇海',min:1600,max:3000,commute:'25-50分',cost:100},      {area:'北仑/奉化',min:1200,max:2200,commute:'40-70分',cost:95},      {area:'余姚/慈溪',min:900,max:1800,commute:'55-85分',cost:90},    ],    commute:[      {from:'北仑→鄞州',time:45,cost:6,type:'地铁/公交'},      {from:'慈溪→市区',time:60,cost:8,type:'城际'},      {from:'奉化→海曙',time:50,cost:6,type:'地铁'},      {from:'镇海→CBD',time:35,cost:5,type:'地铁'},    ],    cost:{meal:20,coffee:28,gym:240,rent1r:2400,monthly:4200},    pop:{single:47,retain:72,migrate:38,keySchools:20,gaokao:68},    jobs:{q1:68,q2:80,q3:70,q4:62,sectors:['港口/航运','石化','纺织','家电','汽车零部件']},    radar:[70,82,62,72,72,78],  },  '合肥': { tier:0, color:'#d2a8ff',    rent:[      {area:'蜀山/庐阳',min:1700,max:3500,commute:'15-35分',cost:90},      {area:'政务/包河',min:1800,max:3800,commute:'20-40分',cost:95},      {area:'瑶海/新站',min:1300,max:2500,commute:'25-50分',cost:85},      {area:'肥西/肥东',min:900,max:1800,commute:'45-75分',cost:80},    ],    commute:[      {from:'肥西→蜀山',time:45,cost:5,type:'地铁'},      {from:'新站→政务区',time:40,cost:5,type:'地铁'},      {from:'肥东→庐阳',time:50,cost:5,type:'地铁'},      {from:'滨湖→市中心',time:35,cost:5,type:'地铁'},    ],    cost:{meal:14,coffee:24,gym:180,rent1r:2000,monthly:3400},    pop:{single:50,retain:65,migrate:28,keySchools:22,gaokao:74},    jobs:{q1:65,q2:78,q3:60,q4:62,sectors:['家电/制造','新型显示','新能源汽车','集成电路','量子科技']},    radar:[68,82,60,68,75,72],  },  '沈阳': { tier:0, color:'#c9a1ff',    rent:[      {area:'和平/沈河',min:1600,max:3200,commute:'15-35分',cost:95},      {area:'皇姑/大东',min:1300,max:2500,commute:'20-45分',cost:85},      {area:'铁西/于洪',min:1100,max:2000,commute:'30-55分',cost:80},      {area:'沈北/浑南',min:900,max:1800,commute:'40-70分',cost:80},    ],    commute:[      {from:'沈北→和平',time:50,cost:5,type:'地铁'},      {from:'浑南→市中心',time:40,cost:5,type:'地铁'},      {from:'铁西→沈河',time:35,cost:4,type:'地铁'},      {from:'于洪→皇姑',time:40,cost:4,type:'地铁'},    ],    cost:{meal:13,coffee:22,gym:160,rent1r:1600,monthly:2900},    pop:{single:46,retain:62,migrate:20,keySchools:26,gaokao:74},    jobs:{q1:52,q2:68,q3:55,q4:58,sectors:['装备制造','汽车','医药','房地产','零售']},    radar:[55,80,58,58,72,68],  },  '无锡': { tier:0, color:'#7ee787',    rent:[      {area:'梁溪/锡山',min:1800,max:3600,commute:'15-35分',cost:100},      {area:'滨湖/新吴',min:1600,max:3000,commute:'25-50分',cost:95},      {area:'惠山/江阴',min:1200,max:2200,commute:'40-70分',cost:90},      {area:'宜兴',min:800,max:1600,commute:'65-95分',cost:85},    ],    commute:[      {from:'太湖新城→梁溪',time:35,cost:5,type:'地铁'},      {from:'江阴→市区',time:50,cost:8,type:'城际'},      {from:'惠山→市中心',time:40,cost:5,type:'地铁'},      {from:'新吴→太湖新城',time:30,cost:4,type:'地铁'},    ],    cost:{meal:18,coffee:26,gym:200,rent1r:2000,monthly:3600},    pop:{single:45,retain:72,migrate:42,keySchools:18,gaokao:68},    jobs:{q1:68,q2:80,q3:68,q4:62,sectors:['物联网/传感','集成电路','生物医药','高端制造','新能源']},    radar:[72,82,62,72,68,80],  },  // ── 二线城市 ──  '西安': { tier:2, color:'#ffa657',    rent:[      {area:'雁塔/碑林',min:1700,max:3500,commute:'15-35分',cost:90},      {area:'新城/莲湖',min:1400,max:2800,commute:'20-45分',cost:85},      {area:'长安/未央',min:1200,max:2400,commute:'30-55分',cost:80},      {area:'临潼/高陵',min:800,max:1600,commute:'55-85分',cost:75},    ],    commute:[      {from:'长安→小寨',time:40,cost:5,type:'地铁'},      {from:'临潼→市中心',time:55,cost:6,type:'地铁'},      {from:'未央→雁塔',time:35,cost:4,type:'地铁'},      {from:'高陵→市区',time:60,cost:6,type:'地铁'},    ],    cost:{meal:13,coffee:22,gym:160,rent1r:1800,monthly:3000},    pop:{single:48,retain:62,migrate:22,keySchools:38,gaokao:72},    jobs:{q1:58,q2:72,q3:55,q4:60,sectors:['航空航天','软件/IT','教育','军工','新能源']},    radar:[60,82,58,62,75,68],  },  '长沙': { tier:2, color:'#ff7b72',    rent:[      {area:'岳麓/天心',min:1700,max:3500,commute:'15-35分',cost:95},      {area:'雨花/芙蓉',min:1500,max:3000,commute:'20-45分',cost:90},      {area:'开福/望城',min:1200,max:2400,commute:'35-65分',cost:85},      {area:'长沙县/宁乡',min:900,max:1800,commute:'55-85分',cost:80},    ],    commute:[      {from:'星沙→五一广场',time:45,cost:5,type:'地铁'},      {from:'望城→岳麓',time:50,cost:5,type:'地铁'},      {from:'宁乡→市区',time:70,cost:8,type:'城际'},      {from:'雨花→天心',time:30,cost:4,type:'地铁'},    ],    cost:{meal:14,coffee:24,gym:180,rent1r:1800,monthly:3200},    pop:{single:50,retain:65,migrate:28,keySchools:28,gaokao:72},    jobs:{q1:60,q2:75,q3:58,q4:60,sectors:['工程机械','媒体/娱乐','新材料','食品','电子']},    radar:[62,85,58,62,82,70],  },  '福州': { tier:2, color:'#ff9ecd',    rent:[      {area:'鼓楼/台江',min:2000,max:4200,commute:'15-35分',cost:100},      {area:'仓山/晋安',min:1600,max:3200,commute:'25-50分',cost:95},      {area:'马尾/长乐',min:1200,max:2400,commute:'40-70分',cost:90},      {area:'福清/闽侯',min:900,max:1800,commute:'55-85分',cost:85},    ],    commute:[      {from:'马尾→鼓楼',time:45,cost:5,type:'地铁'},      {from:'闽侯→市区',time:50,cost:6,type:'地铁'},      {from:'长乐→台江',time:55,cost:7,type:'城际'},      {from:'福清→市区',time:60,cost:10,type:'城际'},    ],    cost:{meal:18,coffee:26,gym:200,rent1r:2200,monthly:3800},    pop:{single:46,retain:68,migrate:30,keySchools:22,gaokao:70},    jobs:{q1:62,q2:75,q3:62,q4:60,sectors:['轻工制造','纺织','软件','金融服务','茶产业']},    radar:[65,82,62,65,72,72],  },  '厦门': { tier:2, color:'#ffd700',    rent:[      {area:'思明/湖里',min:2500,max:5500,commute:'15-35分',cost:120},      {area:'集美/海沧',min:1800,max:3600,commute:'30-55分',cost:100},      {area:'同安/翔安',min:1200,max:2400,commute:'50-80分',cost:90},      {area:'漳州港/角美',min:900,max:1800,commute:'60-90分',cost:85},    ],    commute:[      {from:'集美→思明',time:45,cost:6,type:'地铁/BRT'},      {from:'海沧→岛内',time:40,cost:5,type:'地铁'},      {from:'翔安→湖里',time:55,cost:7,type:'地铁'},      {from:'同安→市区',time:65,cost:8,type:'BRT'},    ],    cost:{meal:20,coffee:30,gym:250,rent1r:2800,monthly:4500},    pop:{single:50,retain:70,migrate:42,keySchools:18,gaokao:72},    jobs:{q1:65,q2:78,q3:65,q4:62,sectors:['软件/信息服务','光电','金融服务','旅游会展','航空维修']},    radar:[68,88,62,68,85,72],  },  '济南': { tier:2, color:'#ffa657',    rent:[      {area:'历下/市中',min:1800,max:3800,commute:'15-35分',cost:95},      {area:'槐荫/天桥',min:1400,max:2800,commute:'20-45分',cost:85},      {area:'历城/长清',min:1100,max:2200,commute:'35-65分',cost:80},      {area:'章丘/济阳',min:800,max:1600,commute:'55-85分',cost:75},    ],    commute:[      {from:'长清→市中心',time:55,cost:6,type:'地铁'},      {from:'章丘→历下',time:60,cost:7,type:'城际'},      {from:'历城→市中',time:35,cost:4,type:'地铁'},      {from:'济阳→市区',time:70,cost:8,type:'城际'},    ],    cost:{meal:13,coffee:22,gym:160,rent1r:1800,monthly:3100},    pop:{single:46,retain:62,migrate:20,keySchools:28,gaokao:74},    jobs:{q1:55,q2:70,q3:55,q4:58,sectors:['装备制造','软件','医药','金融','交通装备']},    radar:[58,82,58,60,72,68],  },  '佛山': { tier:2, color:'#ffa657',    rent:[      {area:'禅城/南海',min:1800,max:3800,commute:'20-40分',cost:100},      {area:'顺德/高明',min:1400,max:2800,commute:'35-65分',cost:90},      {area:'三水',min:900,max:1800,commute:'50-80分',cost:85},      {area:'西樵/九江',min:700,max:1400,commute:'60-90分',cost:80},    ],    commute:[      {from:'顺德→禅城',time:40,cost:6,type:'地铁'},      {from:'南海→市中心',time:35,cost:5,type:'地铁'},      {from:'三水→禅城',time:55,cost:7,type:'城际'},      {from:'高明→南海',time:60,cost:8,type:'城际'},    ],    cost:{meal:16,coffee:24,gym:200,rent1r:2000,monthly:3500},    pop:{single:48,retain:65,migrate:52,keySchools:14,gaokao:70},    jobs:{q1:65,q2:78,q3:65,q4:60,sectors:['家电制造','陶瓷','金属加工','食品饮料','机器人']},    radar:[68,80,55,65,65,78],  },  '大连': { tier:2, color:'#79c0ff',    rent:[      {area:'中山/西岗',min:1800,max:3800,commute:'15-35分',cost:100},      {area:'沙河口/甘井子',min:1400,max:2800,commute:'25-50分',cost:90},      {area:'高新园区',min:1600,max:3200,commute:'20-40分',cost:95},      {area:'金州/旅顺',min:900,max:1800,commute:'50-80分',cost:85},    ],    commute:[      {from:'金州→中山',time:55,cost:6,type:'地铁'},      {from:'旅顺→沙河口',time:60,cost:7,type:'地铁/公交'},      {from:'高新→市区',time:30,cost:5,type:'地铁'},      {from:'普兰店→主城区',time:75,cost:8,type:'城际'},    ],    cost:{meal:16,coffee:26,gym:200,rent1r:2000,monthly:3600},    pop:{single:48,retain:62,migrate:25,keySchools:22,gaokao:72},    jobs:{q1:58,q2:72,q3:62,q4:58,sectors:['软件/信息服务','石油化工','船舶制造','海洋经济','金融']},    radar:[62,85,62,62,78,70],  },  '哈尔滨': { tier:2, color:'#7ee787',    rent:[      {area:'南岗/道里',min:1300,max:2800,commute:'15-35分',cost:85},      {area:'道外/香坊',min:1000,max:2000,commute:'20-45分',cost:80},      {area:'松北/平房',min:900,max:1800,commute:'35-65分',cost:75},      {area:'阿城/双城',min:600,max:1200,commute:'55-85分',cost:70},    ],    commute:[      {from:'松北→南岗',time:45,cost:5,type:'地铁'},      {from:'平房→市中心',time:55,cost:5,type:'地铁'},      {from:'阿城→道里',time:65,cost:6,type:'城际'},      {from:'双城→香坊',time:60,cost:6,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1400,monthly:2500},    pop:{single:44,retain:55,migrate:15,keySchools:24,gaokao:76},    jobs:{q1:48,q2:62,q3:50,q4:55,sectors:['装备制造','农产品加工','旅游','制药','冰雪经济']},    radar:[50,78,55,52,72,68],  },  '长春': { tier:2, color:'#ffa657',    rent:[      {area:'朝阳/南关',min:1300,max:2800,commute:'15-35分',cost:85},      {area:'绿园/宽城',min:1000,max:2000,commute:'25-50分',cost:80},      {area:'二道/经开',min:1100,max:2200,commute:'30-55分',cost:80},      {area:'九台/双阳',min:600,max:1200,commute:'60-90分',cost:70},    ],    commute:[      {from:'北湖→南关',time:50,cost:5,type:'地铁'},      {from:'九台→朝阳区',time:70,cost:7,type:'城际'},      {from:'经开→市中心',time:35,cost:4,type:'地铁'},      {from:'双阳→绿园',time:65,cost:6,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1300,monthly:2400},    pop:{single:44,retain:55,migrate:16,keySchools:22,gaokao:74},    jobs:{q1:50,q2:65,q3:52,q4:55,sectors:['汽车制造','轨道客车','农产品加工','光电','医药']},    radar:[52,78,58,55,68,68],  },  '石家庄': { tier:2, color:'#ffd700',    rent:[      {area:'长安/桥西',min:1300,max:2800,commute:'15-35分',cost:85},      {area:'新华/裕华',min:1200,max:2500,commute:'20-45分',cost:80},      {area:'鹿泉/藁城',min:900,max:1800,commute:'40-70分',cost:75},      {area:'正定/栾城',min:700,max:1400,commute:'50-80分',cost:70},    ],    commute:[      {from:'鹿泉→市中心',time:50,cost:5,type:'地铁'},      {from:'正定→长安',time:45,cost:5,type:'地铁'},      {from:'藁城→裕华',time:55,cost:6,type:'城际'},      {from:'栾城→新华',time:50,cost:5,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1400,monthly:2600},    pop:{single:46,retain:58,migrate:18,keySchools:18,gaokao:76},    jobs:{q1:50,q2:65,q3:52,q4:55,sectors:['医药','钢铁','石化','食品','物流']},    radar:[52,78,58,55,68,68],  },  '南昌': { tier:2, color:'#c9a1ff',    rent:[      {area:'东湖/西湖',min:1400,max:3000,commute:'15-35分',cost:85},      {area:'红谷滩/青山湖',min:1300,max:2800,commute:'20-45分',cost:80},      {area:'青云谱/新建',min:1000,max:2000,commute:'35-65分',cost:75},      {area:'南昌县/湾里',min:700,max:1400,commute:'50-80分',cost:70},    ],    commute:[      {from:'红谷滩→东湖',time:30,cost:4,type:'地铁'},      {from:'南昌县→市中心',time:45,cost:5,type:'地铁'},      {from:'新建→西湖',time:40,cost:4,type:'地铁'},      {from:'湾里→青山湖',time:55,cost:5,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1500,monthly:2700},    pop:{single:46,retain:60,migrate:20,keySchools:20,gaokao:74},    jobs:{q1:52,q2:68,q3:52,q4:55,sectors:['航空制造','电子信息','医药','食品','VR/软件']},    radar:[55,80,58,58,72,68],  },  '南宁': { tier:2, color:'#7ee787',    rent:[      {area:'青秀/兴宁',min:1500,max:3200,commute:'15-35分',cost:85},      {area:'西乡塘/江南',min:1200,max:2500,commute:'25-50分',cost:80},      {area:'良庆/邕宁',min:1000,max:2000,commute:'40-70分',cost:75},      {area:'武鸣/隆安',min:700,max:1400,commute:'60-90分',cost:70},    ],    commute:[      {from:'良庆→青秀',time:40,cost:5,type:'地铁'},      {from:'武鸣→市区',time:65,cost:8,type:'城际'},      {from:'江南→兴宁',time:30,cost:4,type:'地铁'},      {from:'邕宁→西乡塘',time:50,cost:6,type:'地铁'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1500,monthly:2700},    pop:{single:44,retain:62,migrate:22,keySchools:16,gaokao:74},    jobs:{q1:50,q2:65,q3:52,q4:55,sectors:['有色金属','电子','医药','物流','东盟贸易']},    radar:[52,82,58,55,72,68],  },  '贵阳': { tier:2, color:'#79c0ff',    rent:[      {area:'南明/云岩',min:1400,max:3000,commute:'15-35分',cost:85},      {area:'观山湖/花溪',min:1300,max:2800,commute:'25-50分',cost:80},      {area:'白云/乌当',min:1000,max:2000,commute:'40-70分',cost:75},      {area:'清镇/修文',min:700,max:1400,commute:'55-85分',cost:70},    ],    commute:[      {from:'花溪→南明',time:50,cost:5,type:'地铁'},      {from:'白云→云岩',time:45,cost:5,type:'地铁'},      {from:'清镇→观山湖',time:40,cost:5,type:'城际'},      {from:'乌当→市区',time:50,cost:5,type:'地铁'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1500,monthly:2700},    pop:{single:46,retain:62,migrate:20,keySchools:16,gaokao:74},    jobs:{q1:52,q2:68,q3:52,q4:55,sectors:['大数据','旅游','医药','磷化工','新能源']},    radar:[55,85,58,58,78,72],  },  '太原': { tier:2, color:'#d2a8ff',    rent:[      {area:'迎泽/杏花岭',min:1400,max:3000,commute:'15-35分',cost:85},      {area:'小店/万柏林',min:1200,max:2500,commute:'25-50分',cost:80},      {area:'晋源/尖草坪',min:1000,max:2000,commute:'35-65分',cost:75},      {area:'清徐/阳曲',min:700,max:1400,commute:'60-90分',cost:70},    ],    commute:[      {from:'晋源→迎泽',time:40,cost:5,type:'地铁'},      {from:'小店→杏花岭',time:35,cost:4,type:'地铁'},      {from:'清徐→市区',time:60,cost:6,type:'城际'},      {from:'阳曲→万柏林',time:55,cost:5,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1500,monthly:2700},    pop:{single:45,retain:58,migrate:16,keySchools:18,gaokao:74},    jobs:{q1:50,q2:65,q3:52,q4:55,sectors:['煤炭/能源','钢铁','装备制造','新材料','旅游']},    radar:[52,78,58,55,68,68],  },  '温州': { tier:2, color:'#ffd700',    rent:[      {area:'鹿城/瓯海',min:2000,max:4200,commute:'15-35分',cost:110},      {area:'龙湾/洞头',min:1600,max:3200,commute:'30-55分',cost:100},      {area:'瑞安/乐清',min:1200,max:2500,commute:'50-80分',cost:95},      {area:'永嘉/苍南',min:900,max:1800,commute:'60-90分',cost:90},    ],    commute:[      {from:'瑞安→鹿城',time:55,cost:8,type:'S1/城际'},      {from:'乐清→市区',time:50,cost:7,type:'城际'},      {from:'龙湾→瓯海',time:40,cost:6,type:'S1'},      {from:'洞头→鹿城',time:60,cost:10,type:'城际'},    ],    cost:{meal:18,coffee:28,gym:220,rent1r:2400,monthly:4000},    pop:{single:48,retain:68,migrate:40,keySchools:14,gaokao:72},    jobs:{q1:62,q2:75,q3:62,q4:60,sectors:['鞋革','电器','泵阀','服装','激光']},    radar:[65,80,58,65,65,75],  },  '泉州': { tier:2, color:'#ffa657',    rent:[      {area:'鲤城/丰泽',min:1600,max:3200,commute:'15-35分',cost:95},      {area:'晋江/石狮',min:1400,max:2800,commute:'30-60分',cost:90},      {area:'洛江/泉港',min:1100,max:2200,commute:'40-70分',cost:85},      {area:'惠安/南安',min:800,max:1600,commute:'55-85分',cost:80},    ],    commute:[      {from:'晋江→鲤城',time:40,cost:5,type:'城际/公交'},      {from:'石狮→丰泽',time:45,cost:6,type:'城际'},      {from:'惠安→市区',time:50,cost:6,type:'城际'},      {from:'南安→鲤城',time:55,cost:7,type:'城际'},    ],    cost:{meal:16,coffee:24,gym:180,rent1r:1800,monthly:3200},    pop:{single:46,retain:65,migrate:42,keySchools:12,gaokao:72},    jobs:{q1:60,q2:72,q3:60,q4:58,sectors:['纺织服装','鞋业','石材','食品','石化']},    radar:[62,80,55,62,65,75],  },  '惠州': { tier:2, color:'#79c0ff',    rent:[      {area:'惠城/惠阳',min:1400,max:2800,commute:'20-40分',cost:90},      {area:'仲恺/博罗',min:1100,max:2200,commute:'35-65分',cost:85},      {area:'惠东/大亚湾',min:900,max:1800,commute:'50-80分',cost:80},      {area:'龙门',min:600,max:1200,commute:'70-100分',cost:75},    ],    commute:[      {from:'大亚湾→惠城',time:55,cost:7,type:'城际'},      {from:'仲恺→江北',time:40,cost:5,type:'城际'},      {from:'惠东→市区',time:60,cost:8,type:'城际'},      {from:'博罗→惠城',time:45,cost:5,type:'城际'},    ],    cost:{meal:14,coffee:22,gym:180,rent1r:1600,monthly:2900},    pop:{single:48,retain:62,migrate:45,keySchools:10,gaokao:72},    jobs:{q1:60,q2:72,q3:62,q4:58,sectors:['电子信息','石化','新能源','旅游','房地产']},    radar:[62,80,55,62,70,75],  },  '珠海': { tier:2, color:'#7ee787',    rent:[      {area:'香洲/拱北',min:2500,max:5500,commute:'15-35分',cost:120},      {area:'横琴/保税区',min:3000,max:6500,commute:'20-40分',cost:130},      {area:'金湾/斗门',min:1400,max:2800,commute:'45-75分',cost:100},      {area:'高栏港',min:1000,max:2000,commute:'60-90分',cost:90},    ],    commute:[      {from:'横琴→香洲',time:35,cost:6,type:'城际/公交'},      {from:'金湾→拱北',time:55,cost:8,type:'城际'},      {from:'斗门→市区',time:60,cost:7,type:'城际'},      {from:'高栏→金湾',time:45,cost:6,type:'城际'},    ],    cost:{meal:20,coffee:30,gym:250,rent1r:2800,monthly:4500},    pop:{single:50,retain:70,migrate:48,keySchools:12,gaokao:72},    jobs:{q1:65,q2:78,q3:65,q4:62,sectors:['航空航天','生物医药','电子','新能源','旅游']},    radar:[68,88,62,68,85,72],  },  '常州': { tier:2, color:'#c9a1ff',    rent:[      {area:'天宁/钟楼',min:1700,max:3500,commute:'15-35分',cost:100},      {area:'新北/武进',min:1500,max:3000,commute:'25-50分',cost:95},      {area:'经开/金坛',min:1100,max:2200,commute:'40-70分',cost:90},      {area:'溧阳',min:800,max:1600,commute:'65-95分',cost:85},    ],    commute:[      {from:'武进→天宁',time:35,cost:5,type:'地铁'},      {from:'溧阳→市区',time:70,cost:10,type:'城际'},      {from:'金坛→钟楼',time:55,cost:8,type:'城际'},      {from:'新北→市中心',time:30,cost:4,type:'地铁'},    ],    cost:{meal:18,coffee:26,gym:200,rent1r:2000,monthly:3600},    pop:{single:46,retain:72,migrate:40,keySchools:14,gaokao:68},    jobs:{q1:65,q2:78,q3:65,q4:60,sectors:['高端装备','新材料','新能源','医药','石墨烯']},    radar:[68,82,60,68,68,78],  },  '徐州': { tier:2, color:'#ffa657',    rent:[      {area:'云龙/泉山',min:1400,max:3000,commute:'15-35分',cost:85},      {area:'鼓楼/铜山',min:1200,max:2400,commute:'25-50分',cost:80},      {area:'贾汪/经开',min:900,max:1800,commute:'40-70分',cost:75},      {area:'邳州/新沂',min:600,max:1200,commute:'70-100分',cost:70},    ],    commute:[      {from:'铜山→云龙',time:35,cost:4,type:'地铁'},      {from:'贾汪→泉山',time:50,cost:5,type:'城际'},      {from:'邳州→市区',time:75,cost:8,type:'城际'},      {from:'经开→鼓楼',time:40,cost:5,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1500,monthly:2700},    pop:{single:46,retain:60,migrate:18,keySchools:14,gaokao:74},    jobs:{q1:52,q2:65,q3:52,q4:55,sectors:['装备制造','煤炭/能源','食品','医药','物流']},    radar:[55,78,55,55,68,68],  },  '烟台': { tier:2, color:'#7ee787',    rent:[      {area:'芝罘/莱山',min:1400,max:3000,commute:'15-35分',cost:90},      {area:'福山/牟平',min:1100,max:2200,commute:'30-60分',cost:85},      {area:'开发/蓬莱',min:1200,max:2400,commute:'35-65分',cost:85},      {area:'龙口/莱阳',min:700,max:1400,commute:'70-100分',cost:75},    ],    commute:[      {from:'开发→芝罘',time:40,cost:5,type:'公交'},      {from:'蓬莱→莱山',time:60,cost:8,type:'城际'},      {from:'牟平→市区',time:45,cost:5,type:'公交'},      {from:'福山→市中心',time:35,cost:4,type:'公交'},    ],    cost:{meal:14,coffee:22,gym:160,rent1r:1600,monthly:2900},    pop:{single:45,retain:62,migrate:22,keySchools:14,gaokao:72},    jobs:{q1:55,q2:68,q3:58,q4:55,sectors:['食品加工','电子信息','黄金','化工','葡萄酒']},    radar:[58,82,58,58,75,70],  },  '潍坊': { tier:2, color:'#79c0ff',    rent:[      {area:'奎文/潍城',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'高新/寒亭',min:1100,max:2200,commute:'25-50分',cost:75},      {area:'坊子/滨海',min:800,max:1600,commute:'40-70分',cost:70},      {area:'寿光/诸城',min:600,max:1200,commute:'70-100分',cost:65},    ],    commute:[      {from:'高新→奎文',time:25,cost:4,type:'公交'},      {from:'寿光→市区',time:75,cost:8,type:'城际'},      {from:'诸城→潍城',time:80,cost:10,type:'城际'},      {from:'坊子→市中心',time:40,cost:5,type:'公交'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1300,monthly:2400},    pop:{single:44,retain:58,migrate:20,keySchools:12,gaokao:74},    jobs:{q1:50,q2:65,q3:52,q4:55,sectors:['农业','内燃机','石化','食品','医药']},    radar:[52,78,55,52,65,68],  },  '唐山': { tier:2, color:'#d2a8ff',    rent:[      {area:'路南/路北',min:1300,max:2800,commute:'15-35分',cost:85},      {area:'丰南/开平',min:1000,max:2000,commute:'30-60分',cost:80},      {area:'曹妃甸/丰润',min:900,max:1800,commute:'45-75分',cost:75},      {area:'遵化/迁安',min:600,max:1200,commute:'70-100分',cost:70},    ],    commute:[      {from:'曹妃甸→路北',time:65,cost:8,type:'城际'},      {from:'丰润→市区',time:45,cost:5,type:'城际'},      {from:'迁安→路南',time:75,cost:10,type:'城际'},      {from:'开平→路北',time:35,cost:4,type:'公交'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1400,monthly:2500},    pop:{single:44,retain:58,migrate:18,keySchools:10,gaokao:74},    jobs:{q1:52,q2:65,q3:55,q4:55,sectors:['钢铁','陶瓷','化工','装备制造','港口']},    radar:[55,78,58,55,62,68],  },  '中山': { tier:2, color:'#ffd700',    rent:[      {area:'石岐/东区',min:1600,max:3200,commute:'15-35分',cost:95},      {area:'火炬/翠亨',min:1500,max:3000,commute:'25-50分',cost:90},      {area:'小榄/古镇',min:1100,max:2200,commute:'40-70分',cost:85},      {area:'三乡/坦洲',min:900,max:1800,commute:'50-80分',cost:80},    ],    commute:[      {from:'翠亨→石岐',time:35,cost:5,type:'公交'},      {from:'古镇→东区',time:50,cost:6,type:'城际'},      {from:'坦洲→市区',time:45,cost:6,type:'城际'},      {from:'小榄→石岐',time:40,cost:5,type:'城际'},    ],    cost:{meal:16,coffee:24,gym:180,rent1r:1800,monthly:3200},    pop:{single:48,retain:62,migrate:50,keySchools:10,gaokao:72},    jobs:{q1:62,q2:72,q3:62,q4:58,sectors:['灯饰','家电','五金','医药','游戏']},    radar:[65,80,55,62,65,75],  },  '兰州': { tier:2, color:'#c9a1ff',    rent:[      {area:'城关/七里河',min:1200,max:2600,commute:'15-35分',cost:80},      {area:'安宁/西固',min:1000,max:2000,commute:'25-50分',cost:75},      {area:'红古/榆中',min:700,max:1400,commute:'55-85分',cost:70},      {area:'永登/皋兰',min:500,max:1000,commute:'80-110分',cost:65},    ],    commute:[      {from:'安宁→城关',time:40,cost:5,type:'地铁'},      {from:'榆中→七里河',time:65,cost:7,type:'城际'},      {from:'西固→市区',time:45,cost:5,type:'地铁'},      {from:'红古→城关',time:75,cost:8,type:'城际'},    ],    cost:{meal:10,coffee:18,gym:130,rent1r:1300,monthly:2300},    pop:{single:44,retain:55,migrate:14,keySchools:16,gaokao:76},    jobs:{q1:48,q2:62,q3:50,q4:52,sectors:['石化','有色金属','装备制造','中医药','物流']},    radar:[50,78,55,50,68,68],  },  '呼和浩特': { tier:2, color:'#7ee787',    rent:[      {area:'新城/赛罕',min:1300,max:2800,commute:'15-35分',cost:85},      {area:'回民/玉泉',min:1100,max:2200,commute:'25-50分',cost:80},      {area:'金山/武川',min:800,max:1600,commute:'55-85分',cost:70},      {area:'和林/清水河',min:500,max:1000,commute:'80-110分',cost:65},    ],    commute:[      {from:'金山→新城',time:55,cost:6,type:'城际'},      {from:'武川→赛罕',time:75,cost:8,type:'城际'},      {from:'回民→市区',time:35,cost:4,type:'公交'},      {from:'和林→玉泉',time:60,cost:7,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1400,monthly:2500},    pop:{single:45,retain:58,migrate:18,keySchools:14,gaokao:74},    jobs:{q1:50,q2:65,q3:52,q4:52,sectors:['乳业','能源','稀土','生物医药','旅游']},    radar:[52,80,58,52,70,68],  },  '乌鲁木齐': { tier:2, color:'#79c0ff',    rent:[      {area:'天山/沙依巴克',min:1300,max:2800,commute:'15-35分',cost:85},      {area:'新市/水磨沟',min:1100,max:2200,commute:'25-50分',cost:80},      {area:'经开/米东',min:1100,max:2200,commute:'30-60分',cost:80},      {area:'昌吉/五家渠',min:500,max:1000,commute:'80-110分',cost:65},    ],    commute:[      {from:'经开→天山区',time:45,cost:5,type:'地铁'},      {from:'米东→沙区',time:50,cost:5,type:'公交'},      {from:'昌吉→市区',time:60,cost:8,type:'城际'},      {from:'达坂城→新市区',time:80,cost:10,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1400,monthly:2500},    pop:{single:45,retain:58,migrate:15,keySchools:12,gaokao:74},    jobs:{q1:50,q2:65,q3:52,q4:52,sectors:['能源','化工','商贸','旅游','装备制造']},    radar:[52,78,58,52,70,68],  },  '柳州': { tier:2, color:'#ffa657',    rent:[      {area:'城中/鱼峰',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'柳北/柳南',min:1000,max:2000,commute:'25-50分',cost:75},      {area:'柳东/阳和',min:900,max:1800,commute:'40-70分',cost:70},      {area:'鹿寨/柳江',min:600,max:1200,commute:'60-90分',cost:65},    ],    commute:[      {from:'柳东→城中',time:40,cost:5,type:'公交'},      {from:'鹿寨→市区',time:55,cost:6,type:'城际'},      {from:'柳北→鱼峰',time:30,cost:4,type:'公交'},      {from:'阳和→柳南',time:45,cost:5,type:'公交'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1300,monthly:2400},    pop:{single:44,retain:60,migrate:18,keySchools:10,gaokao:74},    jobs:{q1:52,q2:65,q3:52,q4:55,sectors:['汽车','钢铁','机械','螺蛳粉','新能源']},    radar:[55,78,55,55,65,68],  },  '保定': { tier:2, color:'#c9a1ff',    rent:[      {area:'竞秀/莲池',min:1100,max:2200,commute:'15-35分',cost:75},      {area:'徐水/满城',min:900,max:1800,commute:'35-65分',cost:70},      {area:'清苑/安国',min:700,max:1400,commute:'55-85分',cost:65},      {area:'涿州/高碑店',min:600,max:1200,commute:'70-100分',cost:60},    ],    commute:[      {from:'徐水→竞秀',time:40,cost:5,type:'城际'},      {from:'涿州→莲池',time:80,cost:10,type:'城际'},      {from:'满城→市区',time:45,cost:5,type:'城际'},      {from:'安国→竞秀',time:70,cost:8,type:'城际'},    ],    cost:{meal:10,coffee:18,gym:130,rent1r:1200,monthly:2200},    pop:{single:44,retain:55,migrate:18,keySchools:12,gaokao:76},    jobs:{q1:48,q2:62,q3:50,q4:52,sectors:['汽车','新能源','食品','建材','中医药']},    radar:[50,75,55,50,62,68],  },  '绍兴': { tier:2, color:'#7ee787',    rent:[      {area:'越城/柯桥',min:1800,max:3800,commute:'15-35分',cost:105},      {area:'上虞/诸暨',min:1300,max:2600,commute:'40-70分',cost:95},      {area:'嵊州/新昌',min:900,max:1800,commute:'65-95分',cost:85},      {area:'滨海新区',min:1200,max:2400,commute:'50-80分',cost:90},    ],    commute:[      {from:'柯桥→越城',time:30,cost:5,type:'地铁'},      {from:'诸暨→市区',time:65,cost:10,type:'城际'},      {from:'上虞→CBD',time:45,cost:6,type:'城际'},      {from:'新昌→越城',time:70,cost:10,type:'城际'},    ],    cost:{meal:18,coffee:28,gym:220,rent1r:2200,monthly:4000},    pop:{single:46,retain:72,migrate:38,keySchools:12,gaokao:68},    jobs:{q1:62,q2:75,q3:62,q4:60,sectors:['纺织','化工','生物医药','黄酒','高端制造']},    radar:[65,80,60,65,68,75],  },  '南通': { tier:2, color:'#79c0ff',    rent:[      {area:'崇川/港闸',min:1700,max:3500,commute:'15-35分',cost:100},      {area:'开发区/通州',min:1400,max:2800,commute:'30-60分',cost:90},      {area:'海门/启东',min:1100,max:2200,commute:'50-80分',cost:85},      {area:'如皋/海安',min:800,max:1600,commute:'70-100分',cost:80},    ],    commute:[      {from:'通州→崇川',time:40,cost:5,type:'地铁'},      {from:'海门→市区',time:55,cost:8,type:'城际'},      {from:'启东→港闸',time:65,cost:10,type:'城际'},      {from:'如皋→崇川',time:75,cost:10,type:'城际'},    ],    cost:{meal:18,coffee:26,gym:200,rent1r:2000,monthly:3600},    pop:{single:46,retain:70,migrate:40,keySchools:14,gaokao:68},    jobs:{q1:62,q2:75,q3:62,q4:60,sectors:['船舶海工','纺织','电子','医药','建筑']},    radar:[65,80,60,65,68,75],  },  '金华': { tier:2, color:'#ffd700',    rent:[      {area:'婺城/金东',min:1600,max:3200,commute:'15-35分',cost:100},      {area:'义乌/东阳',min:1800,max:3800,commute:'35-65分',cost:110},      {area:'永康/浦江',min:1100,max:2200,commute:'55-85分',cost:95},      {area:'兰溪/武义',min:800,max:1600,commute:'70-100分',cost:85},    ],    commute:[      {from:'义乌→婺城',time:50,cost:8,type:'城际'},      {from:'东阳→金东',time:55,cost:8,type:'城际'},      {from:'永康→金东',time:65,cost:10,type:'城际'},      {from:'浦江→婺城',time:60,cost:8,type:'城际'},    ],    cost:{meal:16,coffee:26,gym:200,rent1r:2000,monthly:3600},    pop:{single:48,retain:68,migrate:45,keySchools:12,gaokao:70},    jobs:{q1:60,q2:72,q3:60,q4:58,sectors:['小商品','五金','影视','新能源','电商']},    radar:[62,80,58,62,68,75],  },  '台州': { tier:2, color:'#ffa657',    rent:[      {area:'椒江/路桥',min:1600,max:3200,commute:'15-35分',cost:100},      {area:'黄岩/温岭',min:1300,max:2600,commute:'30-60分',cost:90},      {area:'临海/玉环',min:1000,max:2000,commute:'50-80分',cost:85},      {area:'三门/天台',min:700,max:1400,commute:'65-95分',cost:80},    ],    commute:[      {from:'温岭→椒江',time:50,cost:7,type:'城际'},      {from:'临海→市区',time:55,cost:8,type:'城际'},      {from:'黄岩→路桥',time:35,cost:5,type:'公交'},      {from:'玉环→椒江',time:65,cost:10,type:'城际'},    ],    cost:{meal:16,coffee:24,gym:180,rent1r:1800,monthly:3200},    pop:{single:47,retain:68,migrate:42,keySchools:10,gaokao:70},    jobs:{q1:60,q2:72,q3:60,q4:58,sectors:['医药','模具','泵业','汽车配件','渔业']},    radar:[62,78,55,62,65,75],  },  '嘉兴': { tier:2, color:'#c9a1ff',    rent:[      {area:'南湖/秀洲',min:1700,max:3500,commute:'15-35分',cost:100},      {area:'嘉善/平湖',min:1400,max:2800,commute:'35-65分',cost:90},      {area:'海宁/桐乡',min:1200,max:2400,commute:'45-75分',cost:85},      {area:'海盐',min:1000,max:2000,commute:'55-85分',cost:80},    ],    commute:[      {from:'嘉善→南湖',time:40,cost:7,type:'城际'},      {from:'桐乡→市区',time:50,cost:8,type:'城际'},      {from:'平湖→秀洲',time:50,cost:7,type:'城际'},      {from:'海宁→南湖',time:45,cost:7,type:'城际'},    ],    cost:{meal:18,coffee:26,gym:200,rent1r:2000,monthly:3800},    pop:{single:46,retain:72,migrate:45,keySchools:12,gaokao:68},    jobs:{q1:62,q2:75,q3:62,q4:60,sectors:['化纤','皮革','服装','新能源','智能制造']},    radar:[65,80,58,65,65,78],  },  '镇江': { tier:2, color:'#7ee787',    rent:[      {area:'京口/润州',min:1300,max:2600,commute:'15-35分',cost:85},      {area:'丹徒/新区',min:1100,max:2200,commute:'25-50分',cost:80},      {area:'句容/扬中',min:800,max:1600,commute:'50-80分',cost:75},      {area:'丹阳',min:900,max:1800,commute:'45-75分',cost:78},    ],    commute:[      {from:'句容→京口',time:50,cost:7,type:'城际'},      {from:'丹阳→润州',time:45,cost:6,type:'城际'},      {from:'扬中→市区',time:55,cost:8,type:'城际'},      {from:'丹徒→CBD',time:30,cost:4,type:'公交'},    ],    cost:{meal:14,coffee:22,gym:160,rent1r:1500,monthly:2800},    pop:{single:45,retain:65,migrate:28,keySchools:10,gaokao:70},    jobs:{q1:55,q2:68,q3:55,q4:55,sectors:['化工','造纸','装备制造','生命健康','旅游']},    radar:[58,78,58,58,68,70],  },  '扬州': { tier:2, color:'#d2a8ff',    rent:[      {area:'广陵/邗江',min:1400,max:2800,commute:'15-35分',cost:85},      {area:'江都/维扬',min:1200,max:2400,commute:'25-50分',cost:80},      {area:'仪征/高邮',min:800,max:1600,commute:'50-80分',cost:75},      {area:'宝应',min:600,max:1200,commute:'70-100分',cost:70},    ],    commute:[      {from:'仪征→广陵',time:55,cost:7,type:'城际'},      {from:'江都→邗江',time:35,cost:5,type:'公交'},      {from:'高邮→市区',time:65,cost:8,type:'城际'},      {from:'宝应→广陵',time:80,cost:10,type:'城际'},    ],    cost:{meal:14,coffee:22,gym:160,rent1r:1500,monthly:2800},    pop:{single:45,retain:65,migrate:25,keySchools:12,gaokao:70},    jobs:{q1:55,q2:68,q3:55,q4:55,sectors:['化工','汽车','旅游','船舶','软件']},    radar:[58,80,58,58,75,70],  },  '泰州': { tier:2, color:'#79c0ff',    rent:[      {area:'海陵/高港',min:1300,max:2600,commute:'15-35分',cost:85},      {area:'姜堰/医药城',min:1100,max:2200,commute:'30-60分',cost:80},      {area:'泰兴/靖江',min:900,max:1800,commute:'50-80分',cost:75},      {area:'兴化',min:700,max:1400,commute:'65-95分',cost:70},    ],    commute:[      {from:'泰兴→海陵',time:50,cost:7,type:'城际'},      {from:'靖江→高港',time:55,cost:8,type:'城际'},      {from:'姜堰→市区',time:40,cost:5,type:'城际'},      {from:'兴化→海陵',time:70,cost:10,type:'城际'},    ],    cost:{meal:13,coffee:20,gym:150,rent1r:1400,monthly:2600},    pop:{single:45,retain:65,migrate:28,keySchools:10,gaokao:70},    jobs:{q1:55,q2:68,q3:55,q4:55,sectors:['医药','造船','石化','电机','休闲食品']},    radar:[58,78,55,58,65,70],  },  '盐城': { tier:2, color:'#ffa657',    rent:[      {area:'亭湖/盐都',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'城南/开发',min:1100,max:2200,commute:'25-50分',cost:78},      {area:'东台/大丰',min:800,max:1600,commute:'50-80分',cost:72},      {area:'建湖/射阳',min:600,max:1200,commute:'65-95分',cost:68},    ],    commute:[      {from:'东台→亭湖',time:60,cost:8,type:'城际'},      {from:'大丰→盐都',time:55,cost:8,type:'城际'},      {from:'建湖→市区',time:50,cost:6,type:'城际'},      {from:'射阳→亭湖',time:70,cost:10,type:'城际'},    ],    cost:{meal:12,coffee:18,gym:140,rent1r:1300,monthly:2400},    pop:{single:44,retain:60,migrate:22,keySchools:8,gaokao:72},    jobs:{q1:52,q2:65,q3:52,q4:55,sectors:['汽车','新能源','钢铁','农产品加工','环保']},    radar:[55,78,55,52,65,68],  },  '淮安': { tier:2, color:'#7ee787',    rent:[      {area:'清江浦/淮阴',min:1100,max:2200,commute:'15-35分',cost:75},      {area:'淮安/洪泽',min:900,max:1800,commute:'30-60分',cost:72},      {area:'涟水/盱眙',min:700,max:1400,commute:'55-85分',cost:68},      {area:'金湖',min:600,max:1200,commute:'70-100分',cost:65},    ],    commute:[      {from:'涟水→清江浦',time:50,cost:6,type:'城际'},      {from:'盱眙→市区',time:65,cost:8,type:'城际'},      {from:'洪泽→淮阴',time:45,cost:5,type:'城际'},      {from:'金湖→清江浦',time:75,cost:10,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:130,rent1r:1200,monthly:2200},    pop:{single:44,retain:58,migrate:20,keySchools:8,gaokao:72},    jobs:{q1:50,q2:62,q3:50,q4:52,sectors:['盐化','食品','新能源','电子','纺织']},    radar:[52,78,55,50,62,68],  },  '威海': { tier:2, color:'#79c0ff',    rent:[      {area:'环翠/高区',min:1400,max:2800,commute:'15-35分',cost:90},      {area:'经区/临港',min:1200,max:2400,commute:'25-50分',cost:85},      {area:'文登/荣成',min:900,max:1800,commute:'50-80分',cost:80},      {area':'乳山',min:600,max:1200,commute:'70-100分',cost:72},    ],    commute:[      {from:'文登→环翠',time:45,cost:6,type:'城际'},      {from:'荣成→高区',time:60,cost:8,type:'城际'},      {from:'乳山→市区',time:70,cost:10,type:'城际'},      {from:'临港→经区',time:35,cost:5,type:'公交'},    ],    cost:{meal:14,coffee:22,gym:160,rent1r:1500,monthly:2800},    pop:{single:45,retain:65,migrate:25,keySchools:10,gaokao:70},    jobs:{q1:55,q2:68,q3:58,q4:55,sectors:['渔业','医药','新材料','旅游','机电']},    radar:[58,82,58,55,75,70],  },  '淄博': { tier:2, color:'#ffa657',    rent:[      {area:'张店/高新',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'临淄/周村',min:1000,max:2000,commute:'30-60分',cost:75},      {area:'淄川/博山',min:800,max:1600,commute:'45-75分',cost:70},      {area:'桓台/高青',min:700,max:1400,commute:'55-85分',cost:68},    ],    commute:[      {from:'临淄→张店',time:35,cost:4,type:'城际'},      {from:'周村→市区',time:40,cost:5,type:'城际'},      {from:'淄川→高新',time:45,cost:5,type:'城际'},      {from:'博山→张店',time:55,cost:6,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1300,monthly:2400},    pop:{single:44,retain:58,migrate:20,keySchools:10,gaokao:72},    jobs:{q1:52,q2:65,q3:55,q4:55,sectors:['石油化工','建材','医药','纺织','装备制造']},    radar:[55,78,55,52,62,68],  },  '临沂': { tier:2, color:'#d2a8ff',    rent:[      {area:'兰山/罗庄',min:1100,max:2200,commute:'15-35分',cost:75},      {area:'河东/北城',min:1000,max:2000,commute:'25-50分',cost:72},      {area':'费县/莒南',min:700,max:1400,commute:'55-85分',cost:68},      {area:'郯城/临沭',min:600,max:1200,commute:'65-95分',cost:65},    ],    commute:[      {from:'费县→兰山',time:50,cost:6,type:'城际'},      {from:'莒南→罗庄',time:60,cost:8,type:'城际'},      {from:'河东→市区',time:30,cost:4,type:'公交'},      {from:'郯城→兰山',time:70,cost:10,type:'城际'},    ],    cost:{meal:10,coffee:18,gym:130,rent1r:1200,monthly:2200},    pop:{single:44,retain:58,migrate:22,keySchools:10,gaokao:72},    jobs:{q1:50,q2:62,q3:50,q4:52,sectors:['商贸','板材','食品','医药','建材']},    radar:[52,75,55,50,62,68],  },  '洛阳': { tier:2, color:'#ff9ecd',    rent:[      {area:'洛龙/西工',min:1300,max:2800,commute:'15-35分',cost:80},      {area:'涧西/老城',min:1100,max:2200,commute:'20-45分',cost:78},      {area:'瀍河/偃师',min:900,max:1800,commute:'40-70分',cost:72},      {area:'新安/孟津',min:700,max:1400,commute:'55-85分',cost:68},    ],    commute:[      {from:'偃师→洛龙',time:50,cost:6,type:'城际'},      {from:'新安→涧西',time:45,cost:5,type:'城际'},      {from:'孟津→西工',time:55,cost:7,type:'城际'},      {from:'瀍河→老城',time:30,cost:4,type:'公交'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1400,monthly:2600},    pop:{single:45,retain:60,migrate:18,keySchools:14,gaokao:74},    jobs:{q1:52,q2:65,q3:52,q4:55,sectors:['装备制造','光电','石化','旅游','中医药']},    radar:[55,80,58,55,72,68],  },  '芜湖': { tier:2, color:'#7ee787',    rent:[      {area:'镜湖/鸠江',min:1500,max:3000,commute:'15-35分',cost:90},      {area:'弋江/三山',min:1300,max:2600,commute:'25-50分',cost:85},      {area:'湾沚/繁昌',min:1000,max:2000,commute:'45-75分',cost:78},      {area:'南陵/无为',min:700,max:1400,commute:'65-95分',cost:72},    ],    commute:[      {from:'弋江→镜湖',time:30,cost:4,type:'地铁'},      {from:'湾沚→市区',time:55,cost:7,type:'城际'},      {from:'无为→鸠江',time:65,cost:8,type:'城际'},      {from:'繁昌→三山',time:40,cost:5,type:'城际'},    ],    cost:{meal:14,coffee:24,gym:180,rent1r:1700,monthly:3000},    pop:{single:46,retain:65,migrate:28,keySchools:14,gaokao:72},    jobs:{q1:60,q2:72,q3:58,q4:58,sectors:['汽车','家电','材料','电子','机器人']},    radar:[62,82,60,62,68,72],  },  '株洲': { tier:2, color:'#ffa657',    rent:[      {area:'天元/芦淞',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'荷塘/石峰',min:1000,max:2000,commute:'20-45分',cost:75},      {area:'云龙/渌口',min:900,max:1800,commute:'35-65分',cost:72},      {area:'醴陵/攸县',min:700,max:1400,commute:'60-90分',cost:68},    ],    commute:[      {from:'云龙→天元',time:30,cost:4,type:'城际'},      {from:'醴陵→芦淞',time:55,cost:7,type:'城际'},      {from:'攸县→市区',time:70,cost:10,type:'城际'},      {from:'渌口→石峰',time:45,cost:5,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1400,monthly:2600},    pop:{single:45,retain:62,migrate:22,keySchools:10,gaokao:72},    jobs:{q1:55,q2:68,q3:52,q4:55,sectors:['轨道交通','汽车','有色金属','陶瓷','服饰']},    radar:[58,78,55,58,65,68],  },  '绵阳': { tier:2, color:'#79c0ff',    rent:[      {area:'涪城/游仙',min:1300,max:2800,commute:'15-35分',cost:85},      {area:'安州/高新',min:1100,max:2200,commute:'30-60分',cost:80},      {area:'江油/三台',min:800,max:1600,commute:'55-85分',cost:72},      {area:'梓潼/盐亭',min:600,max:1200,commute:'70-100分',cost:68},    ],    commute:[      {from:'江油→涪城',time:50,cost:6,type:'城际'},      {from:'三台→游仙',time:60,cost:8,type:'城际'},      {from:'安州→市区',time:40,cost:5,type:'城际'},      {from:'高新→市中心',time:25,cost:4,type:'公交'},    ],    cost:{meal:13,coffee:22,gym:160,rent1r:1500,monthly:2800},    pop:{single:46,retain:65,migrate:22,keySchools:14,gaokao:74},    jobs:{q1:55,q2:68,q3:55,q4:55,sectors:['电子信息','核技术','航空航天','医药','食品']},    radar:[58,82,58,58,72,70],  },  '九江': { tier:2, color:'#7ee787',    rent:[      {area:'浔阳/濂溪',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'柴桑/八里湖',min:1100,max:2200,commute:'25-50分',cost:78},      {area:'瑞昌/共青城',min:800,max:1600,commute:'45-75分',cost:72},      {area:'湖口/彭泽',min:600,max:1200,commute:'65-95分',cost:68},    ],    commute:[      {from:'共青城→浔阳',time:55,cost:7,type:'城际'},      {from:'瑞昌→濂溪',time:45,cost:5,type:'城际'},      {from:'湖口→市区',time:60,cost:8,type:'城际'},      {from:'八里湖→浔阳',time:30,cost:4,type:'公交'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1400,monthly:2600},    pop:{single:45,retain:62,migrate:20,keySchools:10,gaokao:72},    jobs:{q1:52,q2:65,q3:52,q4:55,sectors:['石化','纺织','电子','旅游','茶产业']},    radar:[55,78,58,55,68,68],  },  '上饶': { tier:2, color:'#c9a1ff',    rent:[      {area:'信州/广信',min:1100,max:2200,commute:'15-35分',cost:75},      {area:'广丰/玉山',min:900,max:1800,commute:'35-65分',cost:70},      {area:'婺源/德兴',min:700,max:1400,commute:'55-85分',cost:68},      {area:'鄱阳/余干',min:600,max:1200,commute:'65-95分',cost:65},    ],    commute:[      {from:'婺源→信州',time:65,cost:10,type:'城际'},      {from:'广丰→市区',time:40,cost:5,type:'城际'},      {from:'德兴→广信',time:55,cost:8,type:'城际'},      {from:'鄱阳→信州',time:75,cost:12,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:130,rent1r:1200,monthly:2200},    pop:{single:44,retain:58,migrate:20,keySchools:8,gaokao:72},    jobs:{q1:48,q2:62,q3:50,q4:52,sectors:['有色金属','光伏','旅游','茶产业','物流']},    radar:[50,78,55,50,72,68],  },  '赣州': { tier:2, color:'#ffa657',    rent:[      {area:'章贡/南康',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'赣县/蓉江',min:1000,max:2000,commute:'30-60分',cost:75},      {area:'瑞金/龙南',min:700,max:1400,commute:'60-90分',cost:70},      {area:'兴国/于都',min:600,max:1200,commute:'70-100分',cost:68},    ],    commute:[      {from:'南康→章贡',time:35,cost:5,type:'城际'},      {from:'瑞金→市区',time:80,cost:12,type:'城际'},      {from:'龙南→蓉江',time:65,cost:10,type:'城际'},      {from:'赣县→章江',time:40,cost:5,type:'公交'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1300,monthly:2400},    pop:{single:45,retain:58,migrate:20,keySchools:12,gaokao:74},    jobs:{q1:50,q2:65,q3:52,q4:52,sectors:['稀土','钨','电子','家具','旅游']},    radar:[52,78,58,52,68,68],  },  '济宁': { tier:2, color:'#d2a8ff',    rent:[      {area:'任城/市中',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'高新/太白湖',min:1100,max:2200,commute:'25-50分',cost:78},      {area':'曲阜/邹城',min:800,max:1600,commute:'50-80分',cost:72},      {area:'梁山/泗水',min:600,max:1200,commute:'65-95分',cost:68},    ],    commute:[      {from:'曲阜→任城',time:45,cost:6,type:'城际'},      {from:'邹城→市区',time:50,cost:7,type:'城际'},      {from:'太白湖→市中',time:30,cost:4,type:'公交'},      {from:'梁山→任城',time:65,cost:10,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1300,monthly:2400},    pop:{single:44,retain:58,migrate:18,keySchools:12,gaokao:72},    jobs:{q1:50,q2:65,q3:52,q4:52,sectors:['煤炭','工程机械','医药','文化','食品']},    radar:[52,78,55,52,70,68],  },  '许昌': { tier:2, color:'#7ee787',    rent:[      {area:'魏都/建安',min:1100,max:2200,commute:'15-35分',cost:75},      {area:'东城/开发',min:1000,max:2000,commute:'25-50分',cost:72},      {area:'长葛/禹州',min:700,max:1400,commute:'50-80分',cost:68},      {area:'鄢陵/襄城',min:600,max:1200,commute:'60-90分',cost:65},    ],    commute:[      {from:'长葛→魏都',time:40,cost:5,type:'城际'},      {from:'禹州→建安',time:55,cost:7,type:'城际'},      {from:'东城→市区',time:25,cost:4,type:'公交'},      {from:'鄢陵→魏都',time:60,cost:8,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1200,monthly:2200},    pop:{single:44,retain:60,migrate:20,keySchools:8,gaokao:72},    jobs:{q1:50,q2:65,q3:50,q4:52,sectors:['电力装备','人造金刚石','食品','纺织','物流']},    radar:[52,78,55,52,62,68],  },  '新乡': { tier:2, color:'#79c0ff',    rent:[      {area:'红旗/卫滨',min:1100,max:2200,commute:'15-35分',cost:75},      {area:'牧野/凤泉',min:1000,max:2000,commute:'25-50分',cost:72},      {area:'辉县/长垣',min:700,max:1400,commute:'55-85分',cost:68},      {area:'获嘉/延津',min:600,max:1200,commute:'65-95分',cost:65},    ],    commute:[      {from:'辉县→红旗',time:55,cost:7,type:'城际'},      {from:'长垣→卫滨',time:65,cost:8,type:'城际'},      {from:'凤泉→市区',time:35,cost:4,type:'公交'},      {from:'获嘉→牧野',time:45,cost:5,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:130,rent1r:1200,monthly:2200},    pop:{single:44,retain:58,migrate:18,keySchools:12,gaokao:72},    jobs:{q1:50,q2:65,q3:50,q4:52,sectors:['电池','生物医药','食品','纺织','振动设备']},    radar:[52,78,55,52,62,68],  },  '驻马店': { tier:2, color:'#ffa657',    rent:[      {area:'驿城/开发',min:1000,max:2000,commute:'15-35分',cost:72},      {area:'遂平/确山',min:700,max:1400,commute:'40-70分',cost:68},      {area:'正阳/汝南',min:600,max:1200,commute:'55-85分',cost:65},      {area:'新蔡/泌阳',min:500,max:1000,commute:'70-100分',cost:62},    ],    commute:[      {from:'遂平→驿城',time:35,cost:5,type:'城际'},      {from:'正阳→市区',time:60,cost:8,type:'城际'},      {from:'汝南→开发',time:50,cost:6,type:'城际'},      {from:'新蔡→驿城',time:80,cost:12,type:'城际'},    ],    cost:{meal:10,coffee:16,gym:120,rent1r:1100,monthly:2000},    pop:{single:44,retain:55,migrate:18,keySchools:6,gaokao:74},    jobs:{q1:45,q2:60,q3:48,q4:50,sectors:['农产品加工','医药','化工','户外休闲','物流']},    radar:[48,75,55,48,60,65],  },  '信阳': { tier:2, color:'#7ee787',    rent:[      {area:'浉河/平桥',min:1000,max:2000,commute:'15-35分',cost:72},      {area:'羊山/南湾',min:900,max:1800,commute:'25-50分',cost:70},      {area:'罗山/光山',min:600,max:1200,commute:'55-85分',cost:65},      {area:'固始/商城',min:500,max:1000,commute:'70-100分',cost:62},    ],    commute:[      {from:'罗山→浉河',time:50,cost:6,type:'城际'},      {from:'光山→平桥',time:55,cost:7,type:'城际'},      {from:'南湾→市区',time:30,cost:4,type:'公交'},      {from:'固始→浉河',time:85,cost:12,type:'城际'},    ],    cost:{meal:10,coffee:16,gym:120,rent1r:1100,monthly:2000},    pop:{single:44,retain:55,migrate:18,keySchools:8,gaokao:74},    jobs:{q1:45,q2:60,q3:48,q4:50,sectors:['电子','生态农业','旅游','茶产业','物流']},    radar:[48,78,55,48,68,65],  },  '衡阳': { tier:2, color:'#c9a1ff',    rent:[      {area:'石鼓/蒸湘',min:1100,max:2200,commute:'15-35分',cost:75},      {area:'雁峰/珠晖',min:1000,max:2000,commute:'20-45分',cost:72},      {area:'南岳/衡山',min:700,max:1400,commute:'50-80分',cost:68},      {area:'耒阳/常宁',min:600,max:1200,commute:'65-95分',cost:65},    ],    commute:[      {from:'耒阳→石鼓',time:70,cost:10,type:'城际'},      {from:'衡山→蒸湘',time:55,cost:8,type:'城际'},      {from:'珠晖→市区',time:25,cost:4,type:'公交'},      {from:'常宁→雁峰',time:65,cost:10,type:'城际'},    ],    cost:{meal:11,coffee:18,gym:140,rent1r:1200,monthly:2200},    pop:{single:44,retain:58,migrate:20,keySchools:10,gaokao:72},    jobs:{q1:50,q2:62,q3:50,q4:52,sectors:['有色金属','钢铁','装备制造','旅游','医药']},    radar:[52,78,55,52,68,68],  },  '株洲': { tier:2, color:'#ffa657',    rent:[      {area:'天元/芦淞',min:1200,max:2500,commute:'15-35分',cost:80},      {area:'荷塘/石峰',min:1000,max:2000,commute:'20-45分',cost:75},      {area:'云龙/渌口',min:900,max:1800,commute:'35-65分',cost:72},      {area:'醴陵/攸县',min:700,max:1400,commute:'60-90分',cost:68},    ],    commute:[      {from:'云龙→天元',time:30,cost:4,type:'城际'},      {from:'醴陵→芦淞',time:55,cost:7,type:'城际'},      {from:'攸县→市区',time:70,cost:10,type:'城际'},      {from:'渌口→石峰',time:45,cost:5,type:'城际'},    ],    cost:{meal:12,coffee:20,gym:150,rent1r:1400,monthly:2600},    pop:{single:45,retain:62,migrate:22,keySchools:10,gaokao:72},    jobs:{q1:55,q2:68,q3:52,q4:55,sectors:['轨道交通','汽车','有色金属','陶瓷','服饰']},    radar:[58,78,55,58,65,68],  },};};const RADAR_LABELS = ['就业机会','生活品质','落户难度','薪资水平','娱乐指数','综合性价比'];
-const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-const SECTORS_HM = ['体制内（公务员/事业）','互联网/科技','金融/银行','制造/传统','医疗/教育'];
-const HEATMAP_DATA = [
-  [5,8,7,9,8,5,3,6,8,9,10,8],
-  [4,2,9,10,9,6,4,3,9,10,8,4],
-  [5,3,8,9,7,5,3,2,8,10,9,5],
-  [6,3,7,8,7,6,5,5,7,8,7,6],
-  [7,5,8,9,7,6,9,8,7,6,5,5],
-];
-
-const COUNTRIES = [
-  {flag:'🇺🇸',name:'美国',type:'留学首选',metrics:{'年学费':'20-60万','年生活':'15-25万','申请周期':'12-18月','回国率':'约22%'},color:'#f85149',visa:'F-1学生签证，读完可申请OPT（1年）',require:['托福 90+/雅思 6.5+','GRE/GMAT（研究生）','GPA 3.0+','推荐信3封','文书'],cost:{min:35,avg:55,max:100},process:[{month:'提前18月',text:'准备语言考试（托福/雅思/GRE）',sub:'备考周期约6-12个月'},{month:'提前12月',text:'确定目标学校，准备申请材料',sub:'文书、推荐信、成绩单'},{month:'9-12月',text:'网申开放，集中提交申请',sub:'大多数学校截止12月-2月'},{month:'次年3-4月',text:'收录取通知',sub:'如收到条件录取需补材料'},{month:'次年5-7月',text:'提交存款证明，签证面试',sub:'提前准备I-20表格'},{month:'次年8-9月',text:'出发入学',sub:'提前到校参加orientation'}],cases:[{name:'刘某',school:'USC计算机硕士',stay:'留在硅谷工作',note:'抽中H1B，拿到绿卡，年薪$15万，5年未回国'},{name:'张某',school:'NYU金融硕士',stay:'回国',note:'签证抽签失败3次，回深圳投行工作，年薪35万'}]},
-  {flag:'🇬🇧',name:'英国',type:'留学热门',metrics:{'年学费':'18-40万','年生活':'12-20万','申请周期':'8-12月','回国率':'约45%'},color:'#58a6ff',visa:'Tier 4 学生签证，读完可申请PSW工签（2年）',require:['雅思 6.0-7.0','本科/研究生成绩','个人陈述（PS）','推荐信2封'],cost:{min:30,avg:45,max:80},process:[{month:'提前12月',text:'准备雅思，达到学校要求',sub:'多数学校要求6.5以上'},{month:'提前9月',text:'研究学校和项目，撰写PS',sub:'注意UCAS截止时间'},{month:'10-1月',text:'提交申请（UCAS/直申）',sub:'商科/理工截止有差异'},{month:'次年2-4月',text:'收取录通知',sub:'准备CAS号码'},{month:'次年5月',text:'递交签证申请',sub:'存款证明需覆盖首年费用'},{month:'次年9月',text:'入学，英国1年制硕士',sub:'1年内完成课程+论文'}],cases:[{name:'王某',school:'帝国理工EE硕士',stay:'留在伦敦',note:'PSW工签在科技公司，薪资£4.5万，感叹物价压力大'},{name:'陈某',school:'曼大商学院',stay:'回国',note:'回来在外企工作，认为英国学历在国内认可度高'}]},
-  {flag:'🇦🇺',name:'澳大利亚',type:'留学+移民热门',metrics:{'年学费':'15-35万','年生活':'10-18万','申请周期':'6-10月','回国率':'约30%'},color:'#d29922',visa:'Student Visa (500)，读完可申请485工签（2-4年）',require:['雅思 6.0-6.5','高中/本科成绩','健康体检','存款证明'],cost:{min:25,avg:38,max:65},process:[{month:'提前8月',text:'准备雅思，申请学校',sub:'商科/IT为热门方向'},{month:'提前5月',text:'收到录取，准备签证',sub:'体检+无犯罪记录'},{month:'提前2月',text:'签证下签',sub:'提前订机票安排住宿'},{month:'入学后2年',text:'申请485毕业生工签',sub:'可合法工作2-4年'},{month:'工作2年后',text:'考虑申请PR',sub:'技术移民189/190/491'}],cases:[{name:'李某',school:'悉尼大学IT硕士',stay:'申请到PR',note:'485工签期间在咨询公司，3年后拿到永居'},{name:'周某',school:'昆士兰大学护理',stay:'留下工作',note:'护士专业澳洲紧缺，工资高，已定居布里斯班'}]},
-  {flag:'🇨🇦',name:'加拿大',type:'移民友好',metrics:{'年学费':'15-30万','年生活':'10-16万','申请周期':'6-12月','回国率':'约25%'},color:'#f0883e',visa:'Student Permit，读完申请PGWP（3年）',require:['雅思 6.0+','高中或本科成绩','资金证明','学校录取信'],cost:{min:22,avg:36,max:60},process:[{month:'提前10月',text:'确定学校和专业',sub:'College或University'},{month:'提前7月',text:'申请学校，获得录取',sub:'准备学签材料'},{month:'提前3月',text:'申请学习许可',sub:'等待时间约8-12周'},{month:'毕业后',text:'申请PGWP工签',sub:'在读年限内，最长3年'},{month:'1-2年后',text:'申请快速通道(Express Entry)',sub:'留学+工作经验加分高'}],cases:[{name:'赵某',school:'UBC工程硕士',stay:'拿到PR',note:'PGWP期间入职温哥华科技公司，EE 450分顺利拿PR'}]},
-  {flag:'🇩🇪',name:'德国',type:'低成本留学',metrics:{'年学费':'0-3万','年生活':'8-13万','申请周期':'8-14月','回国率':'约50%'},color:'#bc8cff',visa:'学生签证，毕业后可申请18月求职签',require:['德语B2（公立）或雅思（英语项目）','APS认证','动机信','资金证明（约9.5万/年）'],cost:{min:8,avg:15,max:30},process:[{month:'提前18月',text:'学德语到B2，或找英语授课项目',sub:'APS认证需提前6月申请'},{month:'提前12月',text:'通过APS审核，网上申请',sub:'uni-assist系统统一申请'},{month:'次年3-5月',text:'收录取，办签证',sub:'需开阻塞账户存入9.5万'},{month:'次年10月',text:'冬季学期入学',sub:'部分暑期学期入学（4月）'},{month:'毕业后',text:'申请18个月求职签',sub:'找到工作后申请工作许可'}],cases:[{name:'孙某',school:'慕尼黑工大机械硕士',stay:'留德工作',note:'西门子签约，薪资€5.5万，感叹办事效率慢但稳定'}]},
-  {flag:'🇸🇬',name:'新加坡',type:'离家近+华语友好',metrics:{'年学费':'12-30万','年生活':'8-14万','申请周期':'6-10月','回国率':'约35%'},color:'#39d353',visa:'Student Pass，毕业可申请EP/SP工签',require:['雅思 6.5+/托福 90+','GPA 3.0+','推荐信','文书'],cost:{min:20,avg:32,max:55},process:[{month:'提前10月',text:'准备申请材料',sub:'NUS/NTU竞争非常激烈'},{month:'提前6月',text:'提交申请，等待结果',sub:'录取率10-20%'},{month:'收录取后',text:'申请Student Pass',sub:'ICA网上办理'},{month:'毕业后',text:'找EP/SP工签工作',sub:'薪资4500 SGD以上可申EP'}],cases:[{name:'吴某',school:'NTU计算机工程',stay:'在新加坡工作',note:'科技公司月薪8000 SGD，生活成本高但待遇好，已申EP'}]},
-  {flag:'🇯🇵',name:'日本',type:'文化相近+留学打工',metrics:{'年学费':'6-15万','年生活':'8-12万','申请周期':'8-12月','回国率':'约55%'},color:'#f78166',visa:'留学签证，毕业可申就职签',require:['日语N2（推荐N1）','JLPT成绩','大学推荐信','学习计划书'],cost:{min:14,avg:22,max:35},process:[{month:'提前14月',text:'学日语到N2水平',sub:'N1更有竞争力'},{month:'提前10月',text:'申请大学院/语言学校',sub:'语言学校→大学院两步走'},{month:'提前4月',text:'申请留学签证',sub:'证明存款约15万'},{month:'毕业后',text:'参加就职活动',sub:'3-4月集中面试，10月内定'}],cases:[{name:'钱某',school:'早稻田大学信息科学',stay:'回国',note:'日语难考N1，就职内定但被国内大厂挖，回去了'}]},
-  {flag:'🇳🇿',name:'新西兰',type:'打工度假热门',metrics:{'年学费':'12-25万','年生活':'8-13万','申请周期':'3-6月','回国率':'约40%'},color:'#7c8cf8',visa:'打工度假签证（WHV）18-30岁可申',require:['年龄18-30岁','持有有效护照','存款约3万','购买医疗保险'],cost:{min:5,avg:12,max:25},process:[{month:'随时可申',text:'到移民局官网填写WHV申请',sub:'每年配额1000人，先到先得'},{month:'2-4周后',text:'下签，订机票',sub:'先到奥克兰落地'},{month:'到达后',text:'办理税号（IRD）、银行卡',sub:'找农场/服务业工作'},{month:'1年后',text:'可续签1年（需农业3月工作经历）',sub:'最长18个月停留'}],cases:[{name:'何某',school:'WHV，无学历要求',stay:'回国',note:'1年在果园+咖啡馆，存了约7万，扩展了视野，回来创业'}]},
-  {flag:'🇰🇷',name:'韩国',type:'文化/K-pop吸引力',metrics:{'年学费':'6-15万','年生活':'7-12万','申请周期':'4-8月','回国率':'约62%'},color:'#ff7b72',visa:'学生签证（D-2），半工半读合法（每周20h）',require:['韩语TOPIK 3级+','高中/本科成绩','个人陈述','资金证明'],cost:{min:12,avg:20,max:32},process:[{month:'提前8月',text:'学韩语备考TOPIK',sub:'推荐3级以上，首尔大学要求4级'},{month:'提前5月',text:'申请学校（3月/9月入学）',sub:'大部分接受英语申请'},{month:'收录取后',text:'申请D-2签证',sub:'提前存入12万资金证明'}],cases:[{name:'魏某',school:'延世大学传媒',stay:'回国',note:'在韩媒体实习，感受了idol文化，回国进入MCN机构做内容'}]},
-];
-
-// ══════════════════════════════════════════════
-//  RENDER
-// ══════════════════════════════════════════════
-let currentCity = '北京';
-let radarSelected = ['北京','深圳','成都'];
-let radarChart = null;
-let currentTierFilter = 99; // 99=全部, 1=一线, 0=新一线, 2=二线
-
-// ── 城市下拉选择 ──
-function getFilteredCities(query, tier){
-  return Object.entries(CITIES).filter(([name, d])=>{
-    const matchTier = tier === 99 || d.tier === tier;
-    const matchQuery = !query || name.includes(query) || d.sectors.some(s=>s.includes(query));
-    return matchTier && matchQuery;
-  });
-}
-
-function showCityDropdown(){
-  document.getElementById('cityDropdown').style.display = 'block';
-  renderDropdownList();
-}
-
-function closeCityDropdown(){
-  document.getElementById('cityDropdown').style.display = 'none';
-}
-
-function filterCities(){
-  renderDropdownList();
-}
-
-function setTier(t, btn){
-  currentTierFilter = t;
-  // 更新按钮状态
-  document.querySelectorAll('.city-tier-btn').forEach(b=>{
-    b.classList.remove('active');
-    b.style.background = 'var(--bg2)';
-    b.style.color = 'var(--text2)';
-  });
-  btn.classList.add('active');
-  btn.style.background = 'var(--blue)';
-  btn.style.color = '#0d1117';
-  document.getElementById('citySearch').value = '';
-  renderDropdownList();
-}
-
-function renderDropdownList(){
-  const query = document.getElementById('citySearch').value.trim();
-  const filtered = getFilteredCities(query, currentTierFilter);
-  const tierNames = {0:'新一线', 1:'一线', 2:'二线'};
-  const tierColors = {0:'#f0883e', 1:'#f85149', 2:'#7c8cf8'};
-
-  const html = filtered.map(([name, d])=>`
-    <div onclick="selectCity('${name}')" class="city-dd-item ${name===currentCity?'active':''}"
-      style="padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);transition:.15s;font-size:13px;"
-      onmouseover="this.style.background='rgba(88,166,255,.1)'"
-      onmouseout="this.style.background=''">
-      <span style="width:8px;height:8px;border-radius:50%;background:${tierColors[d.tier]||'var(--text2)'};flex-shrink:0;"></span>
-      <span style="flex:1;font-weight:${name===currentCity?'700':'500'};color:${name===currentCity?'var(--blue)':'var(--text)'}">${name}</span>
-      <span style="font-size:11px;color:var(--text2);">${tierNames[d.tier]||''}</span>
-      <span style="font-size:11px;color:var(--text2);">¥${d.cost.rent1r}/月</span>
-    </div>`).join('');
-
-  const wrap = document.getElementById('cityDropdownList');
-  wrap.innerHTML = html || '<div style="padding:20px;text-align:center;color:var(--text2);font-size:13px;">未找到匹配城市</div>';
-  document.getElementById('cityDropdown').style.display = filtered.length ? 'block' : 'none';
-}
-
-function selectCity(name){
-  currentCity = name;
-  document.getElementById('citySearch').value = '';
-  document.getElementById('currentCityName').textContent = '📍 ' + name;
-  closeCityDropdown();
-  renderRent();
-  renderCommute();
-  renderCostGrid();
-  renderPopGrid();
-  // 更新下拉列表中的高亮
-  renderDropdownList();
-}
-
-// 点击外部关闭下拉
-document.addEventListener('click', e=>{
-  const dd = document.getElementById('cityDropdown');
-  const inp = document.getElementById('citySearch');
-  if(dd && !dd.contains(e.target) && e.target !== inp){
-    closeCityDropdown();
+  function renderAllCityData() {
+    var cn=document.getElementById('currentCityName');
+    if(cn) cn.textContent=CITIES[currentCity].name;
+    renderRent();
+    renderCommute();
+    renderCostGrid();
+    renderPopGrid();
+    renderHeatmap();
+    renderCompetChart();
+    renderNeiwaiChart();
+    renderRadarChart();
   }
-});
 
-// 初始化城市下拉
-function initCitySelector(){
-  document.getElementById('currentCityName').textContent = '📍 ' + currentCity;
-  renderDropdownList();
-}
+  function renderRent() {
+    var d=CITIES[currentCity],t=I18N[currentLang],max=Math.max.apply(null,Object.values(d.rent));
+    document.getElementById('rentSub').textContent='平均：¥'+(Math.round(Object.values(d.rent).reduce(function(a,b){return a+b;},0)/Object.keys(d.rent).length));
+    var html='';var labels={central:'市中心',nanshan:'核心区',baoan:'宝安/其他',longgang:'龙岗/其他',longhua:'龙华/其他',haidian:'海淀',chaoyang:'朝阳',tongzhou:'通州',changping:'昌平',pudong:'浦东',xuhui:'徐汇',baoshan:'宝山',minhang:'闵行',tianhe:'天河',panyu:'番禺',huangpu:'黄埔',baiyun:'白云',xiacheng:'下城',jianggan:'江干',binjiang:'滨江',xihu:'西湖',jinjiang:'锦江',gaoxin:'高新',wuhou:'武侯',chenghua:'成华',jianye:'建邺',jiangbei:'江北',qixia:'栖霞',wuchang:'武昌',hanKou:'汉口',hongshan:'洪山'};
+    Object.keys(d.rent).forEach(function(k){var v=d.rent[k],pct=Math.round(v/max*100);var bg=v>4500?'#f85149':v>3000?'#d29922':'#3fb950';html+='<div class="rent-row"><span class="rent-label">'+labels[k]+'</span><div class="rent-bar-wrap"><div class="rent-bar" style="width:'+pct+'%;background:'+bg+';">'+v+'</div></div><span class="rent-val">¥'+v+'</span></div>';});
+    document.getElementById('rentGrid').innerHTML=html;
+  }
 
+  function renderCommute() {
+    var d=CITIES[currentCity],html='';d.commute.forEach(function(c){var col=c.level==='green'?'#3fb950':c.level==='yellow'?'#d29922':'#f85149';html+='<div class="commute-item"><span class="commute-area">'+c.area+'</span><div class="commute-time"><span class="commute-dot" style="background:'+col+';"></span><span class="commute-info">'+c.time+'分钟 · ¥'+c.cost+'</span></div></div>';});document.getElementById('commuteList').innerHTML=html;
+  }
 
-// 租金
-function renderRent(){
-  const d=CITIES[currentCity];
-  document.getElementById('rentSub').textContent=`${currentCity} 各区一居室参考租金（2025年数据）`;
-  const maxVal=9000;
-  document.getElementById('rentGrid').innerHTML=d.rent.map(r=>{
-    const pct=Math.round((r.max/maxVal)*100);
-    return `
-      <div class="rent-row">
-        <div class="rent-label">${r.area}</div>
-        <div class="rent-bar-wrap"><div class="rent-bar" style="width:${pct}%;background:${d.color};">${r.min/1000}k</div></div>
-        <div class="rent-val" style="color:${d.color}">${r.min}~${r.max}</div>
-      </div>
-      <div class="rent-row" style="margin-top:-6px;opacity:.65">
-        <div class="rent-label" style="font-size:10px;color:var(--text2)">通勤${r.commute}</div>
-        <div style="font-size:10px;color:var(--text2);flex:1">交通约¥${r.cost}/月</div>
-      </div>`;
-  }).join('');
-}
+  function renderCostGrid() {
+    var d=CITIES[currentCity],t=I18N[currentLang];var items=[{icon:'🍜',val:'¥'+d.cost.meal,label:t.mealLabel,col:d.cost.meal>35?'#f85149':d.cost.meal>28?'#d29922':'#3fb950'},{icon:'☕',val:'¥'+d.cost.coffee,label:t.coffeeLabel,col:d.cost.coffee>32?'#f85149':d.cost.coffee>26?'#d29922':'#3fb950'},{icon:'🏋️',val:'¥'+d.cost.gym,label:t.gymLabel,col:d.cost.gym>150?'#f85149':d.cost.gym>110?'#d29922':'#3fb950'},{icon:'🎬',val:'¥'+d.cost.movie,label:t.movieLabel,col:d.cost.movie>60?'#f85149':d.cost.movie>48?'#d29922':'#3fb950'}];document.getElementById('costGrid').innerHTML=items.map(function(i){return'<div class="stat-box"><div class="stat-num" style="color:'+i.col+';">'+i.val+'</div><div class="stat-label">'+i.icon+' '+i.label+'</div></div>';}).join('');
+  }
 
-// 通勤
-function renderCommute(){
-  const d=CITIES[currentCity];
-  document.getElementById('commuteList').innerHTML=d.commute.map(c=>{
-    const col=c.time>80?'var(--red)':c.time>55?'var(--yellow)':'var(--green)';
-    return `<div class="commute-item">
-      <div class="commute-area">${c.from}</div>
-      <div class="commute-time">
-        <div class="commute-dot" style="background:${col};"></div>
-        <div class="commute-info">
-          <span style="font-weight:700;color:${col}">${c.time}分钟</span>
-          <span style="color:var(--text2);margin-left:6px;">${c.type}</span>
-          <span style="color:var(--text2);margin-left:6px;">¥${c.cost}/次</span>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
+  function renderPopGrid() {
+    var d=CITIES[currentCity],t=I18N[currentLang];var items=[{icon:'👥',val:d.pop+'万',label:t.popLabel},{icon:'📅',val:d.avgAge+'岁',label:t.ageLabel},{icon:'💔',val:d.single+'%',label:t.singleLabel,col:d.single>55?'#f85149':d.single>48?'#d29922':'#3fb950'},{icon:'💰',val:'¥'+d.salary0,label:t.salaryLabel,col:'#58a6ff'}];document.getElementById('popGrid').innerHTML=items.map(function(i){return'<div class="stat-box"><div class="stat-num" style="color:'+(i.col||'#58a6ff')+';">'+i.val+'</div><div class="stat-label">'+i.icon+' '+i.label+'</div></div>';}).join('');
+  }
 
-// 生活成本
-function renderCostGrid(){
-  const t=I18N[currentLang];
-  const d=CITIES[currentCity], c=d.cost;
-  const items=[
-    {icon:'🍜',label:t.mealLabel||'工作日午饭',val:`¥${c.meal}`,sub:t.mealSub||'快餐/外卖均价',col:c.meal>24?'var(--red)':c.meal>19?'var(--yellow)':'var(--green)'},
-    {icon:'☕',label:t.coffeeLabel||'咖啡/奶茶',val:`¥${c.coffee}`,sub:t.coffeeSub||'品牌咖啡均价',col:c.coffee>34?'var(--red)':c.coffee>28?'var(--yellow)':'var(--green)'},
-    {icon:'🏋️',label:t.gymLabel||'健身月卡',val:`¥${c.gym}`,sub:t.gymSub||'普通健身房',col:'var(--blue)'},
-    {icon:'💰',label:t.monthlyLabel||'月均总支出',val:`¥${c.monthly}`,sub:t.monthlySub||'含房租生活费',col:'var(--accent)'},
-  ];
-  document.getElementById('costGrid').innerHTML=items.map(it=>`
-    <div class="card stat-box">
-      <div style="font-size:26px;margin-bottom:8px;">${it.icon}</div>
-      <div class="stat-num" style="color:${it.col}">${it.val}</div>
-      <div class="stat-label">${it.label}</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:4px;">${it.sub}</div>
-    </div>`).join('');
-}
-
-// 人口数据
-function renderPopGrid(){
-  const t=I18N[currentLang];
-  const p=CITIES[currentCity].pop;
-  const items=[
-    {icon:'💑',label:t.singleLabel||'单身男性比例',val:`${p.single}%`,sub:t.singleSub||'20-35岁单身男性占比',col:p.single>52?'var(--blue)':'var(--purple)'},
-    {icon:'🏠',label:t.retainLabel||'应届生2年留存率',val:`${p.retain}%`,sub:t.retainSub||'来了2年后还留着的比例',col:p.retain>72?'var(--green)':'var(--yellow)'},
-    {icon:'🛫',label:t.migrateLabel||'外来人口流入占比',val:`${p.migrate}%`,sub:t.migrateSub||'总人口中非本地户籍比例',col:p.migrate>40?'var(--orange)':'var(--blue)'},
-    {icon:'🎓',label:t.schoolLabel||'重点高校数量',val:`${p.keySchools}所`,sub:t.schoolSub||'双一流/985/211学校数',col:'var(--teal)'},
-    {icon:'📝',label:t.gaokaoLabel||'高考竞争压力',val:`${p.gaokao}/100`,sub:t.gaokaoSub||'一本录取率倒推',col:p.gaokao>73?'var(--red)':'var(--green)'},
-  ];
-  document.getElementById('popGrid').innerHTML=items.map(it=>`
-    <div class="card stat-box">
-      <div style="font-size:22px;margin-bottom:6px;">${it.icon}</div>
-      <div class="stat-num" style="color:${it.col};font-size:clamp(24px,4vw,38px);">${it.val}</div>
-      <div class="stat-label" style="font-size:12px;font-weight:600;">${it.label}</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:4px;line-height:1.5;">${it.sub}</div>
-    </div>`).join('');
-}
-
-// 热力图
-function getHeatColor(v){
-  return ['#0d2137','#0d3a5f','#0d5498','#1a73e8','#4da3ff','#a8d4ff'][Math.min(Math.floor(v/2),5)];
-}
-function renderHeatmap(){
-  const wrap=document.getElementById('heatmap');
-  let html='<div></div>';
-  MONTHS.forEach(m=>html+=`<div class="heatmap-header">${m.replace('月','')}</div>`);
-  HEATMAP_DATA.forEach((row,si)=>{
-    html+=`<div class="heatmap-label">${SECTORS_HM[si].slice(0,4)}</div>`;
-    row.forEach((v,mi)=>{
-      const col=getHeatColor(v);
-      const lbl=v>=8?'🔥':v>=6?'↑':'';
-      html+=`<div class="hm-cell" style="background:${col};color:rgba(255,255,255,.8);" title="${SECTORS_HM[si]} · ${MONTHS[mi]} · 热度${v}/10">${lbl}</div>`;
+  function renderHeatmap() {
+    var d=CITIES[currentCity],months='一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月'.split(',');
+    var html='<div></div>'+months.map(function(m){return'<div class="heatmap-header">'+m.slice(0,1)+'</div>';}).join('');
+    var sectors=[{key:'gov',icon:'🏛️'},{key:'tech',icon:'💼'},{key:'mfg',icon:'🏭'},{key:'fin',icon:'💹'}];
+    sectors.forEach(function(s){
+      html+='<div class="heatmap-label">'+s.icon+'</div>';
+      d.heat[s.key].forEach(function(v){
+        var col=v<=3?'#0d4a8c':v<=6?'#1a73e8':'#7fc6ff';
+        html+='<div class="hm-cell" style="background:'+col+';"></div>';
+      });
     });
-  });
-  wrap.innerHTML=html;
-}
+    document.getElementById('heatmap').innerHTML=html;
+  }
 
-// 竞争压力
-let competChartInst=null;
-function renderCompetChart(){
-  const ctx=document.getElementById('competChart').getContext('2d');
-  if(competChartInst) competChartInst.destroy();
-  competChartInst=new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['公务员','国企','银行/金融','互联网大厂','教师','医院','初创公司','外企','体制内编制'],
-      datasets:[{label:'竞争比（投递/录取）',data:[168,45,88,120,95,52,18,35,220],backgroundColor:['#f85149','#f0883e','#d29922','#58a6ff','#bc8cff','#3fb950','#39d353','#7c8cf8','#f78166'],borderRadius:5}]
-    },
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`竞争比 ${c.raw}:1`}}},
-      scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#8b949e'}},y:{grid:{display:false},ticks:{color:'#e6edf3',font:{size:10}}}}}
-  });
-}
+  function hexToRgba(hex,alpha){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return'rgba('+r+','+g+','+b+','+alpha+')';}
 
-// 体制内外
-let neiwaiChartInst=null;
-function renderNeiwaiChart(){
-  const ctx=document.getElementById('neiwaiChart').getContext('2d');
-  if(neiwaiChartInst) neiwaiChartInst.destroy();
-  neiwaiChartInst=new Chart(ctx,{
-    type:'radar',
-    data:{
-      labels:['薪资增长','工作稳定性','晋升速度','工作强度','福利待遇','人生自由度'],
-      datasets:[
-        {label:'体制内（公务员/国企）',data:[40,95,35,30,85,40],fill:true,backgroundColor:'rgba(88,166,255,.15)',borderColor:'#58a6ff',pointBackgroundColor:'#58a6ff'},
-        {label:'体制外（互联网/外企）',data:[85,45,75,20,65,80],fill:true,backgroundColor:'rgba(63,185,80,.15)',borderColor:'#3fb950',pointBackgroundColor:'#3fb950'},
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{color:'#8b949e',boxWidth:10,font:{size:10}}}},
-      scales:{r:{min:0,max:100,grid:{color:'rgba(255,255,255,.07)'},angleLines:{color:'rgba(255,255,255,.07)'},ticks:{display:false},pointLabels:{color:'#8b949e',font:{size:9}}}}}
-  });
-}
+  var RADAR_COLORS=['#58a6ff','#f78166','#3fb950','#d29922','#bc8cff','#39d353'];
+  var RADAR_LABELS=['就业机会','薪资水平','生活成本','租房成本','娱乐丰富','发展潜力'];
 
-// 雷达城市多选
-const tierNames = {0:'新一线', 1:'一线', 2:'二线'};
-const tierColors = {0:'#f0883e', 1:'#f85149', 2:'#7c8cf8'};
+  function renderCompetChart() {
+    var ctx=document.getElementById('competChart');if(!ctx)return;
+    if(window.competChartInst)window.competChartInst.destroy();
+    var labels=['体制内','互联网','制造业','金融','医疗','教育'];
+    var data=[85,92,65,78,72,70];
+    window.competChartInst=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{label:'竞争指数',data:data,backgroundColor:data.map(function(v){return v>80?'rgba(248,81,73,0.7)':v>70?'rgba(210,153,34,0.7)':'rgba(63,185,80,0.7)';}),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:function(v){return v;}}},x:{grid:{display:false}}}},animation:{duration:800}}});
+  }
 
-function renderRadarCityPicker(){
-  const wrap=document.getElementById('radarCityPicker');
-  const cities = Object.entries(CITIES);
-  // 按tier分组
-  const tiers = {1:[], 0:[], 2:[]};
-  cities.forEach(([n,d])=>{ if(tiers[d.tier]!==undefined) tiers[d.tier].push(n); });
+  function renderNeiwaiChart() {
+    var ctx=document.getElementById('neiwaiChart');if(!ctx)return;
+    if(window.neiwaiChartInst)window.neiwaiChartInst.destroy();
+    var labels=['薪资增长','工作稳定性','晋升速度','工作强度','福利待遇','自由度'];
+    var neidata=CITIES[currentCity].neiwai;
+    var waidata=[6,8,5,7,7,5];
+    window.neiwaiChartInst=new Chart(ctx,{type:'radar',data:{labels:labels,datasets:[{label:'体制内',data:neidata,fill:true,backgroundColor:'rgba(88,166,255,0.15)',borderColor:'#58a6ff',pointBackgroundColor:'#58a6ff'},{label:'体制外',data:waidata,fill:true,backgroundColor:'rgba(247,129,102,0.15)',borderColor:'#f78166',pointBackgroundColor:'#f78166'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle'}}},scales:{r:{angleLines:{color:'rgba(255,255,255,0.06)'},grid:{color:'rgba(255,255,255,0.06)'},pointLabels:{font:{size:10}}}},animation:{duration:1000}}});
+  }
 
-  const html = Object.entries(tiers).sort((a,b)=>a[0]-b[0]).map(([tier, names])=>`
-    <div style="margin-bottom:8px;">
-      <div style="font-size:10px;color:var(--text2);margin-bottom:4px;padding-left:2px;">
-        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${tierColors[tier]};vertical-align:middle;margin-right:4px;"></span>
-        ${tierNames[tier] || tier}（${names.length}城）
-      </div>
-      <div style="display:flex;gap:4px;flex-wrap:wrap;">
-        ${names.map(c=>`<button onclick="toggleRadarCity('${c}')" style="
-          padding:4px 10px;border-radius:6px;border:1px solid ${radarSelected.includes(c)?CITIES[c].color||'var(--blue)':'var(--border)'};
-          background:${radarSelected.includes(c)?'rgba(88,166,255,.15)':'var(--bg2)'};
-          color:${radarSelected.includes(c)?'var(--blue)':'var(--text2)'};
-          font-size:11px;cursor:pointer;font-family:inherit;transition:.15s;"
-          title="¥${CITIES[c].cost.rent1r}/月">${c}</button>`).join('')}
-      </div>
-    </div>`).join('');
+  function renderRadarChart() {
+    var ctx=document.getElementById('radarChart');if(!ctx)return;
+    if(window.radarChart)window.radarChart.destroy();
+    var datasets=radarCities.map(function(c,i){return{label:CITIES[c].name,data:CITIES[c].radar,fill:true,backgroundColor:hexToRgba(RADAR_COLORS[i],.15),borderColor:RADAR_COLORS[i],pointBackgroundColor:RADAR_COLORS[i]};});
+    window.radarChart=new Chart(ctx,{type:'radar',data:{labels:RADAR_LABELS,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle'}}},scales:{r:{angleLines:{color:'rgba(255,255,255,0.06)'},grid:{color:'rgba(255,255,255,0.06)'},pointLabels:{font:{size:11}}}},animation:{duration:1000}}});
+    var picker=document.getElementById('radarCityPicker');
+    if(picker){var btns='';Object.keys(CITIES).forEach(function(c){var sel=radarCities.includes(c);btns+='<button onclick="toggleRadarCity(\''+c+'\')" style="padding:5px 10px;border-radius:6px;border:1px solid '+(sel?'#58a6ff':'#30363d')+';background:'+(sel?'rgba(88,166,255,0.15)':'var(--bg2)')+';color:'+(sel?'#58a6ff':'var(--text2)')+';font-size:12px;cursor:pointer;">'+CITIES[c].name+'</button>';});picker.innerHTML=btns;}
+  }
 
-  wrap.innerHTML = html + `<div style="font-size:11px;color:var(--text2);margin-top:6px;">已选: ${radarSelected.join(' / ')} (最多4城)</div>`;
-}
-function toggleRadarCity(c){
-  if(radarSelected.includes(c)) radarSelected=radarSelected.filter(x=>x!==c);
-  else if(radarSelected.length<4) radarSelected.push(c);
-  renderRadarCityPicker();
-  updateRadar();
-}
-const RADAR_COLORS=['#58a6ff','#3fb950','#f0883e','#bc8cff','#f85149','#d29922'];
-function hexToRgba(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;}
-function updateRadar(){
-  if(!radarChart) return;
-  radarChart.data.datasets=radarSelected.map((c,i)=>({label:c,data:CITIES[c].radar,fill:true,backgroundColor:hexToRgba(RADAR_COLORS[i%6],.15),borderColor:RADAR_COLORS[i%6],pointBackgroundColor:RADAR_COLORS[i%6]}));
-  radarChart.update();
-}
-function initRadarChart(){
-  const ctx=document.getElementById('radarChart').getContext('2d');
-  radarChart=new Chart(ctx,{
-    type:'radar',
-    data:{labels:RADAR_LABELS,datasets:radarSelected.map((c,i)=>({label:c,data:CITIES[c].radar,fill:true,backgroundColor:hexToRgba(RADAR_COLORS[i],.15),borderColor:RADAR_COLORS[i],pointBackgroundColor:RADAR_COLORS[i]}))},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{color:'#8b949e',boxWidth:10,font:{size:11}}}},
-      scales:{r:{min:0,max:100,grid:{color:'rgba(255,255,255,.07)'},angleLines:{color:'rgba(255,255,255,.07)'},ticks:{display:false},pointLabels:{color:'#e6edf3',font:{size:11}}}}}
-  });
-}
+  function toggleRadarCity(city) {
+    var idx=radarCities.indexOf(city);
+    if(idx>-1){if(radarCities.length>1)radarCities.splice(idx,1);}
+    else{if(radarCities.length<4)radarCities.push(city);}
+    renderRadarChart();
+  }
 
-// 出国 - 留学生流向
-let flowChartInst=null;
-function renderFlowChart(){
-  const ctx=document.getElementById('flowChart').getContext('2d');
-  if(flowChartInst) flowChartInst.destroy();
-  flowChartInst=new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['美国','英国','澳大利亚','加拿大','日本','德国','新加坡','新西兰','韩国','其他'],
-      datasets:[{label:'在外留学人数（万人）',data:[28.5,13.8,8.6,7.2,5.8,3.9,3.5,1.1,2.4,24.3],backgroundColor:['#f85149','#58a6ff','#d29922','#f0883e','#ff7b72','#bc8cff','#39d353','#7c8cf8','#f78166','rgba(139,148,158,.4)'],borderRadius:7}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw}万人留学`}}},
-      scales:{x:{grid:{display:false},ticks:{color:'#e6edf3',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#8b949e',callback:v=>`${v}万`}}}}
-  });
-}
-
-// 国家卡片
-function renderCountryGrid(){
-  const wrap=document.getElementById('countryGrid');
-  wrap.innerHTML=COUNTRIES.map((c,i)=>`
-    <div class="country-card" onclick="selectCountry(${i})" id="cc_${i}">
-      <div class="cc-flag">${c.flag}</div>
-      <div class="cc-name">${c.name}</div>
-      <div class="cc-type">${c.type}</div>
-      <div class="cc-metrics">
-        ${Object.entries(c.metrics).map(([k,v])=>`<div class="cc-metric"><div class="cc-metric-val" style="color:${c.color};font-size:11px;">${v}</div><div class="cc-metric-label">${k}</div></div>`).join('')}
-      </div>
-    </div>`).join('');
-}
-
-function selectCountry(idx){
-  document.querySelectorAll('.country-card').forEach(el=>el.classList.remove('selected'));
-  document.getElementById(`cc_${idx}`).classList.add('selected');
-  const c=COUNTRIES[idx];
-  const panel=document.getElementById('countryDetail');
-  panel.style.display='block';
-  panel.innerHTML=`
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
-      <span style="font-size:36px;">${c.flag}</span>
-      <div><h3 style="margin:0 0 4px;">${c.name} · ${c.type}</h3><span style="font-size:12px;color:var(--text2);">签证：${c.visa}</span></div>
-      <div style="margin-left:auto;text-align:right;">
-        <div style="font-size:12px;color:var(--text2);">首年启动成本</div>
-        <div style="font-size:18px;font-weight:800;color:${c.color};">¥${c.cost.min}万 ~ ${c.cost.avg}万</div>
-        <div style="font-size:11px;color:var(--text2);">（含学费+生活费）</div>
-      </div>
-    </div>
-    <div class="grid2">
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:10px;">📋 申请必要条件</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
-          ${c.require.map(r=>`<li style="font-size:12px;display:flex;gap:8px;"><span style="color:${c.color};">✓</span>${r}</li>`).join('')}
-        </ul>
-      </div>
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:10px;">📅 申请流程时间轴</div>
-        <div class="timeline">
-          ${c.process.map(p=>`<div class="tl-item"><div class="tl-month">${p.month}</div><div class="tl-text">${p.text}</div><div class="tl-sub">${p.sub}</div></div>`).join('')}
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:16px;">
-      <div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:10px;">📖 真实案例</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        ${c.cases.map(cs=>`<div style="background:var(--bg3);border-radius:10px;padding:12px;font-size:12px;"><strong style="color:${c.color};">${cs.name}</strong> · ${cs.school}<br><span style="color:var(--text2);font-size:11px;display:block;margin-top:3px;">→ ${cs.stay}</span><span style="color:var(--text);margin-top:4px;display:block;line-height:1.6;">${cs.note}</span></div>`).join('')}
-      </div>
-    </div>`;
-  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-// 出国类型饼图
-let typeChartInst=null;
-function renderTypeChart(){
-  const ctx=document.getElementById('typeChart').getContext('2d');
-  if(typeChartInst) typeChartInst.destroy();
-  typeChartInst=new Chart(ctx,{
-    type:'doughnut',
-    data:{labels:['学历留学（本科/研究生）','工作签证','打工度假WHV','自费移民/投资移民','陪读/随行'],datasets:[{data:[62,18,9,7,4],backgroundColor:['#58a6ff','#3fb950','#f0883e','#bc8cff','#d29922'],borderWidth:0,hoverOffset:6}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#8b949e',boxWidth:10,font:{size:10}}}}}
-  });
-}
-
-// 回国比例
-let returnChartInst=null;
-function renderReturnChart(){
-  const ctx=document.getElementById('returnChart').getContext('2d');
-  if(returnChartInst) returnChartInst.destroy();
-  returnChartInst=new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['美国','英国','澳大利亚','加拿大','日本','德国','新加坡'],
-      datasets:[
-        {label:'回国（%）',data:[25,48,32,28,58,52,38],backgroundColor:'#3fb950',borderRadius:4},
-        {label:'留在当地（%）',data:[75,52,68,72,42,48,62],backgroundColor:'#58a6ff',borderRadius:4},
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{color:'#8b949e',boxWidth:10,font:{size:10}}}},
-      scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#e6edf3',font:{size:10}}},y:{stacked:true,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#8b949e',callback:v=>`${v}%`}}}}
-  });
-}
-
-// 真实案例
-function renderCases(){
-  const cases=[
-    {icon:'🇺🇸',name:'程序员张先生',path:'CS本科→美国硕士→硅谷工作→H1B→绿卡',year:8,result:'留在美国，年薪$18万，已成为资深工程师',tag:'留下',color:'var(--green)'},
-    {icon:'🇬🇧',name:'金融专业李同学',path:'金融本科→伦敦LSE硕士→PSW→国内投行',year:3,result:'回国就业，英国学历在外资行认可度高',tag:'回国',color:'var(--blue)'},
-    {icon:'🇦🇺',name:'护理专业王女士',path:'国内护理→澳洲执照认证→技术移民',year:5,result:'拿到PR，布里斯班做注册护士，月薪¥4万+',tag:'移民',color:'var(--orange)'},
-    {icon:'🇩🇪',name:'机械工程孙同学',path:'德国慕工大硕士（免学费）→工作签',year:4,result:'留德工作，薪资€5.5万，但融入慢',tag:'留下',color:'var(--purple)'},
-    {icon:'🇳🇿',name:'文科毕业何同学',path:'打工度假WHV→果园+咖啡馆1年',year:1,result:'回国创业，存了7万，拓宽了视野',tag:'回国',color:'var(--teal)'},
+  var COUNTRIES=[
+    {id:'usa',flag:'🇺🇸',name:'美国',type:'留学',cost:45,accept:12,salary:'$75K',timeline:'12-18月',detail:'<p>✅ 优势：世界顶尖大学多，OPT允许工作3年，科技金融机会全球最多</p><p>❌ 难点：学费最贵，竞争激烈，签证敏感</p><p>💰 启动资金：建议准备50-80万人民币/年</p>',steps:['考托福/GRE','申请学校（提前1年）','获得I-20','缴SEVIS费','面签','入学'],regret:35},
+    {id:'uk',flag:'🇬🇧',name:'英国',type:'留学',cost:30,accept:25,salary:'£35K',timeline:'6-12月',detail:'<p>✅ 优势：一年制硕士性价比高，PSW签证2年，文化底蕴深厚</p><p>❌ 难点：留学时间短，就业窗口期紧，伦敦生活成本高</p><p>💰 启动资金：建议准备30-50万人民币/年</p>',steps:['考雅思','申请学校','获得CAS','肺结核体检','申请签证','入学'],regret:28},
+    {id:'aus',flag:'🇦🇺',name:'澳大利亚',type:'留学/打工',cost:25,accept:30,salary:'A$65K',timeline:'3-6月',detail:'<p>✅ 优势：移民友好，WHV打工度假签对中国开放，自然环境好</p><p>❌ 难点：部分专业就业难，远离主流市场</p><p>💰 启动资金：建议准备20-35万人民币/年</p>',steps:['考雅思','申请学校/签证','获批','订机票','入境'],regret:22},
+    {id:'can',flag:'🇨🇦',name:'加拿大',type:'留学/移民',cost:22,accept:35,salary:'C$65K',timeline:'6-12月',detail:'<p>✅ 优势：移民政策最友好，留学转移民路径清晰，社会福利好</p><p>❌ 难点：气候寒冷，部分地区工作机会少</p><p>💰 启动资金：建议准备20-30万人民币/年</p>',steps:['考雅思/托福','申请学校','获录取通知书','申请学生签证','体检','入境'],regret:18},
+    {id:'jpn',flag:'🇯🇵',name:'日本',type:'留学/工作',cost:15,accept:40,salary:'¥400万',timeline:'3-6月',detail:'<p>✅ 优势：费用低，文化相近，就业稳定，社会安全</p><p>❌ 难点：语言要求高，职场文化差异，起薪相对较低</p><p>💰 启动资金：建议准备8-15万人民币/年</p>',steps:['学日语（N3以上）','申请学校/工作','在留资格认定','申请签证','入境'],regret:25},
+    {id:'ger',flag:'🇩🇪',name:'德国',type:'留学',cost:8,accept:50,salary:'€50K',timeline:'6-12月',detail:'<p>✅ 优势：多数公立大学免学费，教育质量高，工业强国就业好</p><p>❌ 难点：德语要求高，毕业要求严格，冬季寒冷</p><p>💰 启动资金：建议准备8-12万人民币/年</p>',steps:['学德语','申请大学','获Zulassung','申请签证','入学'],regret:20},
+    {id:'sgp',flag:'🇸🇬',name:'新加坡',type:'留学/工作',cost:20,accept:35,salary:'S$65K',timeline:'2-4月',detail:'<p>✅ 优势：离家近，英语环境，就业机会多，税率低</p><p>❌ 难点：竞争激烈，生活成本高，移民门槛提高</p><p>💰 启动资金：建议准备15-25万人民币/年</p>',steps:['申请学校/工作','获批','申请签证','入境'],regret:30},
+    {id:'kor',flag:'🇰🇷',name:'韩国',type:'留学',cost:10,accept:60,salary:'₩4000万',timeline:'3-6月',detail:'<p>✅ 优势：学费低，文化流行，韩企就业机会，留学成本低</p><p>❌ 难点：语言要求高，薪资水平相对较低</p><p>💰 启动资金：建议准备6-10万人民币/年</p>',steps:['学韩语（TOPIK3+）','申请学校','获标准入学许可','申请签证','入学'],regret:24},
+    {id:'nz',flag:'🇳🇿',name:'新西兰',type:'打工/移民',cost:12,accept:55,salary:'NZ$60K',timeline:'1-3月',detail:'<p>✅ 优势：WHV对中国开放，移民政策友好，自然环境优美</p><p>❌ 难点：工作机会相对较少，经济规模小</p><p>💰 启动资金：建议准备5-10万人民币</p>',steps:['申请WHV抽签','获签','订机票','入境'],regret:15}
   ];
-  document.getElementById('caseList').innerHTML=cases.map(c=>`
-    <div style="background:var(--bg3);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;">
-      <span style="font-size:22px;">${c.icon}</span>
-      <div style="flex:1;">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;">
-          <strong style="font-size:13px;">${c.name}</strong>
-          <span style="background:${c.color}22;color:${c.color};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;">${c.tag}</span>
-          <span style="color:var(--text2);font-size:11px;margin-left:auto;">${c.year}年</span>
-        </div>
-        <div style="font-size:11px;color:var(--blue);margin-bottom:4px;">${c.path}</div>
-        <div style="font-size:12px;color:var(--text);line-height:1.6;">${c.result}</div>
-      </div>
-    </div>`).join('');
-}
 
-// 时间轴
-function renderTimelines(){
-  const study=[
-    {month:'大三下学期',text:'开始备考语言（托福/雅思/德语）',sub:'至少提前12-18个月'},
-    {month:'大四上学期',text:'确定申请名单，撰写文书、PS',sub:'找推荐人，索要推荐信'},
-    {month:'大四9-12月',text:'集中提交网申',sub:'截止时间因校而异'},
-    {month:'大四下学期',text:'等待录取，准备存款证明',sub:'申请签证，订机票'},
-    {month:'毕业后8-9月',text:'出发入学',sub:'硕士一般1-2年完成'},
-  ];
-  const work=[
-    {month:'提前6月',text:'确定目标国+签证类型',sub:'打工度假/技术移民/工签路径不同'},
-    {month:'提前4月',text:'准备材料（存款/体检/保险）',sub:'打工度假相对简单，工签需要雇主'},
-    {month:'提前1月',text:'下签，预定机票住宿',sub:'建议先联系当地华人社群'},
-    {month:'到达后',text:'办理税号/社保卡/银行卡',sub:'找工作前先办好基础手续'},
-    {month:'1-2年后',text:'评估是否继续留下/换路径',sub:'转读书、换签、或回国'},
-  ];
-  document.getElementById('studyTimeline').innerHTML=study.map(s=>`<div class="tl-item"><div class="tl-month">${s.month}</div><div class="tl-text">${s.text}</div><div class="tl-sub">${s.sub}</div></div>`).join('');
-  document.getElementById('workTimeline').innerHTML=work.map(s=>`<div class="tl-item"><div class="tl-month" style="color:var(--green);">${s.month}</div><div class="tl-text">${s.text}</div><div class="tl-sub">${s.sub}</div></div>`).join('');
-}
+  var flowLabels=['美国','英国','澳大利亚','加拿大','日本','德国','新加坡','韩国','其他'];
+  var flowData=[42,15,12,10,8,7,6,4,16];
+  var typeData=[62,18,9,7,4];
+  var returnData=[45,55];
 
-// ══ SCROLL ANIMATION ══
-function onScroll(){
-  document.querySelectorAll('.fade-in').forEach(el=>{
-    if(el.getBoundingClientRect().top < window.innerHeight-60) el.classList.add('visible');
-  });
-}
-window.addEventListener('scroll', onScroll, {passive:true});
+  function renderFlowChart() {
+    var ctx=document.getElementById('flowChart');if(!ctx)return;
+    if(window.flowChartInst)window.flowChartInst.destroy();
+    window.flowChartInst=new Chart(ctx,{type:'bar',data:{labels:flowLabels,datasets:[{label:'占比(%)',data:flowData,backgroundColor:['rgba(59,130,246,0.7)','rgba(16,185,129,0.7)','rgba(245,158,11,0.7)','rgba(168,85,247,0.7)','rgba(249,115,22,0.7)','rgba(99,102,241,0.7)','rgba(236,72,153,0.7)','rgba(20,184,166,0.7)','rgba(107,114,128,0.7)'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:function(v){return v+'%';}}},y:{grid:{display:false}}}},animation:{duration:1000}});
+  }
 
-// ══ INIT ══
-(function(){
-  applyLang();
-  document.querySelectorAll('.lang-btn').forEach(b=>{
-    b.classList.toggle('active', b.getAttribute('data-lang') === currentLang);
-  });
-  initCitySelector();
-  renderRent();
-  renderCommute();
-  renderCostGrid();
-  renderPopGrid();
-  renderHeatmap();
-  renderCompetChart();
-  renderNeiwaiChart();
-  renderRadarCityPicker();
-  initRadarChart();
-  renderFlowChart();
-  renderCountryGrid();
-  renderTypeChart();
-  renderReturnChart();
-  renderCases();
-  renderTimelines();
-  setTimeout(onScroll,100);
+  function renderTypeChart() {
+    var ctx=document.getElementById('typeChart');if(!ctx)return;
+    if(window.typeChartInst)window.typeChartInst.destroy();
+    window.typeChartInst=new Chart(ctx,{type:'doughnut',data:{labels:['学历留学（本科/研究生）','工作签证','打工度假WHV','自费移民/投资移民','陪读/随行'],datasets:[{data:typeData,backgroundColor:['#58a6ff','#3fb950','#f0883e','#bc8cff','#d29922'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,pointStyle:'circle',font:{size:10}}}}}});
+  }
+
+  function renderReturnChart() {
+    var ctx=document.getElementById('returnChart');if(!ctx)return;
+    if(window.returnChartInst)window.returnChartInst.destroy();
+    window.returnChartInst=new Chart(ctx,{type:'bar',data:{labels:['留在海外','回国发展'],datasets:[{label:'占比(%)',data:returnData,backgroundColor:['rgba(63,185,80,0.7)','rgba(248,81,73,0.7)'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:function(v){return v+'%';}}},x:{grid:{display:false}}}},animation:{duration:800}});
+  }
+
+  function renderCountryGrid() {
+    var html='';COUNTRIES.forEach(function(c){
+      html+='<div class="country-card" onclick="showCountryDetail(\''+c.id+'\')">';
+      html+='<div class="cc-flag">'+c.flag+'</div>';
+      html+='<div class="cc-name">'+c.name+'</div>';
+      html+='<div class="cc-type">'+c.type+'</div>';
+      html+='<div class="cc-metrics">';
+      html+='<div class="cc-metric"><div class="cc-metric-val">¥'+c.cost+'万</div><div class="cc-metric-label">年费用</div></div>';
+      html+='<div class="cc-metric"><div class="cc-metric-val">'+c.accept+'%</div><div class="cc-metric-label">通过率</div></div>';
+      html+='<div class="cc-metric"><div class="cc-metric-val">'+c.salary+'</div><div class="cc-metric-label">薪资</div></div>';
+      html+='<div class="cc-metric"><div class="cc-metric-val">'+c.timeline+'</div><div class="cc-metric-label">周期</div></div>';
+      html+='</div></div>';
+    });document.getElementById('countryGrid').innerHTML=html;
+  }
+
+  function showCountryDetail(id) {
+    var c=COUNTRIES.find(function(x){return x.id===id;});if(!c)return;
+    document.querySelectorAll('.country-card').forEach(function(el){el.classList.remove('selected');});
+    event.currentTarget.classList.add('selected');
+    var t=I18N[currentLang];
+    var html='<h3>'+c.flag+' '+c.name+' '+c.type+'</h3>';
+    html+=c.detail;
+    html+='<div style="margin-top:16px;"><div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;">📋 申请步骤</div><ol class="step-list">';
+    c.steps.forEach(function(s){html+='<li><div class="step-text"><strong>'+s+'</strong></div></li>';});
+    html+='</ol></div>';
+    html+='<div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:10px;"><span style="color:var(--yellow);">⚠️</span> 后悔率：'+c.regret+'%（回国调研数据）</div>';
+    document.getElementById('countryDetail').innerHTML=html;document.getElementById('countryDetail').style.display='block';
+  }
+
+  function renderCases() {
+    var cases=[{name:'张同学',from:'美国硕士',story:'在硅谷工作3年后回国，现在深圳一家科技公司做技术总监，薪资是国内的2倍。','regret':false},{name:'李同学',from:'澳大利亚WHV',story:'打工度假2年攒了20万，回国后发现国内竞争更激烈了。','regret':true},{name:'王同学',from:'日本修士',story:'毕业后在东京一家游戏公司工作，已申请高度人才签证准备移民。','regret':false}];
+    document.getElementById('caseList').innerHTML=cases.map(function(c){return'<div style="padding:12px;background:var(--bg3);border-radius:8px;"><div style="font-size:12px;font-weight:700;margin-bottom:4px;">'+c.name+' · '+c.from+(c.regret?' <span style="color:var(--red);">后悔</span>':' <span style="color:var(--green);">值得</span>')+'</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">'+c.story+'</div></div>';}).join('');
+  }
+
+  function renderTimelines() {
+    var study=['T-12月：开始准备语言考试','T-10月：开始申请学校','T-4月：获得录取通知','T-2月：申请签证','T-1月：行前准备','T0：入学'];
+    var work=['T-6月：准备材料','T-3月：申请工签/WHV','T-1月：获得批准','T0：出发'];
+    document.getElementById('studyTimeline').innerHTML=study.map(function(t){var parts=t.split('：');return'<div class="tl-item"><div class="tl-month">'+parts[0]+'</div><div class="tl-text">'+parts[1]+'</div></div>';}).join('');
+    document.getElementById('workTimeline').innerHTML=work.map(function(t){var parts=t.split('：');return'<div class="tl-item"><div class="tl-month">'+parts[0]+'</div><div class="tl-text">'+parts[1]+'</div></div>';}).join('');
+  }
+
+  function showCityDropdown() {var dd=document.getElementById('cityDropdown');if(dd)dd.style.display='block';}
+  function filterCities() {var q=document.getElementById('citySearch').value.toLowerCase();var cities=['shenzhen','beijing','shanghai','guangzhou','hangzhou','chengdu','nanjing','wuhan'];var filtered=cities.filter(function(c){return CITIES[c].name.toLowerCase().includes(q);});document.getElementById('cityDropdownList').innerHTML=filtered.map(function(c){return'<div onclick="selectCity(\''+c+'\')" style="padding:8px 14px;cursor:pointer;font-size:13px;" onmouseover="this.style.background=\'var(--bg3)\'" onmouseout="this.style.background=\'none\'">'+CITIES[c].name+'</div>';}).join('');}
+
+  function onScroll(){document.querySelectorAll('.fade-in').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-60)el.classList.add('visible');});}
+  window.addEventListener('scroll',onScroll,{passive:true});
+
+  (function(){
+    applyLang();
+    document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-lang')===currentLang);});
+    initCitySelector();
+    renderRent();
+    renderCommute();
+    renderCostGrid();
+    renderPopGrid();
+    renderHeatmap();
+    renderCompetChart();
+    renderNeiwaiChart();
+    renderRadarChart();
+    renderFlowChart();
+    renderTypeChart();
+    renderReturnChart();
+    renderCountryGrid();
+    renderCases();
+    renderTimelines();
+    setTimeout(onScroll,100);
+  })();
 })();
 </script>
 </body>
