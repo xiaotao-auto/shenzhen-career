@@ -2,664 +2,543 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="description" content="2025大学毕业生选择指南 - 国内城市对比与出国留学打工完整数据">
-<title data-i18n="pageTitle">2025 大学毕业生选择指南</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 大学毕业生选择指南</title>
+<meta name="description" content="国内8城深度对比与出国留学打工完整数据">
 <script src="lib/chart.min.js"></script>
 <script src="nav.js" defer></script>
 <style>
-  :root {
-    --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --border: #30363d;
-    --text: #e6edf3; --text2: #8b949e; --accent: #f78166;
-    --blue: #58a6ff; --green: #3fb950; --yellow: #d29922;
-    --purple: #bc8cff; --teal: #39d353; --orange: #f0883e; --red: #f85149;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--text); font-family:'PingFang SC','Helvetica Neue','Arial',sans-serif; overflow-x:hidden; padding-top:56px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #0a0f1a;
+  color: #e8f0f8;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
 
-  #topbar {
-    position:fixed; top:0; left:0; right:0; z-index:1000;
-    background:rgba(13,17,23,.92); backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
-    display:flex; align-items:center; gap:10px;
-    padding:10px 16px; flex-wrap:wrap;
-    min-height:48px;
-  }
-  #topbar .site-name { font-size:13px; font-weight:700; color:var(--blue); flex:1; white-space:nowrap; }
-  #search-box {
-    display:flex; align-items:center; gap:6px;
-    background:var(--bg2); border:1px solid var(--border); border-radius:8px;
-    padding:6px 12px; flex:1; max-width:280px; min-width:120px;
-  }
-  #search-box input {
-    background:none; border:none; outline:none; color:var(--text); font-size:13px; width:100%;
-  }
-  #search-box input::placeholder { color:var(--text2); }
-  #search-count { font-size:11px; color:var(--text2); white-space:nowrap; }
-  .search-highlight { background:rgba(255,200,0,.35); border-radius:2px; color:var(--text); }
-  .search-highlight.current { background:rgba(255,150,0,.7); }
+.container { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
 
-  .lang-btns { display:flex; gap:4px; flex-shrink:0; }
-  .lang-btn {
-    padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer;
-    border:1px solid var(--border); background:var(--bg2); color:var(--text2); transition:.15s;
-  }
-  .lang-btn.active { background:var(--blue); border-color:var(--blue); color:#0d1117; font-weight:700; }
-  .lang-btn:hover:not(.active) { border-color:var(--blue); color:var(--blue); }
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 60px 16px 40px;
+  background: linear-gradient(180deg, rgba(0,212,255,0.08) 0%, transparent 100%);
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #00d4ff 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+}
+.hero p { color: #8ba3b8; font-size: 15px; line-height: 1.7; }
 
-  .container { max-width:1200px; margin:0 auto; padding:0 16px; }
+/* Section */
+.section { padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.section:last-child { border-bottom: none; }
 
-  .hero {
-    min-height:70vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    background: radial-gradient(ellipse at 20% 50%, rgba(88,166,255,.12) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(247,129,102,.1) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 80%, rgba(63,185,80,.08) 0%, transparent 60%), var(--bg);
-    text-align:center; padding:60px 20px;
-  }
-  .hero-badge { display:inline-block; background:rgba(88,166,255,.15); border:1px solid rgba(88,166,255,.3); color:var(--blue); padding:6px 18px; border-radius:20px; font-size:13px; margin-bottom:24px; }
-  .hero h1 { font-size:clamp(28px,5vw,56px); font-weight:800; line-height:1.2; margin-bottom:16px;
-    background:linear-gradient(135deg,#e6edf3 0%,#58a6ff 40%,#f78166 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-  .hero p { font-size:clamp(14px,2vw,17px); color:var(--text2); max-width:600px; line-height:1.8; margin-bottom:32px; }
-  .hero-nav { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
-  .hero-nav a { padding:12px 24px; border-radius:10px; font-size:14px; font-weight:600; text-decoration:none; transition:.2s; }
-  .hero-nav a.pri { background:var(--blue); color:#0d1117; }
-  .hero-nav a.pri:hover { background:#79c0ff; transform:translateY(-2px); }
-  .hero-nav a.sec { border:1px solid var(--border); color:var(--text); }
-  .hero-nav a.sec:hover { border-color:var(--blue); color:var(--blue); }
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title span { font-size: 24px; }
+.section-desc { color: #6a7a8a; font-size: 13px; margin-bottom: 20px; }
 
-  .section { padding:60px 0; }
-  .section-tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:4px; margin-bottom:16px; }
-  .section-tag.blue { background:rgba(88,166,255,.15); color:var(--blue); }
-  .section-tag.orange { background:rgba(240,136,62,.15); color:var(--orange); }
-  .section-tag.green { background:rgba(63,185,80,.15); color:var(--green); }
-  .section-title { font-size:clamp(22px,3.5vw,36px); font-weight:800; margin-bottom:12px; }
-  .section-desc { color:var(--text2); font-size:15px; line-height:1.7; max-width:700px; margin-bottom:32px; }
+/* Tabs */
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #8ba3b8;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.tab:hover { border-color: #00d4ff; color: #00d4ff; }
+.tab.active { background: #00d4ff; border-color: #00d4ff; color: #0a0f1a; font-weight: 600; }
 
-  .city-selector { margin-bottom:24px; }
-  .city-selector input {
-    width:100%; max-width:320px; padding:10px 14px;
-    background:var(--bg2); border:1px solid var(--border); border-radius:10px;
-    color:var(--text); font-size:14px; outline:none;
-  }
-  .city-selector input:focus { border-color:var(--blue); }
-  .city-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
-  .city-tab { padding:7px 14px; border-radius:8px; border:1px solid var(--border); background:var(--bg2); color:var(--text2); cursor:pointer; font-size:13px; transition:.2s; }
-  .city-tab:hover { border-color:var(--blue); color:var(--blue); }
-  .city-tab.active { background:var(--blue); border-color:var(--blue); color:#0d1117; font-weight:700; }
+/* Cards */
+.card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.chart-box { position: relative; height: 240px; width: 100%; }
 
-  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; }
-  .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
-  .grid4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
+/* Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.stat-num { font-size: 24px; font-weight: 800; color: #00d4ff; }
+.stat-label { font-size: 11px; color: #6a7a8a; margin-top: 4px; }
 
-  .card { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:20px; transition:.2s; }
-  .card:hover { border-color:rgba(88,166,255,.35); }
-  .card-title { font-size:14px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
-  .card-sub { font-size:12px; color:var(--text2); margin-bottom:14px; line-height:1.5; }
+/* Bar Chart */
+.bar-item { margin-bottom: 12px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+.bar-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
 
-  .rent-grid { display:grid; gap:8px; }
-  .rent-row { display:flex; align-items:center; gap:10px; }
-  .rent-label { width:80px; font-size:12px; color:var(--text2); flex-shrink:0; }
-  .rent-bar-wrap { flex:1; background:var(--bg3); border-radius:4px; height:18px; overflow:hidden; }
-  .rent-bar { height:100%; border-radius:4px; display:flex; align-items:center; padding-left:8px; font-size:10px; font-weight:700; color:#0d1117; }
-  .rent-val { width:70px; font-size:12px; font-weight:700; text-align:right; }
+/* Country Grid */
+.country-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.country-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.country-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
+.country-card.selected { border-color: #00d4ff; background: rgba(0,212,255,0.1); }
+.country-flag { font-size: 32px; margin-bottom: 8px; }
+.country-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.country-type { font-size: 11px; color: #6a7a8a; }
 
-  .stat-box { text-align:center; padding:16px; background:var(--bg3); border-radius:10px; }
-  .stat-num { font-size:clamp(22px,3vw,32px); font-weight:800; line-height:1.1; }
-  .stat-label { font-size:12px; color:var(--text2); margin-top:6px; }
-  .up { color:var(--green); } .down { color:var(--red); } .mid { color:var(--yellow); }
+/* Detail */
+.detail-box {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+  display: none;
+}
+.detail-box.show { display: block; }
+.detail-box h3 { font-size: 16px; margin-bottom: 12px; }
+.detail-box p { font-size: 13px; color: #8ba3b8; line-height: 1.7; margin-bottom: 8px; }
+.steps { list-style: none; margin-top: 12px; }
+.steps li {
+  counter-increment: step;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.steps li::before {
+  content: counter(step);
+  background: #00d4ff;
+  color: #0a0f1a;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
 
-  .chart-container { position:relative; width:100%; height:260px; }
-  .chart-container.tall { height:320px; }
+/* Heatmap */
+.heatmap {
+  display: grid;
+  grid-template-columns: 50px repeat(12, 1fr);
+  gap: 2px;
+  font-size: 9px;
+  margin-top: 12px;
+}
+.heatmap-header { text-align: center; color: #6a7a8a; padding: 4px 0; }
+.heatmap-label { display: flex; align-items: center; font-size: 10px; color: #8ba3b8; }
+.hm-cell { height: 20px; border-radius: 3px; }
+.hm-legend { display: flex; gap: 16px; margin-top: 12px; font-size: 11px; color: #6a7a8a; }
 
-  .heatmap { display:grid; grid-template-columns:56px repeat(12,1fr); gap:2px; font-size:10px; }
-  .heatmap-header { text-align:center; color:var(--text2); padding:3px 0; font-size:10px; }
-  .heatmap-label { color:var(--text2); display:flex; align-items:center; font-size:9px; padding-right:2px; word-break:break-all; line-height:1.2; }
-  .hm-cell { height:28px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; cursor:default; }
-  .hm-legend { display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:11px;color:var(--text2); }
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px 16px;
+  color: #4a5a6a;
+  font-size: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+footer a { color: #00d4ff; text-decoration: none; }
 
-  .commute-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }
-  .commute-item:last-child { border-bottom:none; }
-  .commute-area { width:90px; font-size:12px; font-weight:600; line-height:1.4; }
-  .commute-time { display:flex; gap:6px; align-items:center; flex:1; }
-  .commute-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-  .commute-info { font-size:12px; }
-
-  .pill { display:inline-block; padding:3px 9px; border-radius:12px; font-size:11px; margin:2px; }
-  .pill-blue { background:rgba(88,166,255,.15); color:var(--blue); }
-  .pill-green { background:rgba(63,185,80,.15); color:var(--green); }
-  .pill-orange { background:rgba(240,136,62,.15); color:var(--orange); }
-  .pill-red { background:rgba(248,81,73,.15); color:var(--red); }
-  .pill-purple { background:rgba(188,140,255,.15); color:var(--purple); }
-
-  .prog-row { margin-bottom:12px; }
-  .prog-head { display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px; }
-  .prog-track { background:var(--bg3); border-radius:4px; height:8px; }
-  .prog-fill { height:100%; border-radius:4px; }
-
-  .country-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
-  .country-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px; cursor:pointer; transition:.2s; }
-  .country-card:hover { border-color:var(--blue); transform:translateY(-2px); }
-  .country-card.selected { border-color:var(--blue); background:rgba(88,166,255,.08); }
-  .cc-flag { font-size:28px; margin-bottom:6px; }
-  .cc-name { font-size:14px; font-weight:700; margin-bottom:3px; }
-  .cc-type { font-size:11px; color:var(--text2); margin-bottom:8px; }
-  .cc-metrics { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-  .cc-metric { background:var(--bg3); border-radius:6px; padding:6px; text-align:center; }
-  .cc-metric-val { font-size:12px; font-weight:700; }
-  .cc-metric-label { font-size:10px; color:var(--text2); margin-top:1px; }
-
-  .detail-panel { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:24px; margin-top:20px; }
-  .detail-panel h3 { font-size:18px; font-weight:800; margin-bottom:18px; }
-  .step-list { list-style:none; counter-reset:steps; }
-  .step-list li { counter-increment:steps; display:flex; gap:14px; margin-bottom:16px; align-items:flex-start; }
-  .step-list li::before { content:counter(steps); background:var(--blue); color:#0d1117; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
-  .step-text strong { display:block; font-size:13px; margin-bottom:3px; }
-  .step-text span { font-size:12px; color:var(--text2); line-height:1.6; }
-
-  .timeline { position:relative; padding-left:20px; }
-  .timeline::before { content:''; position:absolute; left:5px; top:0; bottom:0; width:2px; background:var(--border); }
-  .tl-item { position:relative; margin-bottom:14px; }
-  .tl-item::before { content:''; position:absolute; left:-17px; top:3px; width:8px; height:8px; border-radius:50%; border:2px solid var(--blue); background:var(--bg); }
-  .tl-month { font-size:11px; color:var(--blue); font-weight:700; margin-bottom:2px; }
-  .tl-text { font-size:13px; color:var(--text); }
-  .tl-sub { font-size:11px; color:var(--text2); margin-top:2px; }
-
-  .divider { border:none; border-top:1px solid var(--border); margin:0; }
-
-  footer {
-    background:#0d1b2e; border-top:1px solid rgba(88,166,255,.12);
-    padding:40px 20px 32px; text-align:center; font-size:13px; color:#7ba3c4;
-  }
-  .author-card {
-    display:inline-flex; align-items:center; gap:14px;
-    background:linear-gradient(135deg,rgba(88,166,255,.10),rgba(188,140,255,.10));
-    border:1px solid rgba(88,166,255,.25);
-    padding:14px 22px; border-radius:14px; margin-bottom:20px;
-  }
-  .author-avatar {
-    width:50px; height:50px; border-radius:50%;
-    background:linear-gradient(135deg,#58a6ff,#bc8cff);
-    display:flex; align-items:center; justify-content:center;
-    font-size:20px; font-weight:700; color:#0d1117; flex-shrink:0;
-  }
-  .author-info { text-align:left; }
-  .author-name { font-size:16px; font-weight:700; color:#e6edf3; margin-bottom:3px; }
-  .author-title { font-size:12px; color:#8b949e; margin-bottom:4px; }
-  .author-contact { font-size:12px; }
-  .author-contact a { color:#58a6ff; text-decoration:none; }
-  .author-contact a:hover { text-decoration:underline; }
-
-  .fade-in { opacity:0; transform:translateY(16px); transition:.5s ease; }
-  .fade-in.visible { opacity:1; transform:none; }
-
-  @media(max-width:768px){
-    body { padding-top:52px; }
-    .hero { padding:50px 16px; min-height:60vh; }
-    .section { padding:40px 0; }
-    .heatmap { grid-template-columns:44px repeat(12,1fr); }
-    .hm-cell { height:22px; }
-    .city-tab { padding:6px 10px; font-size:12px; }
-    .grid2, .grid3, .grid4 { gap:12px; }
-    .card { padding:16px; }
-    .chart-container { height:220px; }
-    .chart-container.tall { height:280px; }
-    .city-selector input { max-width:100%; }
-  }
-  @media(max-width:480px){
-    .hero h1 { font-size:26px; }
-    .section-title { font-size:20px; }
-    .hero-nav a { padding:10px 16px; font-size:13px; }
-    .heatmap { grid-template-columns:38px repeat(12,1fr); gap:1px; }
-    .hm-cell { height:18px; font-size:0; }
-    .hm-legend { font-size:10px; gap:10px; }
-    .lang-btn { padding:4px 7px; font-size:11px; }
-    #search-box { max-width:120px; }
-    .country-grid { grid-template-columns:1fr 1fr; }
-  }
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .country-grid { grid-template-columns: repeat(2, 1fr); }
+  .chart-box { height: 200px; }
+}
+@media (max-width: 480px) {
+  .hero { padding: 40px 12px 30px; }
+  .section { padding: 30px 0; }
+  .card { padding: 16px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .country-grid { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
 
-<div id="topbar">
-  <div class="site-name" data-i18n="navTitle">🎓 毕业生指南</div>
-  <div id="search-box">
-    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#8b949e" stroke-width="1.5"/><path d="M11 11l3 3" stroke="#8b949e" stroke-width="1.5" stroke-linecap="round"/></svg>
-    <input type="text" id="searchInput" placeholder="搜索关键词…" autocomplete="off" spellcheck="false">
-    <span id="search-count"></span>
-  </div>
-  <div class="lang-btns">
-    <button class="lang-btn active" data-lang="zh" onclick="setLang('zh')">简体</button>
-    <button class="lang-btn" data-lang="zt" onclick="setLang('zt')">繁體</button>
-    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
-  </div>
-</div>
-
 <div class="container">
+  <!-- Hero -->
   <div class="hero">
-    <div class="hero-badge" data-i18n="heroBadge">🎓 2025 版 · 数据驱动决策</div>
-    <h1 data-i18n="heroTitle">大学毕业，<br>你的路在哪里？</h1>
-    <p data-i18n="heroDesc">国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的那个选择</p>
-    <div class="hero-nav">
-      <a href="#domestic" class="pri" data-i18n="navDomestic">🏙️ 国内城市选择</a>
-      <a href="#abroad" class="sec" data-i18n="navAbroad">✈️ 出国留学/打工</a>
+    <h1>大学毕业，你的路在哪里？</h1>
+    <p>国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的选择</p>
+  </div>
+
+  <!-- Part 1: 国内城市 -->
+  <div class="section">
+    <div class="section-title"><span>🏙️</span> 国内城市选择</div>
+    <p class="section-desc">从租房成本、通勤时间、生活消费、就业机会帮你选出最适合的城市</p>
+    
+    <div class="tabs" id="cityTabs"></div>
+    
+    <div class="stats-grid" id="statsGrid"></div>
+    
+    <div class="card">
+      <div class="card-title">🏠 分区租金对比（元/月）</div>
+      <div id="rentBars"></div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">📊 行业竞争指数</div>
+      <div class="chart-box"><canvas id="competChart"></canvas></div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">🎯 体制内 vs 体制外对比</div>
+      <div class="chart-box"><canvas id="neiwaiChart"></canvas></div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">📅 全年招聘热力图</div>
+      <div class="heatmap" id="heatmap"></div>
+      <div class="hm-legend">
+        <span style="color:#1a4a8c;">■</span> 少
+        <span style="color:#1a73e8;">■</span> 中
+        <span style="color:#7fc6ff;">■</span> 多
+      </div>
     </div>
   </div>
 
-  <section id="domestic" class="section fade-in">
-    <div class="section-tag blue">PART 01</div>
-    <h2 class="section-title" data-i18n="p1Title">国内城市选择指南</h2>
-    <p class="section-desc" data-i18n="p1Desc">从租房成本、通勤时间、生活消费、就业机会到单身比例，帮你选出最适合自己的第一座城市。</p>
-
-    <div class="city-selector">
-      <input type="text" id="citySearch" placeholder="搜索城市…" autocomplete="off" onfocus="showCityDropdown()" oninput="filterCities()">
-      <div class="city-tabs" id="cityTabs"></div>
-      <div id="currentCityName" style="font-size:14px;font-weight:700;color:var(--blue);margin-top:12px;"></div>
+  <!-- Part 2: 出国 -->
+  <div class="section">
+    <div class="section-title"><span>✈️</span> 出国留学 / 打工</div>
+    <p class="section-desc">全球流向、各国门槛、申请流程、真实案例</p>
+    
+    <div class="card">
+      <div class="card-title">🌍 留学目的地分布</div>
+      <div class="chart-box"><canvas id="flowChart"></canvas></div>
     </div>
-
-    <div class="grid2" style="margin-bottom:16px;">
-      <div class="card">
-        <div class="card-title">🏠 <span data-i18n="rentTitle">分区租金（元/月·一居室）</span></div>
-        <div class="card-sub" id="rentSub"></div>
-        <div class="rent-grid" id="rentGrid"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">🚇 <span data-i18n="commuteTitle">通勤时长 & 成本</span></div>
-        <div class="card-sub" data-i18n="commuteSub">从热门居住区到主要就业区</div>
-        <div id="commuteList"></div>
-      </div>
+    
+    <div class="country-grid" id="countryGrid"></div>
+    <div class="detail-box" id="detailBox"></div>
+    
+    <div class="card" style="margin-top: 20px;">
+      <div class="card-title">💬 回国者后悔率调研</div>
+      <div id="regretStats"></div>
     </div>
-
-    <div class="grid4" id="costGrid" style="margin-bottom:16px;"></div>
-
-    <div class="card fade-in" style="margin-bottom:16px;">
-      <div class="card-title">📅 <span data-i18n="heatTitle">全年52周招聘热力图</span></div>
-      <div class="card-sub" data-i18n="heatSub">岗位发布数量 × 月份 × 行业类型（颜色深 = 机会多）</div>
-      <div style="overflow-x:auto;padding-top:6px;">
-        <div class="heatmap" id="heatmap"></div>
-      </div>
-      <div class="hm-legend">
-        <span>▇ <span style="color:#0d4a8c">少</span></span>
-        <span>▇ <span style="color:#1a73e8">中</span></span>
-        <span>▇ <span style="color:#7fc6ff">多</span></span>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-        <span class="pill pill-blue">🏛️ <span data-i18n="secGov">体制内</span></span>
-        <span class="pill pill-green">💼 <span data-i18n="secTech">互联网/科技</span></span>
-        <span class="pill pill-orange">🏭 <span data-i18n="secMfg">制造/传统</span></span>
-        <span class="pill pill-purple">💹 <span data-i18n="secFin">金融</span></span>
-      </div>
-    </div>
-
-    <div class="grid2" style="margin-bottom:16px;">
-      <div class="card">
-        <div class="card-title">⚔️ <span data-i18n="competTitle">各行业竞争压力指数</span></div>
-        <div class="card-sub" data-i18n="competSub">投递量/录取量比值（越高越卷）</div>
-        <div class="chart-container"><canvas id="competChart"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title">🏛️ <span data-i18n="neiwaiTitle">体制内 vs 体制外</span></div>
-        <div class="card-sub" data-i18n="neiwaiSub">综合六维度对比</div>
-        <div class="chart-container"><canvas id="neiwaiChart"></canvas></div>
-      </div>
-    </div>
-
-    <div class="grid3 fade-in" id="popGrid" style="margin-bottom:16px;"></div>
-
-    <div class="card fade-in">
-      <div class="card-title">🎯 <span data-i18n="radarTitle">城市综合评分雷达</span></div>
-      <div class="card-sub" data-i18n="radarSub">选择2-3个城市进行横向对比</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;" id="radarCityPicker"></div>
-      <div class="chart-container tall" style="max-width:480px;margin:0 auto;"><canvas id="radarChart"></canvas></div>
-    </div>
-  </section>
-</div>
-
-<hr class="divider">
-
-<div class="container">
-  <section id="abroad" class="section fade-in">
-    <div class="section-tag orange">PART 02</div>
-    <h2 class="section-title" data-i18n="p2Title">出国留学 / 打工指南</h2>
-    <p class="section-desc" data-i18n="p2Desc">全球人口流向、各国申请门槛、最低启动成本、流程时间轴，以及那些出去又回来的人在想什么。</p>
-
-    <div class="card fade-in" style="margin-bottom:16px;">
-      <div class="card-title">🌍 <span data-i18n="flowTitle">全球中国留学生流向分布</span></div>
-      <div class="card-sub" data-i18n="flowSub">2025年在外留学人数（万人）及主要目的地占比</div>
-      <div class="chart-container"><canvas id="flowChart"></canvas></div>
-    </div>
-
-    <div style="font-size:14px;font-weight:700;margin-bottom:12px;" data-i18n="countryHint">点击国家查看详细申请指南 👇</div>
-    <div class="country-grid" id="countryGrid" style="margin-bottom:20px;"></div>
-
-    <div class="detail-panel fade-in" id="countryDetail" style="display:none;"></div>
-
-    <div class="grid2 fade-in" style="margin-top:20px;">
-      <div class="card">
-        <div class="card-title">📊 <span data-i18n="typeTitle">出国类型分布</span></div>
-        <div class="card-sub" data-i18n="typeSub">留学 / 工作签 / 打工度假 / 移民</div>
-        <div class="chart-container" style="height:240px;"><canvas id="typeChart"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title">🔄 <span data-i18n="returnTitle">留在海外 vs 回国比例</span></div>
-        <div class="card-sub" data-i18n="returnSub">完成学业/工签到期后的选择（2025）</div>
-        <div class="chart-container" style="height:240px;"><canvas id="returnChart"></canvas></div>
-      </div>
-    </div>
-
-    <div class="card fade-in" style="margin-top:16px;">
-      <div class="card-title">💬 <span data-i18n="regretTitle">回国者：后悔出去了吗？</span></div>
-      <div class="card-sub" data-i18n="regretSub">对已回国的留学/打工者进行的调研（N=3200，2025）</div>
-      <div style="margin-bottom:20px;">
-        <div class="prog-row">
-          <div class="prog-head"><span>🙌 <span data-i18n="r1">没后悔，值得</span></span><span class="up">52%</span></div>
-          <div class="prog-track"><div class="prog-fill" style="width:52%;background:var(--green);"></div></div>
-        </div>
-        <div class="prog-row">
-          <div class="prog-head"><span>🤔 <span data-i18n="r2">有得有失，说不清</span></span><span class="mid">28%</span></div>
-          <div class="prog-track"><div class="prog-fill" style="width:28%;background:var(--yellow);"></div></div>
-        </div>
-        <div class="prog-row">
-          <div class="prog-head"><span>😔 <span data-i18n="r3">后悔了，回来更难适应</span></span><span class="down">13%</span></div>
-          <div class="prog-track"><div class="prog-fill" style="width:13%;background:var(--red);"></div></div>
-        </div>
-        <div class="prog-row">
-          <div class="prog-head"><span>😤 <span data-i18n="r4">后悔，浪费钱浪费时间</span></span><span class="down">7%</span></div>
-          <div class="prog-track"><div class="prog-fill" style="width:7%;background:var(--accent);"></div></div>
-        </div>
-      </div>
-      <div class="card-title" style="margin-bottom:10px;">📖 <span data-i18n="caseTitle">真实案例</span></div>
-      <div id="caseList" style="display:flex;flex-direction:column;gap:10px;"></div>
-    </div>
-
-    <div class="card fade-in" style="margin-top:16px;">
-      <div class="card-title">🗺️ <span data-i18n="roadmapTitle">出国决策路线图</span></div>
-      <div class="card-sub" data-i18n="roadmapSub">从想法到落地，最少需要多长时间</div>
-      <div class="grid2">
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:10px;" data-i18n="studyRoute">📚 留学路线（研究生）</div>
-          <div class="timeline" id="studyTimeline"></div>
-        </div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:10px;" data-i18n="workRoute">💼 打工/工签路线</div>
-          <div class="timeline" id="workTimeline"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 </div>
 
 <footer>
-  <div style="max-width:800px; margin:0 auto;">
-    <div class="author-card">
-      <div class="author-avatar">涛</div>
-      <div class="author-info">
-        <div class="author-name">唐小涛</div>
-        <div class="author-title">数据研究者 · 毕业生选择指南作者</div>
-        <div class="author-contact">
-          <a href="mailto:xiao.tao.123.ok@outlook.com">📧 xiao.tao.123.ok@outlook.com</a>
-        </div>
-      </div>
-    </div>
-    <p style="margin-top:20px; margin-bottom:8px; font-size:14px; font-weight:600; color:#c9d1d9;">📊 2025 大学毕业生选择指南</p>
-    <p style="font-size:12px; line-height:1.7; color:#6a7a8a;">
-      数据来源：贝壳研究院（租金）· 猎聘/智联大数据（就业）· UNESCO/教育部（留学）<br>
-      美世生活成本调研（消费）· 第七次人口普查（人口）
-    </p>
-    <p style="margin-top:8px; font-size:11px; color:#4a5a6a;">
-      ⚠️ 本网页数据均为公开信息汇总整理，数据截至2024-2025年，仅供参考。
-    </p>
-    <p style="margin-top:8px; font-size:11px; color:#4a5a6a;">
-      © 2025 唐小涛 · 采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:#58a6ff;">CC BY-NC 4.0</a> 协议发布
-    </p>
-  </div>
+  <p>数据来源：贝壳研究院、猎聘智联、UNESCO公开数据 | © 2025 唐小涛</p>
+  <p style="margin-top: 8px;"><a href="https://xiaotao-auto.github.io/shenzhen-career/">← 返回首页</a></p>
 </footer>
-
-<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <script>
 (function() {
   var CITIES = {
-    shenzhen:{name:'深圳',tier:1,rent:{central:4500,nanshan:4200,baoan:3200,longgang:2800,longhua:3800},commute:[{area:'科技园→南山区',time:20,cost:4,level:'green'},{area:'华强北→福田区',time:35,cost:6,level:'green'},{area:'坂田→龙华区',time:45,cost:7,level:'yellow'},{area:'布吉→罗湖区',time:50,cost:8,level:'yellow'}],cost:{meal:35,coffee:32, gym:150, movie:60},heat:{gov:[2,2,3,4,5,6,5,4,4,5,3,2],tech:[5,4,6,7,8,7,6,8,9,8,7,5],mfg:[3,2,4,5,6,7,8,7,6,5,4,3],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:85,neiwai:[8,6,7,9,5,7],pop:1768,avgAge:32,single:58,salary:8500,radar:[9,8,9,7,8,9],rank:{rent:2,salary:1,opportunity:2}},
-    beijing:{name:'北京',tier:1,rent:{central:6800,haidian:6200,chaoyang:5800,tongzhou:3800,changping:3500},commute:[{area:'中关村→海淀区',time:40,cost:6,level:'yellow'},{area:'国贸→朝阳区',time:50,cost:7,level:'yellow'},{area:'望京→朝阳区',time:45,cost:6,level:'yellow'}],cost:{meal:40,coffee:38,gym:180,movie:70},heat:{gov:[4,3,5,6,7,8,7,6,5,6,4,3],tech:[6,5,7,8,9,8,7,9,8,7,6,5],mfg:[3,2,4,5,6,7,6,5,4,3,2,2],fin:[5,4,6,7,8,7,6,7,8,7,6,5]},compet:92,neiwai:[9,5,6,8,4,6],pop:2200,avgAge:35,single:62,salary:9200,radar:[7,9,6,8,6,7],rank:{rent:5,salary:5,opportunity:5}},
-    shanghai:{name:'上海',tier:1,rent:{central:6200,pudong:5500,xuhui:5800,baoshan:3800,minhang:3500},commute:[{area:'陆家嘴→浦东新区',time:45,cost:7,level:'yellow'},{area:'徐家汇→徐汇区',time:40,cost:6,level:'yellow'}],cost:{meal:38,coffee:36,gym:170,movie:65},heat:{gov:[3,3,4,5,6,7,6,5,5,6,4,3],tech:[5,4,6,7,8,7,6,7,8,7,6,4],mfg:[4,3,5,6,7,8,7,6,5,4,3,3],fin:[6,5,7,8,9,8,7,8,9,8,7,6]},compet:88,neiwai:[8,7,7,8,6,7],pop:2480,avgAge:34,single:60,salary:8800,radar:[8,8,7,8,7,8],rank:{rent:4,salary:4,opportunity:4}},
-    guangzhou:{name:'广州',tier:1,rent:{central:3800,tianhe:3500,panyu:2800,huangpu:3000,baiyun:2200},commute:[{area:'珠江新城→天河区',time:30,cost:5,level:'green'},{area:'万博→番禺区',time:35,cost:5,level:'green'}],cost:{meal:28,coffee:25,gym:120,movie:50},heat:{gov:[3,2,4,5,6,7,6,5,4,5,3,2],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[5,4,6,7,8,9,8,7,6,5,4,4],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:72,neiwai:[7,8,8,7,8,8],pop:1870,avgAge:33,single:55,salary:6800,radar:[7,7,8,7,9,7],rank:{rent:1,salary:2,opportunity:3}},
-    hangzhou:{name:'杭州',tier:0,rent:{central:4200,xiacheng:3800,jianggan:3600,binjiang:3500,xihu:4000},commute:[{area:'滨江→滨江区',time:25,cost:4,level:'green'},{area:'未来科技城→余杭区',time:35,cost:5,level:'green'}],cost:{meal:30,coffee:30,gym:140,movie:55},heat:{gov:[2,2,3,4,5,6,5,4,4,5,3,2],tech:[6,5,7,8,9,8,7,8,9,8,7,5],mfg:[3,2,4,5,6,7,6,5,4,3,2,2],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:78,neiwai:[7,7,8,8,7,7],pop:1240,avgAge:31,single:52,salary:7200,radar:[8,7,8,8,7,8],rank:{rent:3,salary:3,opportunity:1}},
-    chengdu:{name:'成都',tier:0,rent:{central:2200,jinjiang:2000,gaoxin:1800,wuhou:1600,chenghua:1500},commute:[{area:'春熙路→锦江区',time:25,cost:4,level:'green'},{area:'金融城→高新区',time:30,cost:4,level:'green'}],cost:{meal:22,coffee:22,gym:100,movie:45},heat:{gov:[3,2,4,5,6,7,6,5,4,5,3,2],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[4,3,5,6,7,8,7,6,5,4,3,3],fin:[3,2,4,5,6,5,4,5,6,5,4,3]},compet:65,neiwai:[6,8,9,7,9,8],pop:2140,avgAge:34,single:50,salary:5800,radar:[6,6,9,7,9,7],rank:{rent:1,salary:1,opportunity:2}},
-    nanjing:{name:'南京',tier:0,rent:{central:2800,xuanwu:2600,jianye:2500,jiangbei:2000,qixia:1800},commute:[{area:'新街口→玄武区',time:25,cost:4,level:'green'},{area:'河西→建邺区',time:30,cost:4,level:'green'}],cost:{meal:25,coffee:24,gym:110,movie:48},heat:{gov:[4,3,5,6,7,8,7,6,5,6,4,3],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[5,4,6,7,8,9,8,7,6,5,4,4],fin:[4,3,5,6,7,6,5,6,7,6,5,4]},compet:70,neiwai:[7,7,8,8,8,8],pop:950,avgAge:36,single:48,salary:6200,radar:[7,7,8,8,8,7],rank:{rent:2,salary:2,opportunity:3}},
-    wuhan:{name:'武汉',tier:0,rent:{central:1800,wuchang:1600,han Kou:1500,hongshan:1400,gaoxin:1200},commute:[{area:'光谷→东湖高新区',time:30,cost:4,level:'green'},{area:'徐东→武昌区',time:25,cost:3,level:'green'}],cost:{meal:20,coffee:20,gym:90,movie:40},heat:{gov:[3,2,4,5,6,7,6,5,4,5,3,2],tech:[4,3,5,6,7,6,5,6,7,6,5,4],mfg:[5,4,6,7,8,9,8,7,6,5,4,4],fin:[3,2,4,5,6,5,4,5,6,5,4,3]},compet:62,neiwai:[6,8,9,7,9,8],pop:1365,avgAge:35,single:46,salary:5500,radar:[6,6,9,7,9,7],rank:{rent:1,salary:1,opportunity:2}}
+    sz:{name:'深圳',rent:[45,42,32,28,38],cost:[35,32,150,60],heat:[[2,2,3,4,5,6,5,4,4,5,3,2],[5,4,6,7,8,7,6,8,9,8,7,5],[3,2,4,5,6,7,8,7,6,5,4,3],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[85,92,65,78,72,70],neiwai:[8,6,7,9,5,7],pop:1768,avgAge:32,single:58,salary:8500},
+    bj:{name:'北京',rent:[68,62,58,38,35],cost:[40,38,180,70],heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[6,5,7,8,9,8,7,9,8,7,6,5],[3,2,4,5,6,7,6,5,4,3,2,2],[5,4,6,7,8,7,6,7,8,7,6,5]],compet:[92,95,68,82,75,72],neiwai:[9,5,6,8,4,6],pop:2200,avgAge:35,single:62,salary:9200},
+    sh:{name:'上海',rent:[62,55,58,38,35],cost:[38,36,170,65],heat:[[3,3,4,5,6,7,6,5,5,6,4,3],[5,4,6,7,8,7,6,7,8,7,6,4],[4,3,5,6,7,8,7,6,5,4,3,3],[6,5,7,8,9,8,7,8,9,8,7,6]],compet:[88,90,70,85,78,74],neiwai:[8,7,7,8,6,7],pop:2480,avgAge:34,single:60,salary:8800},
+    gz:{name:'广州',rent:[38,35,28,30,22],cost:[28,25,120,50],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[72,78,62,70,65,60],neiwai:[7,8,8,7,8,8],pop:1870,avgAge:33,single:55,salary:6800},
+    hz:{name:'杭州',rent:[42,38,36,35,40],cost:[30,30,140,55],heat:[[2,2,3,4,5,6,5,4,4,5,3,2],[6,5,7,8,9,8,7,8,9,8,7,5],[3,2,4,5,6,7,6,5,4,3,2,2],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[78,85,58,75,68,62],neiwai:[7,7,8,8,7,7],pop:1240,avgAge:31,single:52,salary:7200},
+    cd:{name:'成都',rent:[22,20,18,16,15],cost:[22,22,100,45],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[4,3,5,6,7,8,7,6,5,4,3,3],[3,2,4,5,6,5,4,5,6,5,4,3]],compet:[65,70,55,62,58,55],neiwai:[6,8,9,7,9,8],pop:2140,avgAge:34,single:50,salary:5800},
+    nj:{name:'南京',rent:[28,26,25,20,18],cost:[25,24,110,48],heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[70,75,58,68,62,58],neiwai:[7,7,8,8,8,8],pop:950,avgAge:36,single:48,salary:6200},
+    wh:{name:'武汉',rent:[18,16,15,14,12],cost:[20,20,90,40],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[3,2,4,5,6,5,4,5,6,5,4,3]],compet:[62,68,52,58,55,52],neiwai:[6,8,9,7,9,8],pop:1365,avgAge:35,single:46,salary:5500}
   };
 
-  var I18N = {
-    zh:{pageTitle:'2025 大学毕业生选择指南',navTitle:'🎓 毕业生指南',heroBadge:'🎓 2025 版 · 数据驱动决策',heroTitle:'大学毕业，<br>你的路在哪里？',heroDesc:'国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的那个选择',navDomestic:'🏙️ 国内城市选择',navAbroad:'✈️ 出国留学/打工',p1Title:'国内城市选择指南',p1Desc:'从租房成本、通勤时间、生活消费、就业机会到单身比例，帮你选出最适合自己的第一座城市。',p2Title:'出国留学 / 打工指南',p2Desc:'全球人口流向、各国申请门槛、最低启动成本、流程时间轴。',rentTitle:'分区租金（元/月·一居室）',commuteTitle:'通勤时长 & 成本',commuteSub:'从热门居住区到主要就业区',heatTitle:'全年52周招聘热力图',heatSub:'岗位发布数量 × 月份 × 行业类型（颜色深 = 机会多）',heatLow:'少',heatMid:'中',heatHigh:'多',competTitle:'各行业竞争压力指数',competSub:'投递量/录取量比值（越高越卷）',neiwaiTitle:'体制内 vs 体制外',neiwaiSub:'综合六维度对比',radarTitle:'城市综合评分雷达',radarSub:'选择2-3个城市进行横向对比',flowTitle:'全球中国留学生流向分布',flowSub:'2025年在外留学人数（万人）及主要目的地占比',typeTitle:'出国类型分布',typeSub:'留学 / 工作签 / 打工度假 / 移民',returnTitle:'留在海外 vs 回国比例',returnSub:'完成学业/工签到期后的选择（2025）',regretTitle:'回国者：后悔出去了吗？',regretSub:'对已回国的留学/打工者进行的调研（N=3200，2025）',r1:'没后悔，值得',r2:'有得有失，说不清',r3:'后悔了，回来更难适应',r4:'后悔，浪费钱浪费时间',caseTitle:'真实案例',roadmapTitle:'出国决策路线图',roadmapSub:'从想法到落地，最少需要多长时间',studyRoute:'📚 留学路线（研究生）',workRoute:'💼 打工/工签路线',secGov:'体制内',secTech:'互联网/科技',secMfg:'制造/传统',secFin:'金融',mealLabel:'工作日午饭',coffeeLabel:'咖啡/奶茶',gymLabel:'健身房',movieLabel:'电影票',popLabel:'常住人口',ageLabel:'平均年龄',singleLabel:'单身比例',salaryLabel:'平均月薪',radarLabels:['就业机会','薪资水平','生活成本','租房成本','娱乐丰富','发展潜力']},
-    zt:{pageTitle:'2025 大學畢業生選擇指南',navTitle:'🎓 畢業生指南',heroBadge:'🎓 2025 版 · 數據驅動決策',heroTitle:'大學畢業，<br>你的路在哪裡？',heroDesc:'國內8城深度對比 · 出國9國申請指南<br>用數據幫你做最重要的那個選擇',navDomestic:'🏙️ 國內城市選擇',navAbroad:'✈️ 出國留學/打工',p1Title:'國內城市選擇指南',p1Desc:'從租房成本、通勤時間、生活消費、就業機會到單身比例，幫你選出最適合自己的第一座城市。',p2Title:'出國留學 / 打工指南',p2Desc:'全球人口流向、各國申請門檻、最低啟動成本、流程時間軸。',rentTitle:'分區租金（元/月·一居室）',commuteTitle:'通勤時長 & 成本',commuteSub:'從熱門居住區到主要就業區',heatTitle:'全年52週招聘熱力圖',heatSub:'崗位發布數量 × 月份 × 行業類型（顏色深 = 機會多）',heatLow:'少',heatMid:'中',heatHigh:'多',competTitle:'各行業競爭壓力指數',competSub:'投遞量/錄取量比值（越高越卷）',neiwaiTitle:'體制內 vs 體制外',neiwaiSub:'綜合六維度對比',radarTitle:'城市綜合評分雷達',radarSub:'選擇2-3個城市進行橫向對比',flowTitle:'全球中國留學生流向分佈',flowSub:'2025年在外留學人數（萬人）及主要目的地佔比',typeTitle:'出國類型分佈',typeSub:'留學 / 工作簽 / 打工度假 / 移民',returnTitle:'留在海外 vs 回國比例',returnSub:'完成學業/工簽到期後的選擇（2025）',regretTitle:'回國者：後悔出去了嗎？',regretSub:'對已回國的留學/打工者進行的調研（N=3200，2025）',r1:'沒後悔，值得',r2:'有得有失，說不清',r3:'後悔了，回來更難適應',r4:'後悔，浪費錢浪費時間',caseTitle:'真實案例',roadmapTitle:'出國決策路線圖',roadmapSub:'從想法到落地，最少需要多長時間',studyRoute:'📚 留學路線（研究生）',workRoute:'💼 打工/工簽路線',secGov:'體制內',secTech:'互聯網/科技',secMfg:'製造/傳統',secFin:'金融',mealLabel:'工作日午飯',coffeeLabel:'咖啡/奶茶',gymLabel:'健身房',movieLabel:'電影票',popLabel:'常住人口',ageLabel:'平均年齡',singleLabel:'單身比例',salaryLabel:'平均月薪',radarLabels:['就業機會','薪資水平','生活成本','租房成本','娛樂豐富','發展潛力']},
-    en:{pageTitle:'2025 Graduate Career Guide',navTitle:'🎓 Graduate Guide',heroBadge:'🎓 2025 Edition · Data-Driven',heroTitle:'Graduated,<br>Where to Go?',heroDesc:'8 China Cities Comparison · 9 Countries Guide<br>Make the most important decision with data',navDomestic:'🏙️ China City Guide',navAbroad:'✈️ Study/Work Abroad',p1Title:'China City Selection Guide',p1Desc:'From rent, commute, living costs to job opportunities, find your first city.',p2Title:'Study & Work Abroad Guide',p2Desc:'Global migration trends, country requirements, costs and timelines.',rentTitle:'Rent by District (¥/month)',commuteTitle:'Commute Time & Cost',commuteSub:'From residential areas to major employment zones',heatTitle:'52-Week Job Market Heatmap',heatSub:'Job postings × Month × Industry (darker = more opportunities)',heatLow:'Low',heatMid:'Mid',heatHigh:'High',competTitle:'Industry Competition Index',competSub:'Applications per hire (higher = more competitive)',neiwaiTitle:'Government vs Private Sector',neiwaiSub:'Six-dimension comparison',radarTitle:'City Comparison Radar',radarSub:'Select 2-3 cities to compare',flowTitle:'Global Student Distribution',flowSub:'2025 Chinese students abroad (10k) by destination',typeTitle:'Abroad Categories',typeSub:'Study / Work Visa / WHV / Immigration',returnTitle:'Stay Abroad vs Return',returnSub:'Choices after graduation/work visa expiry (2025)',regretTitle:'Regrets of Returnees?',regretSub:'Survey of returned students/workers (N=3200, 2025)',r1:'No regrets, worth it',r2:'Mixed feelings',r3:'Regretted, hard to readjust',r4:'Regretted, wasted time & money',caseTitle:'Real Cases',roadmapTitle:'Decision Roadmap',roadmapSub:'From idea to landing, minimum timeline',studyRoute:'📚 Study Route (Master)',workRoute:'💼 Work Visa Route',secGov:'Government',secTech:'Tech',secMfg:'Manufacturing',secFin:'Finance',mealLabel:'Daily Meal',coffeeLabel:'Coffee/Bubble Tea',gymLabel:'Gym',movieLabel:'Movie',popLabel:'Population',ageLabel:'Avg Age',singleLabel:'Single Rate',salaryLabel:'Avg Salary',radarLabels:['Jobs','Salary','Living Cost','Rent','Entertainment','Growth']}
-  };
+  var COUNTRIES = [
+    {id:'usa',flag:'🇺🇸',name:'美国',type:'留学',cost:45,salary:'$75K',regret:35,steps:['考托福/GRE','申请学校','获得I-20','面签','入学'],desc:'✅ 世界顶尖大学多，OPT允许工作3年\n❌ 学费最贵，竞争激烈'},
+    {id:'uk',flag:'🇬🇧',name:'英国',type:'留学',cost:30,salary:'£35K',regret:28,steps:['考雅思','申请学校','获得CAS','申请签证','入学'],desc:'✅ 一年制硕士性价比高，PSW签证2年\n❌ 就业窗口期紧'},
+    {id:'aus',flag:'🇦🇺',name:'澳大利亚',type:'留学/打工',cost:25,salary:'A$65K',regret:22,steps:['考雅思','申请学校','获批','入境'],desc:'✅ 移民友好，WHV对中国开放\n❌ 部分专业就业难'},
+    {id:'can',flag:'🇨🇦',name:'加拿大',type:'留学/移民',cost:22,salary:'C$65K',regret:18,steps:['考雅思','申请学校','获录取通知','申请签证','入境'],desc:'✅ 移民政策最友好\n❌ 气候寒冷'},
+    {id:'jpn',flag:'🇯🇵',name:'日本',type:'留学/工作',cost:15,salary:'¥400万',regret:25,steps:['学日语','申请学校','在留资格','申请签证','入境'],desc:'✅ 费用低，文化相近\n❌ 语言要求高'},
+    {id:'ger',flag:'🇩🇪',name:'德国',type:'留学',cost:8,salary:'€50K',regret:20,steps:['学德语','申请大学','获Zulassung','申请签证','入学'],desc:'✅ 公立大学免学费\n❌ 德语要求高'},
+    {id:'sgp',flag:'🇸🇬',name:'新加坡',type:'留学/工作',cost:20,salary:'S$65K',regret:30,steps:['申请学校','获批','申请签证','入境'],desc:'✅ 离家近，税率低\n❌ 竞争激烈'},
+    {id:'kor',flag:'🇰🇷',name:'韩国',type:'留学',cost:10,salary:'₩4000万',regret:24,steps:['学韩语','申请学校','获入学许可','申请签证','入学'],desc:'✅ 学费低，留学成本低\n❌ 薪资相对较低'},
+    {id:'nz',flag:'🇳🇿',name:'新西兰',type:'打工/移民',cost:12,salary:'NZ$60K',regret:15,steps:['申请WHV','获签','订机票','入境'],desc:'✅ WHV对中国开放\n❌ 工作机会较少'}
+  ];
 
-  var currentLang = 'zh';
-  var currentCity = 'shenzhen';
-  var radarCities = ['shenzhen','beijing'];
+  var currentCity = 'sz';
+  var rentLabels = ['市中心','核心区','周边1','周边2','周边3'];
+  var heatLabels = ['体制内','互联网','制造','金融'];
+  var heatColors = ['#1a4a8c','#1a73e8','#7fc6ff','#4da6ff'];
+  var competLabels = ['体制内','互联网','制造','金融','医疗','教育'];
 
-  function setLang(lang) {
-    currentLang = lang;
-    document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active', b.getAttribute('data-lang')===lang);});
-    applyLang();
-    renderRent();
-    renderCommute();
-    renderCostGrid();
-    renderPopGrid();
-    renderHeatmap();
+  function init() {
+    renderCityTabs();
+    renderStats();
+    renderRentBars();
     renderCompetChart();
     renderNeiwaiChart();
-    renderRadarChart();
-    if(window.updateNavLang) window.updateNavLang(lang);
+    renderFlowChart();
+    renderCountries();
+    renderRegretStats();
   }
 
-  function applyLang() {
-    var t = I18N[currentLang];
-    document.querySelectorAll('[data-i18n]').forEach(function(el){var key=el.getAttribute('data-i18n');if(t[key]){if(key==='heroTitle'||key==='p1Desc'||key==='heroDesc'||key==='p2Desc'){el.innerHTML=t[key];}else{el.textContent=t[key];}}});var si=document.getElementById('searchInput');if(si) si.placeholder=t.mealLabel||'搜索…';
-  }
-
-  function initCitySelector() {
-    var tabs=document.getElementById('cityTabs');
-    var cities=['shenzhen','beijing','shanghai','guangzhou','hangzhou','chengdu','nanjing','wuhan'];
-    tabs.innerHTML=cities.map(function(c){return'<button class="city-tab'+(c===currentCity?' active':'')+'" onclick="selectCity(\''+c+'\')">'+CITIES[c].name+'</button>';}).join('');
-    renderAllCityData();
-  }
-
-  function selectCity(city) {
-    currentCity=city;
-    document.querySelectorAll('.city-tab').forEach(function(t){t.classList.toggle('active',t.textContent===CITIES[city].name);});
-    renderAllCityData();
-  }
-
-  function renderAllCityData() {
-    var cn=document.getElementById('currentCityName');
-    if(cn) cn.textContent=CITIES[currentCity].name;
-    renderRent();
-    renderCommute();
-    renderCostGrid();
-    renderPopGrid();
-    renderHeatmap();
+  window.selectCity = function(key) {
+    currentCity = key;
+    document.querySelectorAll('.tab').forEach(function(t) {
+      t.classList.toggle('active', t.textContent === CITIES[key].name);
+    });
+    renderStats();
+    renderRentBars();
     renderCompetChart();
     renderNeiwaiChart();
-    renderRadarChart();
+    renderHeatmap();
   }
 
-  function renderRent() {
-    var d=CITIES[currentCity],t=I18N[currentLang],max=Math.max.apply(null,Object.values(d.rent));
-    document.getElementById('rentSub').textContent='平均：¥'+(Math.round(Object.values(d.rent).reduce(function(a,b){return a+b;},0)/Object.keys(d.rent).length));
-    var html='';var labels={central:'市中心',nanshan:'核心区',baoan:'宝安/其他',longgang:'龙岗/其他',longhua:'龙华/其他',haidian:'海淀',chaoyang:'朝阳',tongzhou:'通州',changping:'昌平',pudong:'浦东',xuhui:'徐汇',baoshan:'宝山',minhang:'闵行',tianhe:'天河',panyu:'番禺',huangpu:'黄埔',baiyun:'白云',xiacheng:'下城',jianggan:'江干',binjiang:'滨江',xihu:'西湖',jinjiang:'锦江',gaoxin:'高新',wuhou:'武侯',chenghua:'成华',jianye:'建邺',jiangbei:'江北',qixia:'栖霞',wuchang:'武昌',hanKou:'汉口',hongshan:'洪山'};
-    Object.keys(d.rent).forEach(function(k){var v=d.rent[k],pct=Math.round(v/max*100);var bg=v>4500?'#f85149':v>3000?'#d29922':'#3fb950';html+='<div class="rent-row"><span class="rent-label">'+labels[k]+'</span><div class="rent-bar-wrap"><div class="rent-bar" style="width:'+pct+'%;background:'+bg+';">'+v+'</div></div><span class="rent-val">¥'+v+'</span></div>';});
-    document.getElementById('rentGrid').innerHTML=html;
+  window.showDetail = function(id) {
+    var c = COUNTRIES.find(function(x) { return x.id === id; });
+    if (!c) return;
+    document.querySelectorAll('.country-card').forEach(function(el) { el.classList.remove('selected'); });
+    document.getElementById('card-' + id).classList.add('selected');
+    var html = '<h3>' + c.flag + ' ' + c.name + ' (' + c.type + ')</h3>';
+    html += '<p style="white-space:pre-line">' + c.desc + '</p>';
+    html += '<p><strong>💰 年费用：</strong>¥' + c.cost + '万 | <strong>薪资：</strong>' + c.salary + '</p>';
+    html += '<ul class="steps">';
+    c.steps.forEach(function(s) { html += '<li>' + s + '</li>'; });
+    html += '</ul>';
+    html += '<p style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">⚠️ 后悔率：' + c.regret + '%（回国调研数据）</p>';
+    var box = document.getElementById('detailBox');
+    box.innerHTML = html;
+    box.classList.add('show');
   }
 
-  function renderCommute() {
-    var d=CITIES[currentCity],html='';d.commute.forEach(function(c){var col=c.level==='green'?'#3fb950':c.level==='yellow'?'#d29922':'#f85149';html+='<div class="commute-item"><span class="commute-area">'+c.area+'</span><div class="commute-time"><span class="commute-dot" style="background:'+col+';"></span><span class="commute-info">'+c.time+'分钟 · ¥'+c.cost+'</span></div></div>';});document.getElementById('commuteList').innerHTML=html;
+  init();
+
+  function renderCityTabs() {
+    var tabs = document.getElementById('cityTabs');
+    var html = '';
+    Object.keys(CITIES).forEach(function(key) {
+      var c = CITIES[key];
+      html += '<button class="tab' + (key === currentCity ? ' active' : '') + '" onclick="selectCity(\'' + key + '\')">' + c.name + '</button>';
+    });
+    tabs.innerHTML = html;
   }
 
-  function renderCostGrid() {
-    var d=CITIES[currentCity],t=I18N[currentLang];var items=[{icon:'🍜',val:'¥'+d.cost.meal,label:t.mealLabel,col:d.cost.meal>35?'#f85149':d.cost.meal>28?'#d29922':'#3fb950'},{icon:'☕',val:'¥'+d.cost.coffee,label:t.coffeeLabel,col:d.cost.coffee>32?'#f85149':d.cost.coffee>26?'#d29922':'#3fb950'},{icon:'🏋️',val:'¥'+d.cost.gym,label:t.gymLabel,col:d.cost.gym>150?'#f85149':d.cost.gym>110?'#d29922':'#3fb950'},{icon:'🎬',val:'¥'+d.cost.movie,label:t.movieLabel,col:d.cost.movie>60?'#f85149':d.cost.movie>48?'#d29922':'#3fb950'}];document.getElementById('costGrid').innerHTML=items.map(function(i){return'<div class="stat-box"><div class="stat-num" style="color:'+i.col+';">'+i.val+'</div><div class="stat-label">'+i.icon+' '+i.label+'</div></div>';}).join('');
+  function selectCity(key) {
+    currentCity = key;
+    document.querySelectorAll('.tab').forEach(function(t) {
+      t.classList.toggle('active', t.textContent === CITIES[key].name);
+    });
+    renderStats();
+    renderRentBars();
+    renderCompetChart();
+    renderNeiwaiChart();
+    renderHeatmap();
   }
 
-  function renderPopGrid() {
-    var d=CITIES[currentCity],t=I18N[currentLang];var items=[{icon:'👥',val:d.pop+'万',label:t.popLabel},{icon:'📅',val:d.avgAge+'岁',label:t.ageLabel},{icon:'💔',val:d.single+'%',label:t.singleLabel,col:d.single>55?'#f85149':d.single>48?'#d29922':'#3fb950'},{icon:'💰',val:'¥'+d.salary0,label:t.salaryLabel,col:'#58a6ff'}];document.getElementById('popGrid').innerHTML=items.map(function(i){return'<div class="stat-box"><div class="stat-num" style="color:'+(i.col||'#58a6ff')+';">'+i.val+'</div><div class="stat-label">'+i.icon+' '+i.label+'</div></div>';}).join('');
+  function renderStats() {
+    var c = CITIES[currentCity];
+    var stats = [
+      { val: c.pop + '万', label: '常住人口' },
+      { val: c.avgAge + '岁', label: '平均年龄' },
+      { val: c.single + '%', label: '单身比例' },
+      { val: '¥' + c.salary, label: '平均月薪' }
+    ];
+    document.getElementById('statsGrid').innerHTML = stats.map(function(s) {
+      return '<div class="stat-card"><div class="stat-num">' + s.val + '</div><div class="stat-label">' + s.label + '</div></div>';
+    }).join('');
+    renderHeatmap();
+  }
+
+  function renderRentBars() {
+    var c = CITIES[currentCity];
+    var max = Math.max.apply(null, c.rent);
+    var html = '';
+    rentLabels.forEach(function(label, i) {
+      var v = c.rent[i];
+      var pct = Math.round(v / max * 100);
+      var color = v > 50 ? '#f85149' : v > 35 ? '#d29922' : '#3fb950';
+      html += '<div class="bar-item">';
+      html += '<div class="bar-label"><span>' + label + '</span><span style="color:#00d4ff">¥' + v + '00</span></div>';
+      html += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>';
+      html += '</div>';
+    });
+    document.getElementById('rentBars').innerHTML = html;
   }
 
   function renderHeatmap() {
-    var d=CITIES[currentCity],months='一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月'.split(',');
-    var html='<div></div>'+months.map(function(m){return'<div class="heatmap-header">'+m.slice(0,1)+'</div>';}).join('');
-    var sectors=[{key:'gov',icon:'🏛️'},{key:'tech',icon:'💼'},{key:'mfg',icon:'🏭'},{key:'fin',icon:'💹'}];
-    sectors.forEach(function(s){
-      html+='<div class="heatmap-label">'+s.icon+'</div>';
-      d.heat[s.key].forEach(function(v){
-        var col=v<=3?'#0d4a8c':v<=6?'#1a73e8':'#7fc6ff';
-        html+='<div class="hm-cell" style="background:'+col+';"></div>';
+    var c = CITIES[currentCity];
+    var months = '1,2,3,4,5,6,7,8,9,10,11,12'.split(',');
+    var html = '<div></div>';
+    months.forEach(function(m) {
+      html += '<div class="heatmap-header">' + m + '</div>';
+    });
+    heatLabels.forEach(function(label, si) {
+      html += '<div class="heatmap-label">' + label.slice(0,2) + '</div>';
+      c.heat[si].forEach(function(v) {
+        var col = heatColors[si];
+        var opacity = 0.3 + (v / 10) * 0.7;
+        html += '<div class="hm-cell" style="background:rgba(' + 
+          (si === 0 ? '26,74,140' : si === 1 ? '26,115,232' : si === 2 ? '127,198,255' : '77,166,255').split(',').map(function(x) { return Math.round(x * opacity); }).join(',') + ',' + opacity + ')"></div>';
       });
     });
-    document.getElementById('heatmap').innerHTML=html;
+    document.getElementById('heatmap').innerHTML = html;
   }
 
-  function hexToRgba(hex,alpha){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return'rgba('+r+','+g+','+b+','+alpha+')';}
-
-  var RADAR_COLORS=['#58a6ff','#f78166','#3fb950','#d29922','#bc8cff','#39d353'];
-  var RADAR_LABELS=['就业机会','薪资水平','生活成本','租房成本','娱乐丰富','发展潜力'];
-
   function renderCompetChart() {
-    var ctx=document.getElementById('competChart');if(!ctx)return;
-    if(window.competChartInst)window.competChartInst.destroy();
-    var labels=['体制内','互联网','制造业','金融','医疗','教育'];
-    var data=[85,92,65,78,72,70];
-    window.competChartInst=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{label:'竞争指数',data:data,backgroundColor:data.map(function(v){return v>80?'rgba(248,81,73,0.7)':v>70?'rgba(210,153,34,0.7)':'rgba(63,185,80,0.7)';}),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:function(v){return v;}}},x:{grid:{display:false}}}},animation:{duration:800}}});
+    var c = CITIES[currentCity];
+    var ctx = document.getElementById('competChart');
+    if (!ctx) return;
+    if (window.competChart) window.competChart.destroy();
+    window.competChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: competLabels,
+        datasets: [{
+          data: c.compet,
+          backgroundColor: c.compet.map(function(v) {
+            return v > 80 ? 'rgba(248,81,73,0.8)' : v > 70 ? 'rgba(210,153,34,0.8)' : 'rgba(63,185,80,0.8)';
+          }),
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6a7a8a' } },
+          x: { grid: { display: false }, ticks: { color: '#6a7a8a', font: { size: 10 } } }
+        }
+      }
+    });
   }
 
   function renderNeiwaiChart() {
-    var ctx=document.getElementById('neiwaiChart');if(!ctx)return;
-    if(window.neiwaiChartInst)window.neiwaiChartInst.destroy();
-    var labels=['薪资增长','工作稳定性','晋升速度','工作强度','福利待遇','自由度'];
-    var neidata=CITIES[currentCity].neiwai;
-    var waidata=[6,8,5,7,7,5];
-    window.neiwaiChartInst=new Chart(ctx,{type:'radar',data:{labels:labels,datasets:[{label:'体制内',data:neidata,fill:true,backgroundColor:'rgba(88,166,255,0.15)',borderColor:'#58a6ff',pointBackgroundColor:'#58a6ff'},{label:'体制外',data:waidata,fill:true,backgroundColor:'rgba(247,129,102,0.15)',borderColor:'#f78166',pointBackgroundColor:'#f78166'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle'}}},scales:{r:{angleLines:{color:'rgba(255,255,255,0.06)'},grid:{color:'rgba(255,255,255,0.06)'},pointLabels:{font:{size:10}}}},animation:{duration:1000}}});
+    var c = CITIES[currentCity];
+    var ctx = document.getElementById('neiwaiChart');
+    if (!ctx) return;
+    if (window.neiwaiChart) window.neiwaiChart.destroy();
+    window.neiwaiChart = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['薪资增长','工作稳定','晋升速度','工作强度','福利待遇','自由度'],
+        datasets: [
+          { label: '体制内', data: c.neiwai, fill: true, backgroundColor: 'rgba(0,212,255,0.1)', borderColor: '#00d4ff', pointBackgroundColor: '#00d4ff' },
+          { label: '体制外', data: [6,8,5,7,7,5], fill: true, backgroundColor: 'rgba(247,129,102,0.1)', borderColor: '#f78166', pointBackgroundColor: '#f78166' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { color: '#8ba3b8', padding: 12 } } },
+        scales: {
+          r: {
+            angleLines: { color: 'rgba(255,255,255,0.06)' },
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            pointLabels: { color: '#8ba3b8', font: { size: 10 } }
+          }
+        }
+      }
+    });
   }
-
-  function renderRadarChart() {
-    var ctx=document.getElementById('radarChart');if(!ctx)return;
-    if(window.radarChart)window.radarChart.destroy();
-    var datasets=radarCities.map(function(c,i){return{label:CITIES[c].name,data:CITIES[c].radar,fill:true,backgroundColor:hexToRgba(RADAR_COLORS[i],.15),borderColor:RADAR_COLORS[i],pointBackgroundColor:RADAR_COLORS[i]};});
-    window.radarChart=new Chart(ctx,{type:'radar',data:{labels:RADAR_LABELS,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle'}}},scales:{r:{angleLines:{color:'rgba(255,255,255,0.06)'},grid:{color:'rgba(255,255,255,0.06)'},pointLabels:{font:{size:11}}}},animation:{duration:1000}}});
-    var picker=document.getElementById('radarCityPicker');
-    if(picker){var btns='';Object.keys(CITIES).forEach(function(c){var sel=radarCities.includes(c);btns+='<button onclick="toggleRadarCity(\''+c+'\')" style="padding:5px 10px;border-radius:6px;border:1px solid '+(sel?'#58a6ff':'#30363d')+';background:'+(sel?'rgba(88,166,255,0.15)':'var(--bg2)')+';color:'+(sel?'#58a6ff':'var(--text2)')+';font-size:12px;cursor:pointer;">'+CITIES[c].name+'</button>';});picker.innerHTML=btns;}
-  }
-
-  function toggleRadarCity(city) {
-    var idx=radarCities.indexOf(city);
-    if(idx>-1){if(radarCities.length>1)radarCities.splice(idx,1);}
-    else{if(radarCities.length<4)radarCities.push(city);}
-    renderRadarChart();
-  }
-
-  var COUNTRIES=[
-    {id:'usa',flag:'🇺🇸',name:'美国',type:'留学',cost:45,accept:12,salary:'$75K',timeline:'12-18月',detail:'<p>✅ 优势：世界顶尖大学多，OPT允许工作3年，科技金融机会全球最多</p><p>❌ 难点：学费最贵，竞争激烈，签证敏感</p><p>💰 启动资金：建议准备50-80万人民币/年</p>',steps:['考托福/GRE','申请学校（提前1年）','获得I-20','缴SEVIS费','面签','入学'],regret:35},
-    {id:'uk',flag:'🇬🇧',name:'英国',type:'留学',cost:30,accept:25,salary:'£35K',timeline:'6-12月',detail:'<p>✅ 优势：一年制硕士性价比高，PSW签证2年，文化底蕴深厚</p><p>❌ 难点：留学时间短，就业窗口期紧，伦敦生活成本高</p><p>💰 启动资金：建议准备30-50万人民币/年</p>',steps:['考雅思','申请学校','获得CAS','肺结核体检','申请签证','入学'],regret:28},
-    {id:'aus',flag:'🇦🇺',name:'澳大利亚',type:'留学/打工',cost:25,accept:30,salary:'A$65K',timeline:'3-6月',detail:'<p>✅ 优势：移民友好，WHV打工度假签对中国开放，自然环境好</p><p>❌ 难点：部分专业就业难，远离主流市场</p><p>💰 启动资金：建议准备20-35万人民币/年</p>',steps:['考雅思','申请学校/签证','获批','订机票','入境'],regret:22},
-    {id:'can',flag:'🇨🇦',name:'加拿大',type:'留学/移民',cost:22,accept:35,salary:'C$65K',timeline:'6-12月',detail:'<p>✅ 优势：移民政策最友好，留学转移民路径清晰，社会福利好</p><p>❌ 难点：气候寒冷，部分地区工作机会少</p><p>💰 启动资金：建议准备20-30万人民币/年</p>',steps:['考雅思/托福','申请学校','获录取通知书','申请学生签证','体检','入境'],regret:18},
-    {id:'jpn',flag:'🇯🇵',name:'日本',type:'留学/工作',cost:15,accept:40,salary:'¥400万',timeline:'3-6月',detail:'<p>✅ 优势：费用低，文化相近，就业稳定，社会安全</p><p>❌ 难点：语言要求高，职场文化差异，起薪相对较低</p><p>💰 启动资金：建议准备8-15万人民币/年</p>',steps:['学日语（N3以上）','申请学校/工作','在留资格认定','申请签证','入境'],regret:25},
-    {id:'ger',flag:'🇩🇪',name:'德国',type:'留学',cost:8,accept:50,salary:'€50K',timeline:'6-12月',detail:'<p>✅ 优势：多数公立大学免学费，教育质量高，工业强国就业好</p><p>❌ 难点：德语要求高，毕业要求严格，冬季寒冷</p><p>💰 启动资金：建议准备8-12万人民币/年</p>',steps:['学德语','申请大学','获Zulassung','申请签证','入学'],regret:20},
-    {id:'sgp',flag:'🇸🇬',name:'新加坡',type:'留学/工作',cost:20,accept:35,salary:'S$65K',timeline:'2-4月',detail:'<p>✅ 优势：离家近，英语环境，就业机会多，税率低</p><p>❌ 难点：竞争激烈，生活成本高，移民门槛提高</p><p>💰 启动资金：建议准备15-25万人民币/年</p>',steps:['申请学校/工作','获批','申请签证','入境'],regret:30},
-    {id:'kor',flag:'🇰🇷',name:'韩国',type:'留学',cost:10,accept:60,salary:'₩4000万',timeline:'3-6月',detail:'<p>✅ 优势：学费低，文化流行，韩企就业机会，留学成本低</p><p>❌ 难点：语言要求高，薪资水平相对较低</p><p>💰 启动资金：建议准备6-10万人民币/年</p>',steps:['学韩语（TOPIK3+）','申请学校','获标准入学许可','申请签证','入学'],regret:24},
-    {id:'nz',flag:'🇳🇿',name:'新西兰',type:'打工/移民',cost:12,accept:55,salary:'NZ$60K',timeline:'1-3月',detail:'<p>✅ 优势：WHV对中国开放，移民政策友好，自然环境优美</p><p>❌ 难点：工作机会相对较少，经济规模小</p><p>💰 启动资金：建议准备5-10万人民币</p>',steps:['申请WHV抽签','获签','订机票','入境'],regret:15}
-  ];
-
-  var flowLabels=['美国','英国','澳大利亚','加拿大','日本','德国','新加坡','韩国','其他'];
-  var flowData=[42,15,12,10,8,7,6,4,16];
-  var typeData=[62,18,9,7,4];
-  var returnData=[45,55];
 
   function renderFlowChart() {
-    var ctx=document.getElementById('flowChart');if(!ctx)return;
-    if(window.flowChartInst)window.flowChartInst.destroy();
-    window.flowChartInst=new Chart(ctx,{type:'bar',data:{labels:flowLabels,datasets:[{label:'占比(%)',data:flowData,backgroundColor:['rgba(59,130,246,0.7)','rgba(16,185,129,0.7)','rgba(245,158,11,0.7)','rgba(168,85,247,0.7)','rgba(249,115,22,0.7)','rgba(99,102,241,0.7)','rgba(236,72,153,0.7)','rgba(20,184,166,0.7)','rgba(107,114,128,0.7)'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:function(v){return v+'%';}}},y:{grid:{display:false}}}},animation:{duration:1000}});
+    var ctx = document.getElementById('flowChart');
+    if (!ctx) return;
+    if (window.flowChart) window.flowChart.destroy();
+    var labels = ['美国','英国','澳州','加拿大','日本','德国','新加坡','韩国','其他'];
+    var data = [42,15,12,10,8,7,6,4,16];
+    window.flowChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: [
+            'rgba(59,130,246,0.8)','rgba(16,185,129,0.8)','rgba(245,158,11,0.8)',
+            'rgba(168,85,247,0.8)','rgba(249,115,22,0.8)','rgba(99,102,241,0.8)',
+            'rgba(236,72,153,0.8)','rgba(20,184,166,0.8)','rgba(107,114,128,0.8)'
+          ],
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6a7a8a', callback: function(v) { return v + '%'; } } },
+          y: { grid: { display: false }, ticks: { color: '#8ba3b8' } }
+        }
+      }
+    });
   }
 
-  function renderTypeChart() {
-    var ctx=document.getElementById('typeChart');if(!ctx)return;
-    if(window.typeChartInst)window.typeChartInst.destroy();
-    window.typeChartInst=new Chart(ctx,{type:'doughnut',data:{labels:['学历留学（本科/研究生）','工作签证','打工度假WHV','自费移民/投资移民','陪读/随行'],datasets:[{data:typeData,backgroundColor:['#58a6ff','#3fb950','#f0883e','#bc8cff','#d29922'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,pointStyle:'circle',font:{size:10}}}}}});
+  function renderCountries() {
+    var html = '';
+    COUNTRIES.forEach(function(c) {
+      html += '<div class="country-card" onclick="showDetail(\'' + c.id + '\')" id="card-' + c.id + '">';
+      html += '<div class="country-flag">' + c.flag + '</div>';
+      html += '<div class="country-name">' + c.name + '</div>';
+      html += '<div class="country-type">' + c.type + '</div>';
+      html += '</div>';
+    });
+    document.getElementById('countryGrid').innerHTML = html;
   }
 
-  function renderReturnChart() {
-    var ctx=document.getElementById('returnChart');if(!ctx)return;
-    if(window.returnChartInst)window.returnChartInst.destroy();
-    window.returnChartInst=new Chart(ctx,{type:'bar',data:{labels:['留在海外','回国发展'],datasets:[{label:'占比(%)',data:returnData,backgroundColor:['rgba(63,185,80,0.7)','rgba(248,81,73,0.7)'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:function(v){return v+'%';}}},x:{grid:{display:false}}}},animation:{duration:800}});
+  function showDetail(id) {
+    var c = COUNTRIES.find(function(x) { return x.id === id; });
+    if (!c) return;
+    document.querySelectorAll('.country-card').forEach(function(el) { el.classList.remove('selected'); });
+    document.getElementById('card-' + id).classList.add('selected');
+    var html = '<h3>' + c.flag + ' ' + c.name + ' (' + c.type + ')</h3>';
+    html += '<p style="white-space:pre-line">' + c.desc + '</p>';
+    html += '<p><strong>💰 年费用：</strong>¥' + c.cost + '万 | <strong>薪资：</strong>' + c.salary + '</p>';
+    html += '<ul class="steps">';
+    c.steps.forEach(function(s) { html += '<li>' + s + '</li>'; });
+    html += '</ul>';
+    html += '<p style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">⚠️ 后悔率：' + c.regret + '%（回国调研数据）</p>';
+    var box = document.getElementById('detailBox');
+    box.innerHTML = html;
+    box.classList.add('show');
   }
 
-  function renderCountryGrid() {
-    var html='';COUNTRIES.forEach(function(c){
-      html+='<div class="country-card" onclick="showCountryDetail(\''+c.id+'\')">';
-      html+='<div class="cc-flag">'+c.flag+'</div>';
-      html+='<div class="cc-name">'+c.name+'</div>';
-      html+='<div class="cc-type">'+c.type+'</div>';
-      html+='<div class="cc-metrics">';
-      html+='<div class="cc-metric"><div class="cc-metric-val">¥'+c.cost+'万</div><div class="cc-metric-label">年费用</div></div>';
-      html+='<div class="cc-metric"><div class="cc-metric-val">'+c.accept+'%</div><div class="cc-metric-label">通过率</div></div>';
-      html+='<div class="cc-metric"><div class="cc-metric-val">'+c.salary+'</div><div class="cc-metric-label">薪资</div></div>';
-      html+='<div class="cc-metric"><div class="cc-metric-val">'+c.timeline+'</div><div class="cc-metric-label">周期</div></div>';
-      html+='</div></div>';
-    });document.getElementById('countryGrid').innerHTML=html;
+  function renderRegretStats() {
+    var data = [
+      { label: '🙌 没后悔，值得', val: 52, color: '#3fb950' },
+      { label: '🤔 有得有失', val: 28, color: '#d29922' },
+      { label: '😔 后悔了', val: 13, color: '#f85149' },
+      { label: '😤 完全后悔', val: 7, color: '#f78166' }
+    ];
+    document.getElementById('regretStats').innerHTML = data.map(function(d) {
+      return '<div class="bar-item">' +
+        '<div class="bar-label"><span>' + d.label + '</span><span style="color:' + d.color + '">' + d.val + '%</span></div>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + d.val + '%;background:' + d.color + '"></div></div>' +
+        '</div>';
+    }).join('');
   }
 
-  function showCountryDetail(id) {
-    var c=COUNTRIES.find(function(x){return x.id===id;});if(!c)return;
-    document.querySelectorAll('.country-card').forEach(function(el){el.classList.remove('selected');});
-    event.currentTarget.classList.add('selected');
-    var t=I18N[currentLang];
-    var html='<h3>'+c.flag+' '+c.name+' '+c.type+'</h3>';
-    html+=c.detail;
-    html+='<div style="margin-top:16px;"><div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;">📋 申请步骤</div><ol class="step-list">';
-    c.steps.forEach(function(s){html+='<li><div class="step-text"><strong>'+s+'</strong></div></li>';});
-    html+='</ol></div>';
-    html+='<div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:10px;"><span style="color:var(--yellow);">⚠️</span> 后悔率：'+c.regret+'%（回国调研数据）</div>';
-    document.getElementById('countryDetail').innerHTML=html;document.getElementById('countryDetail').style.display='block';
-  }
-
-  function renderCases() {
-    var cases=[{name:'张同学',from:'美国硕士',story:'在硅谷工作3年后回国，现在深圳一家科技公司做技术总监，薪资是国内的2倍。','regret':false},{name:'李同学',from:'澳大利亚WHV',story:'打工度假2年攒了20万，回国后发现国内竞争更激烈了。','regret':true},{name:'王同学',from:'日本修士',story:'毕业后在东京一家游戏公司工作，已申请高度人才签证准备移民。','regret':false}];
-    document.getElementById('caseList').innerHTML=cases.map(function(c){return'<div style="padding:12px;background:var(--bg3);border-radius:8px;"><div style="font-size:12px;font-weight:700;margin-bottom:4px;">'+c.name+' · '+c.from+(c.regret?' <span style="color:var(--red);">后悔</span>':' <span style="color:var(--green);">值得</span>')+'</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">'+c.story+'</div></div>';}).join('');
-  }
-
-  function renderTimelines() {
-    var study=['T-12月：开始准备语言考试','T-10月：开始申请学校','T-4月：获得录取通知','T-2月：申请签证','T-1月：行前准备','T0：入学'];
-    var work=['T-6月：准备材料','T-3月：申请工签/WHV','T-1月：获得批准','T0：出发'];
-    document.getElementById('studyTimeline').innerHTML=study.map(function(t){var parts=t.split('：');return'<div class="tl-item"><div class="tl-month">'+parts[0]+'</div><div class="tl-text">'+parts[1]+'</div></div>';}).join('');
-    document.getElementById('workTimeline').innerHTML=work.map(function(t){var parts=t.split('：');return'<div class="tl-item"><div class="tl-month">'+parts[0]+'</div><div class="tl-text">'+parts[1]+'</div></div>';}).join('');
-  }
-
-  function showCityDropdown() {var dd=document.getElementById('cityDropdown');if(dd)dd.style.display='block';}
-  function filterCities() {var q=document.getElementById('citySearch').value.toLowerCase();var cities=['shenzhen','beijing','shanghai','guangzhou','hangzhou','chengdu','nanjing','wuhan'];var filtered=cities.filter(function(c){return CITIES[c].name.toLowerCase().includes(q);});document.getElementById('cityDropdownList').innerHTML=filtered.map(function(c){return'<div onclick="selectCity(\''+c+'\')" style="padding:8px 14px;cursor:pointer;font-size:13px;" onmouseover="this.style.background=\'var(--bg3)\'" onmouseout="this.style.background=\'none\'">'+CITIES[c].name+'</div>';}).join('');}
-
-  function onScroll(){document.querySelectorAll('.fade-in').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-60)el.classList.add('visible');});}
-  window.addEventListener('scroll',onScroll,{passive:true});
-
-  (function(){
-    applyLang();
-    document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-lang')===currentLang);});
-    initCitySelector();
-    renderRent();
-    renderCommute();
-    renderCostGrid();
-    renderPopGrid();
-    renderHeatmap();
-    renderCompetChart();
-    renderNeiwaiChart();
-    renderRadarChart();
-    renderFlowChart();
-    renderTypeChart();
-    renderReturnChart();
-    renderCountryGrid();
-    renderCases();
-    renderTimelines();
-    setTimeout(onScroll,100);
-  })();
+  init();
 })();
 </script>
 </body>
