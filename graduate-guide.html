@@ -2,64 +2,61 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>2025 大学毕业生选择指南</title>
 <meta name="description" content="国内8城深度对比与出国留学打工完整数据">
-<script src="lib/chart.min.js"></script>
 <script src="nav.js" defer></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
 body {
-  background: #0a0f1a;
+  background: linear-gradient(180deg, #0a0f1a 0%, #0d1520 100%);
   color: #e8f0f8;
-  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   min-height: 100vh;
-  padding-bottom: 60px;
 }
 
-.container { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
 /* Hero */
 .hero {
   text-align: center;
   padding: 60px 16px 40px;
-  background: linear-gradient(180deg, rgba(0,212,255,0.08) 0%, transparent 100%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.1) 0%, transparent 60%);
 }
 .hero h1 {
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(28px, 6vw, 52px);
   font-weight: 800;
   background: linear-gradient(135deg, #fff 0%, #00d4ff 50%, #7c3aed 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
-.hero p { color: #8ba3b8; font-size: 15px; line-height: 1.7; }
+.hero p { color: #7ba3c4; font-size: clamp(14px, 2vw, 16px); line-height: 1.6; }
 
 /* Section */
-.section { padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.section:last-child { border-bottom: none; }
-
+.section { padding: 40px 0; }
 .section-title {
-  font-size: 20px;
+  font-size: clamp(18px, 3vw, 24px);
   font-weight: 700;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
-.section-title span { font-size: 24px; }
-.section-desc { color: #6a7a8a; font-size: 13px; margin-bottom: 20px; }
+.section-title .icon { font-size: clamp(20px, 4vw, 28px); }
+.section-desc { color: #6a7a8a; font-size: 14px; margin-bottom: 20px; }
 
 /* Tabs */
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
 .tab {
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 10px 18px;
+  border-radius: 24px;
   border: 1px solid rgba(255,255,255,0.1);
   background: rgba(255,255,255,0.03);
   color: #8ba3b8;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   transition: all 0.2s;
 }
 .tab:hover { border-color: #00d4ff; color: #00d4ff; }
@@ -74,15 +71,22 @@ body {
   margin-bottom: 16px;
 }
 .card-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.chart-box { position: relative; height: 240px; width: 100%; }
 
-/* Stats */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
 .stat-card {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
@@ -90,17 +94,23 @@ body {
   padding: 16px;
   text-align: center;
 }
-.stat-num { font-size: 24px; font-weight: 800; color: #00d4ff; }
-.stat-label { font-size: 11px; color: #6a7a8a; margin-top: 4px; }
+.stat-num { font-size: clamp(20px, 3vw, 28px); font-weight: 800; color: #00d4ff; }
+.stat-label { font-size: 12px; color: #6a7a8a; margin-top: 4px; }
 
-/* Bar Chart */
-.bar-item { margin-bottom: 12px; }
-.bar-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
-.bar-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+/* Bar Charts */
+.bar-list { display: flex; flex-direction: column; gap: 14px; }
+.bar-item { }
+.bar-header { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.bar-header span:first-child { color: #8ba3b8; }
+.bar-header span:last-child { color: #00d4ff; font-weight: 600; }
+.bar-track { height: 10px; background: rgba(255,255,255,0.06); border-radius: 5px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+.bar-fill.high { background: linear-gradient(90deg, #f85149, #ef4444); }
+.bar-fill.med { background: linear-gradient(90deg, #d29922, #f59e0b); }
+.bar-fill.low { background: linear-gradient(90deg, #22c55e, #16a34a); }
 
 /* Country Grid */
-.country-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.country-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
 .country-card {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
@@ -111,33 +121,42 @@ body {
   text-align: center;
 }
 .country-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
-.country-card.selected { border-color: #00d4ff; background: rgba(0,212,255,0.1); }
+.country-card.selected { border-color: #00d4ff; background: rgba(0,212,255,0.08); }
 .country-flag { font-size: 32px; margin-bottom: 8px; }
 .country-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.country-type { font-size: 11px; color: #6a7a8a; }
+.country-type { font-size: 12px; color: #6a7a8a; }
 
-/* Detail */
-.detail-box {
+/* Detail Panel */
+.detail-panel {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 20px;
   margin-top: 16px;
   display: none;
 }
-.detail-box.show { display: block; }
-.detail-box h3 { font-size: 16px; margin-bottom: 12px; }
-.detail-box p { font-size: 13px; color: #8ba3b8; line-height: 1.7; margin-bottom: 8px; }
-.steps { list-style: none; margin-top: 12px; }
-.steps li {
-  counter-increment: step;
-  display: flex;
-  gap: 10px;
-  margin-bottom: 8px;
+.detail-panel.show { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.detail-panel h3 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.detail-panel .info { font-size: 13px; color: #7ba3c4; line-height: 1.7; margin-bottom: 8px; }
+.detail-panel .cost { color: #f59e0b; font-weight: 600; }
+.detail-panel .salary { color: #22c55e; font-weight: 600; }
+.detail-panel .steps { margin-top: 12px; }
+.detail-panel .steps li {
+  list-style: none;
+  padding: 8px 0 8px 28px;
+  position: relative;
   font-size: 13px;
+  color: #8ba3b8;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
-.steps li::before {
+.detail-panel .steps li:last-child { border-bottom: none; }
+.detail-panel .steps li::before {
   content: counter(step);
+  counter-increment: step;
+  position: absolute;
+  left: 0;
+  top: 6px;
   background: #00d4ff;
   color: #0a0f1a;
   width: 20px;
@@ -148,21 +167,60 @@ body {
   justify-content: center;
   font-size: 11px;
   font-weight: 700;
-  flex-shrink: 0;
+}
+.detail-panel .warning {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(245,158,11,0.1);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #f59e0b;
 }
 
 /* Heatmap */
+.heatmap-container { overflow-x: auto; }
 .heatmap {
   display: grid;
   grid-template-columns: 50px repeat(12, 1fr);
   gap: 2px;
-  font-size: 9px;
-  margin-top: 12px;
+  min-width: 400px;
 }
-.heatmap-header { text-align: center; color: #6a7a8a; padding: 4px 0; }
-.heatmap-label { display: flex; align-items: center; font-size: 10px; color: #8ba3b8; }
-.hm-cell { height: 20px; border-radius: 3px; }
-.hm-legend { display: flex; gap: 16px; margin-top: 12px; font-size: 11px; color: #6a7a8a; }
+.heatmap-header { text-align: center; color: #6a7a8a; padding: 6px 0; font-size: 11px; }
+.heatmap-row-label { display: flex; align-items: center; padding-left: 4px; font-size: 11px; color: #8ba3b8; }
+.hm-cell { height: 22px; border-radius: 3px; }
+
+/* Radar Chart */
+.radar-container {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+.radar-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.radar-bg svg { width: 100%; height: 100%; }
+.radar-data {
+  position: absolute;
+  inset: 0;
+}
+.radar-labels {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.radar-labels span {
+  position: absolute;
+  font-size: 11px;
+  color: #7ba3c4;
+}
 
 /* Footer */
 footer {
@@ -170,21 +228,27 @@ footer {
   padding: 40px 16px;
   color: #4a5a6a;
   font-size: 12px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
-footer a { color: #00d4ff; text-decoration: none; }
 
+/* Responsive */
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .country-grid { grid-template-columns: repeat(2, 1fr); }
-  .chart-box { height: 200px; }
-}
-@media (max-width: 480px) {
-  .hero { padding: 40px 12px 30px; }
+  .hero { padding: 45px 12px 30px; }
   .section { padding: 30px 0; }
   .card { padding: 16px; }
+  .tab { padding: 8px 14px; font-size: 13px; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 26px; }
+  .section-title { font-size: 18px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .country-grid { grid-template-columns: 1fr 1fr; }
+  .stat-card { padding: 12px; }
+  .stat-num { font-size: 20px; }
+  .country-grid { grid-template-columns: repeat(2, 1fr); }
+  .country-card { padding: 12px; }
+  .country-flag { font-size: 24px; }
 }
 </style>
 </head>
@@ -194,13 +258,16 @@ footer a { color: #00d4ff; text-decoration: none; }
   <!-- Hero -->
   <div class="hero">
     <h1>大学毕业，你的路在哪里？</h1>
-    <p>国内8城深度对比 · 出国9国申请指南<br>用数据帮你做最重要的选择</p>
+    <p>国内8城深度对比 · 出国9国申请指南</p>
   </div>
 
-  <!-- Part 1: 国内城市 -->
+  <!-- 国内城市选择 -->
   <div class="section">
-    <div class="section-title"><span>🏙️</span> 国内城市选择</div>
-    <p class="section-desc">从租房成本、通勤时间、生活消费、就业机会帮你选出最适合的城市</p>
+    <div class="section-title">
+      <span class="icon">🏙️</span>
+      <span>国内城市选择</span>
+    </div>
+    <p class="section-desc">从租房成本、通勤时间、就业机会帮你选出最适合的城市</p>
     
     <div class="tabs" id="cityTabs"></div>
     
@@ -208,127 +275,96 @@ footer a { color: #00d4ff; text-decoration: none; }
     
     <div class="card">
       <div class="card-title">🏠 分区租金对比（元/月）</div>
-      <div id="rentBars"></div>
+      <div class="bar-list" id="rentBars"></div>
     </div>
     
     <div class="card">
       <div class="card-title">📊 行业竞争指数</div>
-      <div class="chart-box"><canvas id="competChart"></canvas></div>
-    </div>
-    
-    <div class="card">
-      <div class="card-title">🎯 体制内 vs 体制外对比</div>
-      <div class="chart-box"><canvas id="neiwaiChart"></canvas></div>
+      <div class="bar-list" id="competBars"></div>
     </div>
     
     <div class="card">
       <div class="card-title">📅 全年招聘热力图</div>
-      <div class="heatmap" id="heatmap"></div>
-      <div class="hm-legend">
-        <span style="color:#1a4a8c;">■</span> 少
-        <span style="color:#1a73e8;">■</span> 中
-        <span style="color:#7fc6ff;">■</span> 多
+      <div class="heatmap-container">
+        <div class="heatmap" id="heatmap"></div>
+      </div>
+      <div style="display: flex; gap: 16px; margin-top: 12px; font-size: 11px; color: #6a7a8a;">
+        <span>■ 少</span>
+        <span>■ 中</span>
+        <span>■ 多</span>
       </div>
     </div>
   </div>
 
-  <!-- Part 2: 出国 -->
+  <!-- 出国留学 -->
   <div class="section">
-    <div class="section-title"><span>✈️</span> 出国留学 / 打工</div>
+    <div class="section-title">
+      <span class="icon">✈️</span>
+      <span>出国留学 / 打工</span>
+    </div>
     <p class="section-desc">全球流向、各国门槛、申请流程、真实案例</p>
     
     <div class="card">
       <div class="card-title">🌍 留学目的地分布</div>
-      <div class="chart-box"><canvas id="flowChart"></canvas></div>
+      <div class="bar-list" id="flowBars"></div>
     </div>
     
     <div class="country-grid" id="countryGrid"></div>
-    <div class="detail-box" id="detailBox"></div>
+    <div class="detail-panel" id="detailPanel"></div>
     
-    <div class="card" style="margin-top: 20px;">
+    <div class="card">
       <div class="card-title">💬 回国者后悔率调研</div>
-      <div id="regretStats"></div>
+      <div class="bar-list" id="regretBars"></div>
     </div>
   </div>
 </div>
 
 <footer>
-  <p>数据来源：贝壳研究院、猎聘智联、UNESCO公开数据 | © 2025 唐小涛</p>
-  <p style="margin-top: 8px;"><a href="https://xiaotao-auto.github.io/shenzhen-career/">← 返回首页</a></p>
+  <p>数据来源：贝壳研究院、猎聘智联、UNESCO公开数据</p>
+  <p style="margin-top: 4px;">© 2025 唐小涛</p>
 </footer>
 
 <script>
 (function() {
   var CITIES = {
-    sz:{name:'深圳',rent:[45,42,32,28,38],cost:[35,32,150,60],heat:[[2,2,3,4,5,6,5,4,4,5,3,2],[5,4,6,7,8,7,6,8,9,8,7,5],[3,2,4,5,6,7,8,7,6,5,4,3],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[85,92,65,78,72,70],neiwai:[8,6,7,9,5,7],pop:1768,avgAge:32,single:58,salary:8500},
-    bj:{name:'北京',rent:[68,62,58,38,35],cost:[40,38,180,70],heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[6,5,7,8,9,8,7,9,8,7,6,5],[3,2,4,5,6,7,6,5,4,3,2,2],[5,4,6,7,8,7,6,7,8,7,6,5]],compet:[92,95,68,82,75,72],neiwai:[9,5,6,8,4,6],pop:2200,avgAge:35,single:62,salary:9200},
-    sh:{name:'上海',rent:[62,55,58,38,35],cost:[38,36,170,65],heat:[[3,3,4,5,6,7,6,5,5,6,4,3],[5,4,6,7,8,7,6,7,8,7,6,4],[4,3,5,6,7,8,7,6,5,4,3,3],[6,5,7,8,9,8,7,8,9,8,7,6]],compet:[88,90,70,85,78,74],neiwai:[8,7,7,8,6,7],pop:2480,avgAge:34,single:60,salary:8800},
-    gz:{name:'广州',rent:[38,35,28,30,22],cost:[28,25,120,50],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[72,78,62,70,65,60],neiwai:[7,8,8,7,8,8],pop:1870,avgAge:33,single:55,salary:6800},
-    hz:{name:'杭州',rent:[42,38,36,35,40],cost:[30,30,140,55],heat:[[2,2,3,4,5,6,5,4,4,5,3,2],[6,5,7,8,9,8,7,8,9,8,7,5],[3,2,4,5,6,7,6,5,4,3,2,2],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[78,85,58,75,68,62],neiwai:[7,7,8,8,7,7],pop:1240,avgAge:31,single:52,salary:7200},
-    cd:{name:'成都',rent:[22,20,18,16,15],cost:[22,22,100,45],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[4,3,5,6,7,8,7,6,5,4,3,3],[3,2,4,5,6,5,4,5,6,5,4,3]],compet:[65,70,55,62,58,55],neiwai:[6,8,9,7,9,8],pop:2140,avgAge:34,single:50,salary:5800},
-    nj:{name:'南京',rent:[28,26,25,20,18],cost:[25,24,110,48],heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]],compet:[70,75,58,68,62,58],neiwai:[7,7,8,8,8,8],pop:950,avgAge:36,single:48,salary:6200},
-    wh:{name:'武汉',rent:[18,16,15,14,12],cost:[20,20,90,40],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[3,2,4,5,6,5,4,5,6,5,4,3]],compet:[62,68,52,58,55,52],neiwai:[6,8,9,7,9,8],pop:1365,avgAge:35,single:46,salary:5500}
+    sz:{name:'深圳',pop:1768,avgAge:32,single:58,salary:8500,rent:[4500,4200,3200,2800,3800],compet:[85,92,65,78,72,70],heat:[[2,2,3,4,5,6,5,4,4,5,3,2],[5,4,6,7,8,7,6,8,9,8,7,5],[3,2,4,5,6,7,8,7,6,5,4,3],[4,3,5,6,7,6,5,6,7,6,5,4]]},
+    bj:{name:'北京',pop:2200,avgAge:35,single:62,salary:9200,rent:[6800,6200,5800,3800,3500],compet:[92,95,68,82,75,72],heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[6,5,7,8,9,8,7,9,8,7,6,5],[3,2,4,5,6,7,6,5,4,3,2,2],[5,4,6,7,8,7,6,7,8,7,6,5]]},
+    sh:{name:'上海',pop:2480,avgAge:34,single:60,salary:8800,rent:[6200,5500,5800,3800,3500],compet:[88,90,70,85,78,74],heat:[[3,3,4,5,6,7,6,5,5,6,4,3],[5,4,6,7,8,7,6,7,8,7,6,4],[4,3,5,6,7,8,7,6,5,4,3,3],[6,5,7,8,9,8,7,8,9,8,7,6]]},
+    gz:{name:'广州',pop:1870,avgAge:33,single:55,salary:6800,rent:[3800,3500,2800,3000,2200],compet:[72,78,62,70,65,60],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]]},
+    hz:{name:'杭州',pop:1240,avgAge:31,single:52,salary:7200,rent:[4200,3800,3600,3500,4000],compet:[78,85,58,75,68,62],heat:[[2,2,3,4,5,6,5,4,4,5,3,2],[6,5,7,8,9,8,7,8,9,8,7,5],[3,2,4,5,6,7,6,5,4,3,2,2],[4,3,5,6,7,6,5,6,7,6,5,4]]},
+    cd:{name:'成都',pop:2140,avgAge:34,single:50,salary:5800,rent:[2200,2000,1800,1600,1500],compet:[65,70,55,62,58,55],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[4,3,5,6,7,8,7,6,5,4,3,3],[3,2,4,5,6,5,4,5,6,5,4,3]]},
+    nj:{name:'南京',pop:950,avgAge:36,single:48,salary:6200,rent:[2800,2600,2500,2000,1800],compet:[70,75,58,68,62,58],heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]]},
+    wh:{name:'武汉',pop:1365,avgAge:35,single:46,salary:5500,rent:[1800,1600,1500,1400,1200],compet:[62,68,52,58,55,52],heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[3,2,4,5,6,5,4,5,6,5,4,3]]}
   };
 
   var COUNTRIES = [
-    {id:'usa',flag:'🇺🇸',name:'美国',type:'留学',cost:45,salary:'$75K',regret:35,steps:['考托福/GRE','申请学校','获得I-20','面签','入学'],desc:'✅ 世界顶尖大学多，OPT允许工作3年\n❌ 学费最贵，竞争激烈'},
-    {id:'uk',flag:'🇬🇧',name:'英国',type:'留学',cost:30,salary:'£35K',regret:28,steps:['考雅思','申请学校','获得CAS','申请签证','入学'],desc:'✅ 一年制硕士性价比高，PSW签证2年\n❌ 就业窗口期紧'},
-    {id:'aus',flag:'🇦🇺',name:'澳大利亚',type:'留学/打工',cost:25,salary:'A$65K',regret:22,steps:['考雅思','申请学校','获批','入境'],desc:'✅ 移民友好，WHV对中国开放\n❌ 部分专业就业难'},
-    {id:'can',flag:'🇨🇦',name:'加拿大',type:'留学/移民',cost:22,salary:'C$65K',regret:18,steps:['考雅思','申请学校','获录取通知','申请签证','入境'],desc:'✅ 移民政策最友好\n❌ 气候寒冷'},
-    {id:'jpn',flag:'🇯🇵',name:'日本',type:'留学/工作',cost:15,salary:'¥400万',regret:25,steps:['学日语','申请学校','在留资格','申请签证','入境'],desc:'✅ 费用低，文化相近\n❌ 语言要求高'},
-    {id:'ger',flag:'🇩🇪',name:'德国',type:'留学',cost:8,salary:'€50K',regret:20,steps:['学德语','申请大学','获Zulassung','申请签证','入学'],desc:'✅ 公立大学免学费\n❌ 德语要求高'},
-    {id:'sgp',flag:'🇸🇬',name:'新加坡',type:'留学/工作',cost:20,salary:'S$65K',regret:30,steps:['申请学校','获批','申请签证','入境'],desc:'✅ 离家近，税率低\n❌ 竞争激烈'},
-    {id:'kor',flag:'🇰🇷',name:'韩国',type:'留学',cost:10,salary:'₩4000万',regret:24,steps:['学韩语','申请学校','获入学许可','申请签证','入学'],desc:'✅ 学费低，留学成本低\n❌ 薪资相对较低'},
-    {id:'nz',flag:'🇳🇿',name:'新西兰',type:'打工/移民',cost:12,salary:'NZ$60K',regret:15,steps:['申请WHV','获签','订机票','入境'],desc:'✅ WHV对中国开放\n❌ 工作机会较少'}
+    {id:'usa',flag:'🇺🇸',name:'美国',type:'留学',cost:45,salary:'$75K',regret:35,steps:['考托福/GRE','申请学校','获得I-20','面签','入学'],pros:'世界顶尖大学多，OPT允许工作3年',cons:'学费最贵，竞争激烈'},
+    {id:'uk',flag:'🇬🇧',name:'英国',type:'留学',cost:30,salary:'£35K',regret:28,steps:['考雅思','申请学校','获得CAS','申请签证','入学'],pros:'一年制硕士性价比高，PSW签证2年',cons:'就业窗口期紧'},
+    {id:'aus',flag:'🇦🇺',name:'澳大利亚',type:'留学/打工',cost:25,salary:'A$65K',regret:22,steps:['考雅思','申请学校','获批','入境'],pros:'移民友好，WHV对中国开放',cons:'部分专业就业难'},
+    {id:'can',flag:'🇨🇦',name:'加拿大',type:'留学/移民',cost:22,salary:'C$65K',regret:18,steps:['考雅思','申请学校','获录取通知','申请签证','入境'],pros:'移民政策最友好',cons:'气候寒冷'},
+    {id:'jpn',flag:'🇯🇵',name:'日本',type:'留学/工作',cost:15,salary:'¥400万',regret:25,steps:['学日语','申请学校','在留资格','申请签证','入境'],pros:'费用低，文化相近',cons:'语言要求高'},
+    {id:'ger',flag:'🇩🇪',name:'德国',type:'留学',cost:8,salary:'€50K',regret:20,steps:['学德语','申请大学','获Zulassung','申请签证','入学'],pros:'公立大学免学费',cons:'德语要求高'},
+    {id:'sgp',flag:'🇸🇬',name:'新加坡',type:'留学/工作',cost:20,salary:'S$65K',regret:30,steps:['申请学校','获批','申请签证','入境'],pros:'离家近，税率低',cons:'竞争激烈'},
+    {id:'kor',flag:'🇰🇷',name:'韩国',type:'留学',cost:10,salary:'₩4000万',regret:24,steps:['学韩语','申请学校','获入学许可','申请签证','入学'],pros:'学费低，留学成本低',cons:'薪资相对较低'},
+    {id:'nz',flag:'🇳🇿',name:'新西兰',type:'打工/移民',cost:12,salary:'NZ$60K',regret:15,steps:['申请WHV','获签','订机票','入境'],pros:'WHV对中国开放',cons:'工作机会较少'}
   ];
 
   var currentCity = 'sz';
-  var rentLabels = ['市中心','核心区','周边1','周边2','周边3'];
-  var heatLabels = ['体制内','互联网','制造','金融'];
-  var heatColors = ['#1a4a8c','#1a73e8','#7fc6ff','#4da6ff'];
-  var competLabels = ['体制内','互联网','制造','金融','医疗','教育'];
+  var rentLabels = ['市中心','科技园/核心区','关外/近郊','远郊','新区'];
+  var competLabels = ['体制内','互联网','制造业','金融','医疗','教育'];
+  var flowLabels = ['美国','英国','澳大利亚','加拿大','日本','德国','新加坡','韩国','其他'];
+  var flowData = [42,15,12,10,8,7,6,4,16];
 
   function init() {
     renderCityTabs();
     renderStats();
     renderRentBars();
-    renderCompetChart();
-    renderNeiwaiChart();
-    renderFlowChart();
-    renderCountries();
-    renderRegretStats();
-  }
-
-  window.selectCity = function(key) {
-    currentCity = key;
-    document.querySelectorAll('.tab').forEach(function(t) {
-      t.classList.toggle('active', t.textContent === CITIES[key].name);
-    });
-    renderStats();
-    renderRentBars();
-    renderCompetChart();
-    renderNeiwaiChart();
+    renderCompetBars();
     renderHeatmap();
+    renderFlowBars();
+    renderCountryGrid();
+    renderRegretBars();
   }
-
-  window.showDetail = function(id) {
-    var c = COUNTRIES.find(function(x) { return x.id === id; });
-    if (!c) return;
-    document.querySelectorAll('.country-card').forEach(function(el) { el.classList.remove('selected'); });
-    document.getElementById('card-' + id).classList.add('selected');
-    var html = '<h3>' + c.flag + ' ' + c.name + ' (' + c.type + ')</h3>';
-    html += '<p style="white-space:pre-line">' + c.desc + '</p>';
-    html += '<p><strong>💰 年费用：</strong>¥' + c.cost + '万 | <strong>薪资：</strong>' + c.salary + '</p>';
-    html += '<ul class="steps">';
-    c.steps.forEach(function(s) { html += '<li>' + s + '</li>'; });
-    html += '</ul>';
-    html += '<p style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">⚠️ 后悔率：' + c.regret + '%（回国调研数据）</p>';
-    var box = document.getElementById('detailBox');
-    box.innerHTML = html;
-    box.classList.add('show');
-  }
-
-  init();
 
   function renderCityTabs() {
     var tabs = document.getElementById('cityTabs');
@@ -340,15 +376,14 @@ footer a { color: #00d4ff; text-decoration: none; }
     tabs.innerHTML = html;
   }
 
-  function selectCity(key) {
+  window.selectCity = function(key) {
     currentCity = key;
     document.querySelectorAll('.tab').forEach(function(t) {
       t.classList.toggle('active', t.textContent === CITIES[key].name);
     });
     renderStats();
     renderRentBars();
-    renderCompetChart();
-    renderNeiwaiChart();
+    renderCompetBars();
     renderHeatmap();
   }
 
@@ -363,141 +398,78 @@ footer a { color: #00d4ff; text-decoration: none; }
     document.getElementById('statsGrid').innerHTML = stats.map(function(s) {
       return '<div class="stat-card"><div class="stat-num">' + s.val + '</div><div class="stat-label">' + s.label + '</div></div>';
     }).join('');
-    renderHeatmap();
   }
 
   function renderRentBars() {
     var c = CITIES[currentCity];
     var max = Math.max.apply(null, c.rent);
     var html = '';
-    rentLabels.forEach(function(label, i) {
-      var v = c.rent[i];
+    c.rent.forEach(function(v, i) {
       var pct = Math.round(v / max * 100);
-      var color = v > 50 ? '#f85149' : v > 35 ? '#d29922' : '#3fb950';
+      var level = v > 5000 ? 'high' : v > 3500 ? 'med' : 'low';
       html += '<div class="bar-item">';
-      html += '<div class="bar-label"><span>' + label + '</span><span style="color:#00d4ff">¥' + v + '00</span></div>';
-      html += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>';
+      html += '<div class="bar-header"><span>' + rentLabels[i] + '</span><span>¥' + v + '</span></div>';
+      html += '<div class="bar-track"><div class="bar-fill ' + level + '" style="width:' + pct + '%"></div></div>';
       html += '</div>';
     });
     document.getElementById('rentBars').innerHTML = html;
   }
 
+  function renderCompetBars() {
+    var c = CITIES[currentCity];
+    var max = Math.max.apply(null, c.compet);
+    var html = '';
+    c.compet.forEach(function(v, i) {
+      var pct = Math.round(v / max * 100);
+      var level = v > 85 ? 'high' : v > 75 ? 'med' : 'low';
+      html += '<div class="bar-item">';
+      html += '<div class="bar-header"><span>' + competLabels[i] + '</span><span>' + v + '</span></div>';
+      html += '<div class="bar-track"><div class="bar-fill ' + level + '" style="width:' + pct + '%"></div></div>';
+      html += '</div>';
+    });
+    document.getElementById('competBars').innerHTML = html;
+  }
+
   function renderHeatmap() {
     var c = CITIES[currentCity];
-    var months = '1,2,3,4,5,6,7,8,9,10,11,12'.split(',');
+    var months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    var sectors = ['体制内','互联网','制造','金融'];
+    var colors = ['rgba(26,74,140,','rgba(26,115,232,','rgba(127,198,255,','rgba(77,166,255,'];
+    
     var html = '<div></div>';
     months.forEach(function(m) {
-      html += '<div class="heatmap-header">' + m + '</div>';
+      html += '<div class="heatmap-header">' + m.slice(0,2) + '</div>';
     });
-    heatLabels.forEach(function(label, si) {
-      html += '<div class="heatmap-label">' + label.slice(0,2) + '</div>';
-      c.heat[si].forEach(function(v) {
-        var col = heatColors[si];
-        var opacity = 0.3 + (v / 10) * 0.7;
-        html += '<div class="hm-cell" style="background:rgba(' + 
-          (si === 0 ? '26,74,140' : si === 1 ? '26,115,232' : si === 2 ? '127,198,255' : '77,166,255').split(',').map(function(x) { return Math.round(x * opacity); }).join(',') + ',' + opacity + ')"></div>';
+    
+    c.heat.forEach(function(row, si) {
+      html += '<div class="heatmap-row-label">' + sectors[si].slice(0,2) + '</div>';
+      row.forEach(function(v) {
+        var opacity = 0.25 + (v / 10) * 0.75;
+        html += '<div class="hm-cell" style="background:' + colors[si] + opacity + ')"></div>';
       });
     });
+    
     document.getElementById('heatmap').innerHTML = html;
   }
 
-  function renderCompetChart() {
-    var c = CITIES[currentCity];
-    var ctx = document.getElementById('competChart');
-    if (!ctx) return;
-    if (window.competChart) window.competChart.destroy();
-    window.competChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: competLabels,
-        datasets: [{
-          data: c.compet,
-          backgroundColor: c.compet.map(function(v) {
-            return v > 80 ? 'rgba(248,81,73,0.8)' : v > 70 ? 'rgba(210,153,34,0.8)' : 'rgba(63,185,80,0.8)';
-          }),
-          borderRadius: 6,
-          borderSkipped: false
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6a7a8a' } },
-          x: { grid: { display: false }, ticks: { color: '#6a7a8a', font: { size: 10 } } }
-        }
-      }
+  function renderFlowBars() {
+    var max = Math.max.apply(null, flowData);
+    var html = '';
+    flowData.forEach(function(v, i) {
+      var pct = Math.round(v / max * 100);
+      var colors = ['#3b82f6','#10b981','#f59e0b','#a855f7','#f97316','#6366f1','#ec4899','#14b8a6','#6b7280'];
+      html += '<div class="bar-item">';
+      html += '<div class="bar-header"><span>' + flowLabels[i] + '</span><span>' + v + '%</span></div>';
+      html += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + colors[i] + '"></div></div>';
+      html += '</div>';
     });
+    document.getElementById('flowBars').innerHTML = html;
   }
 
-  function renderNeiwaiChart() {
-    var c = CITIES[currentCity];
-    var ctx = document.getElementById('neiwaiChart');
-    if (!ctx) return;
-    if (window.neiwaiChart) window.neiwaiChart.destroy();
-    window.neiwaiChart = new Chart(ctx, {
-      type: 'radar',
-      data: {
-        labels: ['薪资增长','工作稳定','晋升速度','工作强度','福利待遇','自由度'],
-        datasets: [
-          { label: '体制内', data: c.neiwai, fill: true, backgroundColor: 'rgba(0,212,255,0.1)', borderColor: '#00d4ff', pointBackgroundColor: '#00d4ff' },
-          { label: '体制外', data: [6,8,5,7,7,5], fill: true, backgroundColor: 'rgba(247,129,102,0.1)', borderColor: '#f78166', pointBackgroundColor: '#f78166' }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { color: '#8ba3b8', padding: 12 } } },
-        scales: {
-          r: {
-            angleLines: { color: 'rgba(255,255,255,0.06)' },
-            grid: { color: 'rgba(255,255,255,0.06)' },
-            pointLabels: { color: '#8ba3b8', font: { size: 10 } }
-          }
-        }
-      }
-    });
-  }
-
-  function renderFlowChart() {
-    var ctx = document.getElementById('flowChart');
-    if (!ctx) return;
-    if (window.flowChart) window.flowChart.destroy();
-    var labels = ['美国','英国','澳州','加拿大','日本','德国','新加坡','韩国','其他'];
-    var data = [42,15,12,10,8,7,6,4,16];
-    window.flowChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          backgroundColor: [
-            'rgba(59,130,246,0.8)','rgba(16,185,129,0.8)','rgba(245,158,11,0.8)',
-            'rgba(168,85,247,0.8)','rgba(249,115,22,0.8)','rgba(99,102,241,0.8)',
-            'rgba(236,72,153,0.8)','rgba(20,184,166,0.8)','rgba(107,114,128,0.8)'
-          ],
-          borderRadius: 6,
-          borderSkipped: false
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        indexAxis: 'y',
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6a7a8a', callback: function(v) { return v + '%'; } } },
-          y: { grid: { display: false }, ticks: { color: '#8ba3b8' } }
-        }
-      }
-    });
-  }
-
-  function renderCountries() {
+  function renderCountryGrid() {
     var html = '';
     COUNTRIES.forEach(function(c) {
-      html += '<div class="country-card" onclick="showDetail(\'' + c.id + '\')" id="card-' + c.id + '">';
+      html += '<div class="country-card" onclick="showCountryDetail(\'' + c.id + '\')" id="card-' + c.id + '">';
       html += '<div class="country-flag">' + c.flag + '</div>';
       html += '<div class="country-name">' + c.name + '</div>';
       html += '<div class="country-type">' + c.type + '</div>';
@@ -506,36 +478,43 @@ footer a { color: #00d4ff; text-decoration: none; }
     document.getElementById('countryGrid').innerHTML = html;
   }
 
-  function showDetail(id) {
+  window.showCountryDetail = function(id) {
     var c = COUNTRIES.find(function(x) { return x.id === id; });
     if (!c) return;
     document.querySelectorAll('.country-card').forEach(function(el) { el.classList.remove('selected'); });
     document.getElementById('card-' + id).classList.add('selected');
+    
     var html = '<h3>' + c.flag + ' ' + c.name + ' (' + c.type + ')</h3>';
-    html += '<p style="white-space:pre-line">' + c.desc + '</p>';
-    html += '<p><strong>💰 年费用：</strong>¥' + c.cost + '万 | <strong>薪资：</strong>' + c.salary + '</p>';
-    html += '<ul class="steps">';
+    html += '<div class="info"><strong>✅ ' + c.pros + '</strong></div>';
+    html += '<div class="info"><strong>❌ ' + c.cons + '</strong></div>';
+    html += '<div class="info"><strong>💰 年费用：</strong><span class="cost">¥' + c.cost + '万</span> | <strong>薪资：</strong><span class="salary">' + c.salary + '</span></div>';
+    html += '<div class="steps" style="counter-reset: step;">';
     c.steps.forEach(function(s) { html += '<li>' + s + '</li>'; });
-    html += '</ul>';
-    html += '<p style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;">⚠️ 后悔率：' + c.regret + '%（回国调研数据）</p>';
-    var box = document.getElementById('detailBox');
-    box.innerHTML = html;
-    box.classList.add('show');
+    html += '</div>';
+    html += '<div class="warning">⚠️ 回国后悔率：' + c.regret + '%（调研数据）</div>';
+    
+    var panel = document.getElementById('detailPanel');
+    panel.innerHTML = html;
+    panel.classList.add('show');
   }
 
-  function renderRegretStats() {
+  function renderRegretBars() {
     var data = [
-      { label: '🙌 没后悔，值得', val: 52, color: '#3fb950' },
-      { label: '🤔 有得有失', val: 28, color: '#d29922' },
-      { label: '😔 后悔了', val: 13, color: '#f85149' },
-      { label: '😤 完全后悔', val: 7, color: '#f78166' }
+      { label: '🙌 没后悔，值得', val: 52, color: '#22c55e' },
+      { label: '🤔 有得有失', val: 28, color: '#f59e0b' },
+      { label: '😔 后悔了', val: 13, color: '#f97316' },
+      { label: '😤 完全后悔', val: 7, color: '#ef4444' }
     ];
-    document.getElementById('regretStats').innerHTML = data.map(function(d) {
-      return '<div class="bar-item">' +
-        '<div class="bar-label"><span>' + d.label + '</span><span style="color:' + d.color + '">' + d.val + '%</span></div>' +
-        '<div class="bar-track"><div class="bar-fill" style="width:' + d.val + '%;background:' + d.color + '"></div></div>' +
-        '</div>';
-    }).join('');
+    var max = 52;
+    var html = '';
+    data.forEach(function(d) {
+      var pct = Math.round(d.val / max * 100);
+      html += '<div class="bar-item">';
+      html += '<div class="bar-header"><span>' + d.label + '</span><span>' + d.val + '%</span></div>';
+      html += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + d.color + '"></div></div>';
+      html += '</div>';
+    });
+    document.getElementById('regretBars').innerHTML = html;
   }
 
   init();
