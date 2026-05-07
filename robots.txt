@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xiaotao-auto.github.io/shenzhen-career/sitemap.xml
+
+# 搜索引擎优化
+# 帮助搜索引擎更好地发现和索引您的网站内容
