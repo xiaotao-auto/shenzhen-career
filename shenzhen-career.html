@@ -81,6 +81,7 @@
       color: var(--text);
       font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
       overflow-x: hidden;
+      padding-top: 48px;
     }
 
     /* ========= 滚动条 ========= */
@@ -1758,6 +1759,7 @@ function setLang(lang){
   applyLang();
   const inp = document.getElementById('searchInput');
   if(inp) inp.placeholder = I18N[lang].searchPlaceholder || '搜索…';
+  if (window.updateNavLang) window.updateNavLang(lang);
 }
 
 function applyLang(){

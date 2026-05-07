@@ -29,6 +29,7 @@
       background: var(--bg-dark);
       color: var(--text);
       overflow-x: hidden;
+      padding-top: 48px;
     }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0a1628; }
@@ -431,6 +432,7 @@
     document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.textContent.trim().toLowerCase().startsWith(lang==='zh'?'简':lang==='zt'?'繁':'e')));
     applyLang();
     renderAll();
+    if (window.updateNavLang) window.updateNavLang(lang);
   }
   function applyLang(){
     const t = I18N[currentLang];

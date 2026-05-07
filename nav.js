@@ -1,16 +1,76 @@
 /**
- * nav.js — 唐小涛网站群 · 左侧纵向滑出导航 v4
+ * nav.js — 唐小涛网站群 · 左侧纵向滑出导航 v5
  * 平时只显示左侧一条细线+小圆点，hover/点击后纵向滑出导航列表
  * 无署名，只保留站点切换功能
+ * 支持中英繁三语切换
  */
 (function () {
   const BASE = 'https://xiaotao-auto.github.io/shenzhen-career';
   const PAGES = [
-    { key: 'graduate',  emoji: '🎓', label: '毕业生指南',   url: BASE + '/graduate-guide.html' },
-    { key: 'housing',   emoji: '🏠', label: '城市房价地图',  url: BASE + '/housing-price-viz/' },
-    { key: 'career',    emoji: '🏙️', label: '深圳职业图谱',  url: BASE + '/shenzhen-career.html' },
-    { key: 'guestbook', emoji: '💬', label: '访客留言板',    url: BASE + '/guestbook.html' },
+    { key: 'graduate',  emoji: '🎓', labelKey: 'nav_graduate',  url: BASE + '/graduate-guide.html' },
+    { key: 'housing',   emoji: '🏠', labelKey: 'nav_housing',   url: BASE + '/housing-price-viz/' },
+    { key: 'career',    emoji: '🏙️', labelKey: 'nav_career',    url: BASE + '/shenzhen-career.html' },
+    { key: 'guestbook', emoji: '💬', labelKey: 'nav_guestbook', url: BASE + '/guestbook.html' },
   ];
+
+  const I18N_NAV = {
+    zh: {
+      nav_graduate: '毕业生指南',
+      nav_housing: '城市房价地图',
+      nav_career: '深圳职业图谱',
+      nav_guestbook: '访客留言板',
+      nav_panelTitle: '📍 网站导航',
+      nav_triggerLabel: '站内导航',
+    },
+    zt: {
+      nav_graduate: '畢業生指南',
+      nav_housing: '城市房價地圖',
+      nav_career: '深圳職業圖譜',
+      nav_guestbook: '訪客留言板',
+      nav_panelTitle: '📍 網站導航',
+      nav_triggerLabel: '站內導航',
+    },
+    en: {
+      nav_graduate: 'Graduate Guide',
+      nav_housing: 'Housing Map',
+      nav_career: 'Shenzhen Career',
+      nav_guestbook: 'Guestbook',
+      nav_panelTitle: '📍 Site Navigation',
+      nav_triggerLabel: 'Site Navigation',
+    },
+  };
+
+  const I18N_LANG = {
+    zh: { lang_zh: '简体', lang_zt: '繁體', lang_en: 'EN' },
+    zt: { lang_zh: '簡體', lang_zt: '繁體', lang_en: 'EN' },
+    en: { lang_zh: 'CN', lang_zt: 'TW', lang_en: 'EN' },
+  };
+
+  let currentLang = 'zh';
+
+  function t(key) {
+    const dict = I18N_NAV[currentLang] || I18N_NAV.zh;
+    return dict[key] || key;
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    const langBtns = document.querySelectorAll('.lang-btn');
+    if (langBtns.length > 0) {
+      langBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
+    }
+    updateNavLabels();
+  }
+
+  function updateNavLabels() {
+    const panelTitle = document.querySelector('#snav-panel .snav-panel-title');
+    if (panelTitle) panelTitle.textContent = t('nav_panelTitle');
+    const items = document.querySelectorAll('#snav-panel .snav-item');
+    items.forEach((item, i) => {
+      const label = item.querySelector('.snav-item-label');
+      if (label && PAGES[i]) label.textContent = t(PAGES[i].labelKey);
+    });
+  }
 
   function currentKey() {
     const p = location.pathname;
@@ -218,7 +278,7 @@
   trigger.id = 'snav-trigger';
   trigger.setAttribute('role', 'button');
   trigger.setAttribute('tabindex', '0');
-  trigger.setAttribute('aria-label', '站内导航');
+  trigger.setAttribute('aria-label', t('nav_triggerLabel'));
   const curPage = PAGES.find(p => p.key === cur);
   trigger.innerHTML = `
     <div class="snav-line"></div>
@@ -229,13 +289,13 @@
   const panel = document.createElement('div');
   panel.id = 'snav-panel';
   panel.innerHTML = `
-    <div class="snav-panel-title">📍 网站导航</div>
+    <div class="snav-panel-title">${t('nav_panelTitle')}</div>
     ${PAGES.map((p, i) => `
       <a class="snav-item${p.key === cur ? ' active' : ''}"
          href="${p.url}"
          ${p.key === cur ? 'aria-current="page"' : ''}>
         <span class="snav-item-emoji">${p.emoji}</span>
-        <span class="snav-item-label">${p.label}</span>
+        <span class="snav-item-label">${t(p.labelKey)}</span>
         <span class="snav-item-num">${i + 1}</span>
         ${p.key === cur ? '<span class="snav-item-active-dot"></span>' : ''}
       </a>
@@ -297,4 +357,19 @@
   }
   if (document.body) { inject(); }
   else { document.addEventListener('DOMContentLoaded', inject); }
+
+  if (typeof window.setLang !== 'function') {
+    window.setLang = setLang;
+  } else {
+    const originalSetLang = window.setLang;
+    window.setLang = function(lang) {
+      originalSetLang(lang);
+      setLang(lang);
+    };
+  }
+  window.getCurrentLang = function() { return currentLang; };
+  window.updateNavLang = function(lang) {
+    currentLang = lang;
+    updateNavLabels();
+  };
 })();
