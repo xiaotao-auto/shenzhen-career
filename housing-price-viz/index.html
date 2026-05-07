@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>全国城市房价地图 - 2025房价分析</title>
-<meta name="description" content="全国一二线城市房价可视化分析，含房价收入比、性价比评分、房租收益率">
+<title>全国城市房价地图 - 2025年轻人买房租房指南</title>
+<meta name="description" content="全国一二线城市房价深度分析，含房价GDP比、城市历史转型、消费指数、全球对比">
 <script src="../nav.js" defer></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -16,8 +16,6 @@ body {
   min-height: 100vh;
   line-height: 1.6;
 }
-
-/* Container */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
 /* Hero */
@@ -35,9 +33,15 @@ body {
   margin-bottom: 10px;
 }
 .hero p { color: #8ba3c4; font-size: clamp(14px, 2vw, 16px); }
+.hero-tags { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+.hero-tag { 
+  background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); 
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; color: #00d4ff;
+}
 
 /* Section */
-.section { padding: 40px 0; }
+.section { padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.section:last-child { border-bottom: none; }
 .section-title {
   font-size: clamp(18px, 3vw, 22px);
   font-weight: 700;
@@ -49,7 +53,7 @@ body {
 .section-icon { font-size: clamp(22px, 4vw, 28px); }
 .section-desc { color: #6a7a8a; font-size: 14px; margin-bottom: 20px; }
 
-/* China Map Visualization */
+/* China Map */
 .china-map-container {
   position: relative;
   background: rgba(255,255,255,0.02);
@@ -59,19 +63,8 @@ body {
   margin-bottom: 20px;
   overflow: hidden;
 }
-.map-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: center;
-}
-.china-map {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-  max-width: 800px;
-  margin: 0 auto;
-}
+.map-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; text-align: center; }
+.china-map { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 800px; margin: 0 auto; }
 .map-cell {
   aspect-ratio: 1;
   border-radius: 8px;
@@ -81,84 +74,60 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s;
-  position: relative;
   font-size: 11px;
   text-align: center;
   padding: 4px;
 }
-.map-cell:hover {
-  transform: scale(1.1);
-  z-index: 10;
-}
-.map-cell .city-name {
-  font-weight: 600;
-  font-size: 10px;
-  line-height: 1.2;
-}
-.map-cell .price {
-  font-size: 9px;
-  opacity: 0.8;
-}
+.map-cell:hover { transform: scale(1.1); z-index: 10; }
+.map-cell .city-name { font-weight: 600; font-size: 10px; line-height: 1.2; }
+.map-cell .price { font-size: 9px; opacity: 0.8; }
 .map-cell.tier1 { background: rgba(239,68,68,0.3); border: 1px solid rgba(239,68,68,0.5); color: #fca5a5; }
 .map-cell.tier1:hover { background: rgba(239,68,68,0.5); box-shadow: 0 0 20px rgba(239,68,68,0.3); }
 .map-cell.tiernew { background: rgba(245,158,11,0.25); border: 1px solid rgba(245,158,11,0.4); color: #fcd34d; }
 .map-cell.tiernew:hover { background: rgba(245,158,11,0.4); box-shadow: 0 0 20px rgba(245,158,11,0.3); }
 .map-cell.tier2 { background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.3); color: #86efac; }
 .map-cell.tier2:hover { background: rgba(34,197,94,0.35); box-shadow: 0 0 20px rgba(34,197,94,0.3); }
-.map-legend {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 20px;
-  font-size: 12px;
-}
+.map-legend { display: flex; justify-content: center; gap: 24px; margin-top: 20px; font-size: 12px; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
 .legend-dot { width: 12px; height: 12px; border-radius: 4px; }
 .legend-dot.t1 { background: rgba(239,68,68,0.5); }
 .legend-dot.tnew { background: rgba(245,158,11,0.4); }
 .legend-dot.t2 { background: rgba(34,197,94,0.35); }
 
-/* City Tabs */
-.city-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-.city-tab {
-  padding: 10px 18px;
-  border-radius: 24px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.03);
-  color: #8ba3b8;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-.city-tab:hover { border-color: #00d4ff; color: #00d4ff; }
-.city-tab.active { background: #00d4ff; border-color: #00d4ff; color: #0a0f1a; font-weight: 600; }
-
-/* Card */
-.card {
+/* Detail Panel */
+.detail-panel {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
   padding: 20px;
-  margin-bottom: 16px;
+  margin-top: 16px;
+  display: none;
 }
-.card-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 14px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-title .icon { font-size: 18px; }
+.detail-panel.show { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.detail-city { font-size: 20px; font-weight: 700; }
+.detail-tier { font-size: 12px; padding: 4px 10px; border-radius: 12px; }
+.detail-tier.t1 { background: rgba(239,68,68,0.2); color: #f87171; }
+.detail-tier.tnew { background: rgba(245,158,11,0.2); color: #fbbf24; }
+.detail-tier.t2 { background: rgba(34,197,94,0.2); color: #4ade80; }
+.detail-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.detail-metric { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px; text-align: center; }
+.detail-metric-val { font-size: 18px; font-weight: 700; color: #00d4ff; }
+.detail-metric-label { font-size: 11px; color: #6a7a8a; margin-top: 2px; }
+.detail-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.detail-tag { font-size: 12px; padding: 4px 10px; border-radius: 12px; }
+.tag-good { background: rgba(34,197,94,0.15); color: #4ade80; }
+.tag-warn { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.tag-bad { background: rgba(239,68,68,0.15); color: #f87171; }
+.detail-story { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+.story-item { display: flex; gap: 12px; margin-bottom: 12px; font-size: 13px; }
+.story-icon { font-size: 16px; flex-shrink: 0; }
+.story-text { color: #9aafc4; line-height: 1.5; }
+.story-label { color: #00d4ff; font-weight: 600; margin-right: 8px; }
 
 /* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
-}
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
 .stat-card {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
@@ -168,6 +137,17 @@ body {
 }
 .stat-num { font-size: clamp(18px, 3vw, 24px); font-weight: 800; color: #00d4ff; }
 .stat-label { font-size: 11px; color: #6a7a8a; margin-top: 3px; }
+
+/* Card */
+.card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: #fff; display: flex; align-items: center; gap: 8px; }
+.card-title .icon { font-size: 18px; }
 
 /* Bar Chart */
 .bar-chart { display: flex; flex-direction: column; gap: 14px; }
@@ -183,116 +163,93 @@ body {
 .bar-fill.blue { background: linear-gradient(90deg, #00d4ff, #0099cc); }
 .bar-fill.purple { background: linear-gradient(90deg, #c084fc, #a855f7); }
 
-/* Gauge Chart */
-.gauge-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-.gauge {
-  position: relative;
-  width: 120px;
-  height: 80px;
-}
-.gauge-bg {
-  position: absolute;
-  width: 120px;
-  height: 60px;
-  border-radius: 60px 60px 0 0;
-  background: rgba(255,255,255,0.06);
-  overflow: hidden;
-}
-.gauge-fill {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 120px;
-  height: 60px;
-  border-radius: 60px 60px 0 0;
-  transform-origin: bottom center;
-}
-.gauge-center {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-}
-.gauge-value { font-size: 22px; font-weight: 800; color: #00d4ff; }
-.gauge-label { font-size: 11px; color: #6a7a8a; }
-
-/* City Grid */
-.city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-.city-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-}
-.city-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
-.city-card.selected { border-color: #00d4ff; background: rgba(0,212,255,0.08); }
-.city-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.city-price { font-size: 16px; font-weight: 700; color: #00d4ff; margin-bottom: 4px; }
-.city-ratio { font-size: 11px; color: #6a7a8a; }
-
-/* Detail Panel */
-.detail-panel {
+/* Comparison Grid */
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.compare-card {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
-  padding: 20px;
-  margin-top: 16px;
-  display: none;
+  padding: 16px;
 }
-.detail-panel.show { display: block; animation: fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-.detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.detail-city { font-size: 20px; font-weight: 700; }
-.detail-tier { font-size: 12px; padding: 4px 10px; border-radius: 12px; }
-.detail-tier.t1 { background: rgba(239,68,68,0.2); color: #f87171; }
-.detail-tier.tnew { background: rgba(245,158,11,0.2); color: #fbbf24; }
-.detail-tier.t2 { background: rgba(34,197,94,0.2); color: #4ade80; }
-.detail-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin-bottom: 16px; }
-.detail-metric { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px; text-align: center; }
-.detail-metric-val { font-size: 18px; font-weight: 700; color: #00d4ff; }
-.detail-metric-label { font-size: 11px; color: #6a7a8a; margin-top: 2px; }
-.detail-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-.detail-tag { font-size: 12px; padding: 4px 10px; border-radius: 12px; }
-.tag-good { background: rgba(34,197,94,0.15); color: #4ade80; }
-.tag-warn { background: rgba(245,158,11,0.15); color: #fbbf24; }
-.tag-bad { background: rgba(239,68,68,0.15); color: #f87171; }
+.compare-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.compare-icon { font-size: 24px; }
+.compare-city { font-size: 16px; font-weight: 600; }
+.compare-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(0,212,255,0.2); color: #00d4ff; }
+.compare-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.compare-row:last-child { border-bottom: none; }
+.compare-label { color: #6a7a8a; }
+.compare-value { color: #e8f0f8; font-weight: 500; }
+.compare-value.highlight { color: #00d4ff; }
 
-/* Heatmap */
-.heatmap-wrapper { overflow-x: auto; padding-bottom: 8px; }
-.heatmap {
-  display: grid;
-  grid-template-columns: 80px repeat(12, 1fr);
-  gap: 2px;
-  min-width: 500px;
+/* Global Comparison */
+.global-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.global-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
 }
-.heatmap-header { text-align: center; color: #6a7a8a; padding: 6px 0; font-size: 10px; }
-.heatmap-label { display: flex; align-items: center; font-size: 11px; color: #9aafc4; padding-right: 6px; }
-.hm-cell { height: 22px; border-radius: 3px; }
+.global-rank { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.global-rank.top { color: #ffd700; }
+.global-rank.mid { color: #c0c0c0; }
+.global-rank.low { color: #cd7f32; }
+.global-city { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.global-country { font-size: 12px; color: #6a7a8a; margin-bottom: 12px; }
+.global-stat { font-size: 13px; color: #9aafc4; margin-bottom: 6px; }
+.global-stat span { color: #00d4ff; font-weight: 600; }
 
-/* Industry Cards */
-.industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-.industry-card {
+/* Story Timeline */
+.timeline { position: relative; padding-left: 30px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #00d4ff, #a855f7);
+}
+.timeline-item { position: relative; margin-bottom: 20px; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00d4ff;
+  border: 2px solid #0a0f1a;
+}
+.timeline-year { font-size: 14px; font-weight: 700; color: #00d4ff; margin-bottom: 4px; }
+.timeline-text { font-size: 13px; color: #9aafc4; line-height: 1.5; }
+
+/* Cost Index */
+.cost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.cost-card {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
   padding: 14px;
+  text-align: center;
 }
-.industry-name { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-.industry-bars { display: flex; flex-direction: column; gap: 6px; }
-.industry-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-.industry-row-name { width: 60px; color: #8ba3b8; }
-.industry-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-.industry-bar-fill { height: 100%; border-radius: 3px; }
+.cost-icon { font-size: 28px; margin-bottom: 8px; }
+.cost-name { font-size: 13px; color: #9aafc4; margin-bottom: 6px; }
+.cost-range { font-size: 14px; font-weight: 600; color: #00d4ff; }
+.cost-city { font-size: 11px; color: #6a7a8a; margin-top: 4px; }
+
+/* GDP Chart */
+.gdp-chart { margin-top: 16px; }
+.gdp-bar { display: flex; align-items: center; margin-bottom: 10px; }
+.gdp-label { width: 80px; font-size: 13px; color: #9aafc4; flex-shrink: 0; }
+.gdp-track { flex: 1; height: 20px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; position: relative; margin: 0 12px; }
+.gdp-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 11px; font-weight: 600; color: #fff; transition: width 0.8s ease; }
+.gdp-fill.housing { background: linear-gradient(90deg, #f87171, #ef4444); }
+.gdp-fill.tech { background: linear-gradient(90deg, #00d4ff, #0099cc); }
+.gdp-fill.industry { background: linear-gradient(90deg, #4ade80, #22c55e); }
+.gdp-fill.service { background: linear-gradient(90deg, #c084fc, #a855f7); }
+.gdp-value { width: 100px; font-size: 13px; color: #00d4ff; text-align: right; flex-shrink: 0; }
 
 /* Footer */
 footer {
@@ -300,11 +257,7 @@ footer {
   border-top: 1px solid rgba(255,255,255,0.06);
   padding: 40px 16px 60px;
 }
-.footer-content {
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
-}
+.footer-content { max-width: 600px; margin: 0 auto; text-align: center; }
 .author-card {
   display: inline-flex;
   align-items: center;
@@ -335,18 +288,16 @@ footer {
 .footer-stats span { color: #00d4ff; font-weight: 600; }
 .footer-note { font-size: 11px; color: #4a5a6a; margin-top: 16px; line-height: 1.6; }
 .footer-note a { color: #00d4ff; text-decoration: none; }
-.footer-note a:hover { text-decoration: underline; }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .header { padding: 50px 12px 30px; }
+  .hero { padding: 50px 12px 30px; }
   .section { padding: 30px 0; }
   .card { padding: 16px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .city-tab { padding: 8px 14px; font-size: 13px; }
   .china-map { grid-template-columns: repeat(4, 1fr); }
-  .gauge { width: 100px; height: 65px; }
-  .gauge-bg, .gauge-fill { width: 100px; border-radius: 50px 50px 0 0; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .timeline { padding-left: 20px; }
 }
 @media (max-width: 480px) {
   .hero h1 { font-size: 24px; }
@@ -355,6 +306,10 @@ footer {
   .china-map { grid-template-columns: repeat(3, 1fr); }
   .map-cell .city-name { font-size: 9px; }
   .map-cell .price { font-size: 8px; }
+  .gdp-bar { flex-wrap: wrap; }
+  .gdp-label { width: 100%; margin-bottom: 4px; }
+  .gdp-track { margin: 0 0 8px 0; }
+  .gdp-value { width: 100%; text-align: left; }
 }
 </style>
 </head>
@@ -364,10 +319,17 @@ footer {
   <!-- Hero -->
   <div class="hero">
     <h1>全国城市房价地图</h1>
-    <p>可视化分析 · 36城房价 · 性价比评分 · 投资参考</p>
+    <p>年轻人买房租房生存指南 · GDP产业解读 · 全球横向对比</p>
+    <div class="hero-tags">
+      <span class="hero-tag">🏙️ 36城数据</span>
+      <span class="hero-tag">📊 GDP房价比</span>
+      <span class="hero-tag">🌍 全球对比</span>
+      <span class="hero-tag">🧋 奶茶指数</span>
+      <span class="hero-tag">🏭 城市转型</span>
+    </div>
   </div>
 
-  <!-- China Map Visualization -->
+  <!-- China Map -->
   <div class="section">
     <div class="china-map-container">
       <div class="map-title">🏠 中国城市房价分布图（点击城市查看详情）</div>
@@ -378,80 +340,65 @@ footer {
         <div class="legend-item"><div class="legend-dot t2"></div><span>二线城市</span></div>
       </div>
     </div>
+    <div class="detail-panel" id="detailPanel"></div>
   </div>
 
-  <!-- City Detail Panel -->
-  <div class="detail-panel" id="detailPanel"></div>
-
-  <!-- Stats Overview -->
+  <!-- GDP & Industry Analysis -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">📊</span> 数据总览</div>
-    <p class="section-desc">36座一二线城市房价核心指标</p>
+    <div class="section-title"><span class="section-icon">📈</span> GDP与房价关系</div>
+    <p class="section-desc">房价占GDP比重反映城市经济泡沫程度，越高越危险</p>
+    
+    <div class="card">
+      <div class="card-title">🏛️ 城市GDP与房价比（房价/GDP总量 × 100）</div>
+      <div class="gdp-chart" id="gdpChart"></div>
+    </div>
+    
+    <div class="compare-grid" id="industryCompare"></div>
+  </div>
+
+  <!-- City History & Transformation -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">🏭</span> 城市发展史与转型</div>
+    <p class="section-desc">了解一座城的前世今生，预测它的未来</p>
+    
+    <div class="compare-grid" id="cityStory"></div>
+  </div>
+
+  <!-- Cost of Living -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">🧋</span> 消费指数对比</div>
+    <p class="section-desc">房价高不代表一切，生活成本才是日常</p>
+    
+    <div class="card">
+      <div class="card-title">🍜 月薪对比真实购买力</div>
+      <div class="bar-chart" id="purchasingPower"></div>
+    </div>
+    
+    <div class="cost-grid" id="costIndex"></div>
+  </div>
+
+  <!-- Global Comparison -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">🌍</span> 全球城市房价对比</div>
+    <p class="section-desc">与国际都市横向对比，看清中国城市的真实定位</p>
+    
+    <div class="global-grid" id="globalCompare"></div>
+  </div>
+
+  <!-- Price Metrics -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon">📊</span> 核心指标排行</div>
     
     <div class="stats-grid" id="statsGrid"></div>
-  </div>
-
-  <!-- Price Ranking -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">💰</span> 房价排行</div>
-    <p class="section-desc">按单价排序，看看你的目标城市排第几</p>
     
-    <div class="card">
-      <div class="card-title">🏙️ 城市房价排行榜（元/平方米）</div>
-      <div class="bar-chart" id="priceRankChart"></div>
-    </div>
-  </div>
-
-  <!-- Price-to-Income Ratio -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">📈</span> 房价收入比</div>
-    <p class="section-desc">不吃不喝多少年能买一套房（100㎡）</p>
-    
-    <div class="card">
-      <div class="card-title">⏱️ 买房难度指数</div>
-      <div class="bar-chart" id="ratioChart"></div>
-    </div>
-  </div>
-
-  <!-- Value Score -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">⭐</span> 性价比评分</div>
-    <p class="section-desc">综合收入、房价、生活成本计算的宜居指数</p>
-    
-    <div class="card">
-      <div class="card-title">🏆 城市宜居指数 TOP 10</div>
-      <div class="bar-chart" id="valueChart"></div>
-    </div>
-  </div>
-
-  <!-- Rent Yield -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">🏠</span> 租金收益率</div>
-    <p class="section-desc">年租金/房价比率，衡量租房回报</p>
-    
-    <div class="card">
-      <div class="card-title">💵 租金收益率排行</div>
-      <div class="bar-chart" id="rentYieldChart"></div>
-    </div>
-  </div>
-
-  <!-- Industry Analysis -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">🏭</span> 产业分析</div>
-    <p class="section-desc">各城市优势产业与就业机会</p>
-    
-    <div class="industry-grid" id="industryGrid"></div>
-  </div>
-
-  <!-- Monthly Trend -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">📅</span> 房价走势</div>
-    <p class="section-desc">近12个月房价变化趋势</p>
-    
-    <div class="card">
-      <div class="card-title">📉 主要城市房价走势（相对年初涨跌%）</div>
-      <div class="heatmap-wrapper">
-        <div class="heatmap" id="trendHeatmap"></div>
+    <div class="compare-grid">
+      <div class="card">
+        <div class="card-title">💰 房价排行 TOP 10</div>
+        <div class="bar-chart" id="priceRankChart"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">⏱️ 买房难度指数（房价收入比）</div>
+        <div class="bar-chart" id="ratioChart"></div>
       </div>
     </div>
   </div>
@@ -473,7 +420,7 @@ footer {
     </div>
     <div class="footer-note">
       <p>⚠️ 数据仅供参考，不构成投资建议</p>
-      <p>📄 数据来源：国家统计局、贝壳研究院 | © 2025 唐小涛</p>
+      <p>📄 数据来源：国家统计局、世界银行、Numbeo | © 2025 唐小涛</p>
     </div>
   </div>
 </footer>
@@ -483,119 +430,195 @@ footer {
 <script>
 (function() {
   var CITIES = {
-    // 一线城市
     sz:{name:'深圳',tier:'tier1',price:65000,avgSalary:13000,ratio:41.7,value:72,rentYield:2.1,
-        industries:[{name:'互联网',val:95},{name:'金融',val:85},{name:'房地产',val:70},{name:'制造业',val:55}],trend:[2,-1,3,1,-2,4,0,-1,2,3,1,-1]},
+        gdp:32300,gdpRatio:0.201,
+        history:{origin:'改革开放前沿，1980年设经济特区',phase1:'三来一补加工制造业',phase2:'2000年互联网科技转型',future:'数字经济、AI、新能源汽车'},
+        industries:[{n:'互联网',v:95},{n:'金融',v:85},{n:'房地产',v:70},{n:'制造业',v:55}],
+        cost:{rent:3500,milkTea:22,coffee:35,kfcMeal:35,taxi:25,cinema:60},
+        storyIcon:'🚀'},
     bj:{name:'北京',tier:'tier1',price:62000,avgSalary:14000,ratio:37,value:68,rentYield:2.3,
-        industries:[{name:'金融',val:95},{name:'互联网',val:90},{name:'文化传媒',val:80},{name:'房地产',val:65}],trend:[1,2,0,3,1,-1,2,0,-2,1,2,0]},
+        gdp:41600,gdpRatio:0.149,
+        history:{origin:'六朝古都',phase1:'政治文化中心',phase2:'央企总部+互联网',future:'科技创新中心、京津冀一体化'},
+        industries:[{n:'金融',v:95},{n:'互联网',v:90},{n:'文化传媒',v:80},{n:'房地产',v:65}],
+        cost:{rent:4500,milkTea:25,coffee:40,kfcMeal:38,taxi:30,cinema:70},
+        storyIcon:'🏯'},
     sh:{name:'上海',tier:'tier1',price:58000,avgSalary:13500,ratio:35.9,value:70,rentYield:2.4,
-        industries:[{name:'金融',val:95},{name:'互联网',val:85},{name:'贸易',val:80},{name:'房地产',val:70}],trend:[0,1,2,1,-1,0,3,1,0,2,1,0]},
+        gdp:43200,gdpRatio:0.134,
+        history:{origin:'1843年开埠，亚洲金融中心',phase1:'轻工业+金融',phase2:'国际经济中心',future:'国际金融、自贸区升级'},
+        industries:[{n:'金融',v:95},{n:'互联网',v:85},{n:'贸易',v:80},{n:'房地产',v:70}],
+        cost:{rent:4000,milkTea:28,coffee:42,kfcMeal:36,taxi:28,cinema:65},
+        storyIcon:'🌆'},
     gz:{name:'广州',tier:'tier1',price:38000,avgSalary:11000,ratio:28.8,value:78,rentYield:2.6,
-        industries:[{name:'贸易',val:90},{name:'互联网',val:80},{name:'房地产',val:75},{name:'制造业',val:70}],trend:[1,0,-1,2,0,1,0,-1,1,2,0,1]},
-    
-    // 新一线城市
+        gdp:28800,gdpRatio:0.132,
+        history:{origin:'千年商都，海上丝绸之路',phase1:'华南贸易中心',phase2:'商贸+制造业',future:'粤港澳大湾区核心'},
+        industries:[{n:'贸易',v:90},{n:'互联网',v:80},{n:'房地产',v:75},{n:'制造业',v:70}],
+        cost:{rent:2500,milkTea:20,coffee:30,kfcMeal:30,taxi:20,cinema:50},
+        storyIcon:'⛵'},
     cd:{name:'成都',tier:'tiernew',price:18000,avgSalary:9000,ratio:16.7,value:85,rentYield:2.8,
-        industries:[{name:'互联网',val:85},{name:'游戏',val:80},{name:'房地产',val:75},{name:'旅游',val:70}],trend:[0,1,2,1,0,2,1,-1,0,1,2,1]},
+        gdp:20800,gdpRatio:0.087,
+        history:{origin:'天府之国',phase1:'军工+电子',phase2:'西南IT中心+网红城市',future:'公园城市、成渝双城经济圈'},
+        industries:[{n:'互联网',v:85},{n:'游戏',v:80},{n:'房地产',v:75},{n:'旅游',v:70}],
+        cost:{rent:1500,milkTea:18,coffee:25,kfcMeal:25,taxi:15,cinema:45},
+        storyIcon:'🐼'},
     hz:{name:'杭州',tier:'tiernew',price:32000,avgSalary:12000,ratio:22.2,value:80,rentYield:2.4,
-        industries:[{name:'互联网',val:95},{name:'电商',val:90},{name:'金融科技',val:85},{name:'数字经济',val:80}],trend:[2,1,3,2,0,1,2,1,0,2,1,0]},
+        gdp:16100,gdpRatio:0.199,
+        history:{origin:'丝绸之府',phase1:'旅游业+轻工业',phase2:'电商之都、阿里总部',future:'数字经济第一城、亚运之城'},
+        industries:[{n:'互联网',v:95},{n:'电商',v:90},{n:'金融科技',v:85},{n:'数字经济',v:80}],
+        cost:{rent:2800,milkTea:25,coffee:35,kfcMeal:32,taxi:22,cinema:55},
+        storyIcon:'🏯'},
     xa:{name:'西安',tier:'tiernew',price:16000,avgSalary:7500,ratio:17.8,value:82,rentYield:2.9,
-        industries:[{name:'制造业',val:85},{name:'教育',val:80},{name:'军工',val:75},{name:'旅游',val:70}],trend:[0,1,1,0,2,1,0,-1,1,0,1,1]},
+        gdp:7450,gdpRatio:0.215,
+        history:{origin:'十三朝古都',phase1:'军工+教育',phase2:'航空航天+半导体',future:'硬科技之都、国家中心城市'},
+        industries:[{n:'制造业',v:85},{n:'教育',v:80},{n:'军工',v:75},{n:'旅游',v:70}],
+        cost:{rent:1200,milkTea:16,coffee:22,kfcMeal:22,taxi:12,cinema:40},
+        storyIcon:'🏺'},
     su:{name:'苏州',tier:'tiernew',price:25000,avgSalary:10000,ratio:20.8,value:82,rentYield:2.7,
-        industries:[{name:'制造业',val:95},{name:'电子',val:90},{name:'外资企业',val:85},{name:'生物医药',val:80}],trend:[1,0,1,2,0,1,1,0,-1,1,0,1]},
+        gdp:22700,gdpRatio:0.110,
+        history:{origin:'鱼米之乡',phase1:'乡镇企业+丝绸',phase2:'外资制造业高地',future:'制造业升级、生物医药'},
+        industries:[{n:'制造业',v:95},{n:'电子',v:90},{n:'外资企业',v:85},{n:'生物医药',v:80}],
+        cost:{rent:2200,milkTea:20,coffee:28,kfcMeal:28,taxi:18,cinema:48},
+        storyIcon:'🏭'},
     cq:{name:'重庆',tier:'tiernew',price:14000,avgSalary:8000,ratio:14.6,value:86,rentYield:3.0,
-        industries:[{name:'汽车',val:85},{name:'房地产',val:80},{name:'电子',val:75},{name:'旅游',val:70}],trend:[0,1,0,1,2,0,1,0,1,0,-1,1]},
+        gdp:29100,gdpRatio:0.048,
+        history:{origin:'山城、雾都',phase1:'重工业基地',phase2:'汽车+电子制造',future:'内陆开放高地、西部金融中心'},
+        industries:[{n:'汽车',v:85},{n:'房地产',v:80},{n:'电子',v:75},{n:'旅游',v:70}],
+        cost:{rent:1100,milkTea:15,coffee:20,kfcMeal:22,taxi:12,cinema:40},
+        storyIcon:'🌉'},
     tj:{name:'天津',tier:'tiernew',price:22000,avgSalary:9000,ratio:20.4,value:80,rentYield:2.5,
-        industries:[{name:'港口物流',val:90},{name:'制造业',val:85},{name:'金融',val:75},{name:'房地产',val:70}],trend:[0,1,0,1,0,2,0,1,0,1,0,0]},
+        gdp:15600,gdpRatio:0.141,
+        history:{origin:'1860年开埠',phase1:'港口+工业',phase2:'滨海新区、京津冀',future:'北方航运中心、制造业升级'},
+        industries:[{n:'港口物流',v:90},{n:'制造业',v:85},{n:'金融',v:75},{n:'房地产',v:70}],
+        cost:{rent:1800,milkTea:18,coffee:26,kfcMeal:26,taxi:16,cinema:45},
+        storyIcon:'⚓'},
     qd:{name:'青岛',tier:'tiernew',price:18000,avgSalary:8500,ratio:17.6,value:83,rentYield:2.8,
-        industries:[{name:'制造业',val:90},{name:'海洋经济',val:85},{name:'家电',val:80},{name:'外贸',val:75}],trend:[1,0,1,0,2,1,0,0,1,0,-1,1]},
-    cs:{name:'长沙',tier:'tiernew',price:12000,avgSalary:8000,ratio:12.5,value:88,rentYield:3.2,
-        industries:[{name:'工程机械',val:90},{name:'媒体娱乐',val:85},{name:'食品加工',val:75},{name:'房地产',val:70}],trend:[0,1,1,0,1,0,2,1,0,1,0,1]},
+        gdp:14900,gdpRatio:0.121,
+        history:{origin:'1900年德占',phase1:'纺织+家电',phase2:'海洋经济+港口',future:'全球海洋中心城市'},
+        industries:[{n:'制造业',v:90},{n:'海洋经济',v:85},{n:'家电',v:80},{n:'外贸',v:75}],
+        cost:{rent:1400,milkTea:16,coffee:24,kfcMeal:24,taxi:14,cinema:42},
+        storyIcon:'🐟'},
     nj:{name:'南京',tier:'tiernew',price:28000,avgSalary:10500,ratio:22.2,value:81,rentYield:2.5,
-        industries:[{name:'科教',val:90},{name:'电子',val:85},{name:'软件',val:80},{name:'房地产',val:75}],trend:[1,0,2,1,0,1,1,0,-1,1,2,0]},
+        gdp:16300,gdpRatio:0.172,
+        history:{origin:'六朝古都',phase1:'化工+钢铁',phase2:'科教+软件',future:'创新名城、紫金山实验室'},
+        industries:[{n:'科教',v:90},{n:'电子',v:85},{n:'软件',v:80},{n:'房地产',v:75}],
+        cost:{rent:2300,milkTea:22,coffee:30,kfcMeal:28,taxi:18,cinema:50},
+        storyIcon:'🎓'},
     wh:{name:'武汉',tier:'tiernew',price:17000,avgSalary:8000,ratio:17.7,value:84,rentYield:2.8,
-        industries:[{name:'光电子',val:95},{name:'汽车',val:85},{name:'生物医药',val:80},{name:'房地产',val:70}],trend:[0,1,1,0,2,1,0,0,1,0,1,0]},
-    zz:{name:'郑州',tier:'tiernew',price:13000,avgSalary:7000,ratio:15.5,value:82,rentYield:3.0,
-        industries:[{name:'物流',val:95},{name:'食品',val:85},{name:'汽车',val:75},{name:'房地产',val:70}],trend:[0,1,0,1,1,0,2,0,0,1,0,1]},
-    nb:{name:'宁波',tier:'tiernew',price:22000,avgSalary:9500,ratio:19.3,value:82,rentYield:2.6,
-        industries:[{name:'外贸',val:95},{name:'制造业',val:90},{name:'港口',val:85},{name:'石化',val:75}],trend:[1,0,1,2,0,1,0,1,0,1,0,0]},
-    
-    // 二线城市
-    sy:{name:'沈阳',tier:'tier2',price:10000,avgSalary:6500,ratio:12.8,value:83,rentYield:3.2,
-        industries:[{name:'装备制造',val:90},{name:'重工业',val:85},{name:'房地产',val:75},{name:'农业',val:60}],trend:[0,1,0,1,0,1,0,0,1,0,0,1]},
-    km:{name:'昆明',tier:'tier2',price:12000,avgSalary:7000,ratio:14.3,value:82,rentYield:2.9,
-        industries:[{name:'旅游',val:95},{name:'花卉',val:85},{name:'生物医药',val:75},{name:'房地产',val:70}],trend:[1,0,1,0,0,2,1,0,0,1,0,0]},
-    sd:{name:'济南',tier:'tier2',price:15000,avgSalary:7500,ratio:16.7,value:81,rentYield:2.8,
-        industries:[{name:'IT',val:85},{name:'金融',val:80},{name:'制造业',val:75},{name:'医药',val:70}],trend:[0,1,0,1,1,0,1,0,0,1,0,1]},
-    xm:{name:'厦门',tier:'tier2',price:40000,avgSalary:9500,ratio:35.1,value:72,rentYield:2.2,
-        industries:[{name:'贸易',val:90},{name:'金融',val:85},{name:'旅游',val:80},{name:'房地产',val:75}],trend:[2,1,0,2,0,1,2,1,0,1,0,1]},
-    hl:{name:'哈尔滨',tier:'tier2',price:8500,avgSalary:6000,ratio:11.8,value:80,rentYield:3.4,
-        industries:[{name:'农业',val:90},{name:'装备制造',val:80},{name:'旅游',val:75},{name:'房地产',val:60}],trend:[0,1,0,0,1,0,0,1,0,0,1,0]},
+        gdp:18800,gdpRatio:0.090,
+        history:{origin:'九省通衢',phase1:'武钢+光谷萌芽',phase2:'光电产业+汽车',future:'光谷科创大走廊、国家存储器基地'},
+        industries:[{n:'光电子',v:95},{n:'汽车',v:85},{n:'生物医药',v:80},{n:'房地产',v:70}],
+        cost:{rent:1300,milkTea:16,coffee:22,kfcMeal:24,taxi:14,cinema:42},
+        storyIcon:'🔬'},
     cs:{name:'长沙',tier:'tiernew',price:12000,avgSalary:8000,ratio:12.5,value:88,rentYield:3.2,
-        industries:[{name:'工程机械',val:90},{name:'媒体娱乐',val:85},{name:'食品加工',val:75},{name:'房地产',val:70}],trend:[0,1,1,0,1,0,2,1,0,1,0,1]},
+        gdp:13200,gdpRatio:0.091,
+        history:{origin:'楚汉名城',phase1:'工程机械',phase2:'媒体娱乐+网红城市',future:'工程机械之都、青年友好城市'},
+        industries:[{n:'工程机械',v:90},{n:'媒体娱乐',v:85},{n:'食品加工',v:75},{n:'房地产',v:70}],
+        cost:{rent:1000,milkTea:15,coffee:22,kfcMeal:22,taxi:12,cinema:40},
+        storyIcon:'🎬'},
+    xm:{name:'厦门',tier:'tier2',price:40000,avgSalary:9500,ratio:35.1,value:72,rentYield:2.2,
+        gdp:7800,gdpRatio:0.513,
+        history:{origin:'1980年经济特区',phase1:'出口加工',phase2:'软件信息+金融',future:'海上花园、自贸区升级'},
+        industries:[{n:'贸易',v:90},{n:'金融',v:85},{n:'旅游',v:80},{n:'房地产',v:75}],
+        cost:{rent:2800,milkTea:22,coffee:32,kfcMeal:30,taxi:18,cinema:50},
+        storyIcon:'🌴'},
+    sy:{name:'沈阳',tier:'tier2',price:10000,avgSalary:6500,ratio:12.8,value:83,rentYield:3.2,
+        gdp:7250,gdpRatio:0.138,
+        history:{origin:'工业重镇',phase1:'装备制造+重工业',phase2:'产业转型阵痛',future:'高端装备、区域中心'},
+        industries:[{n:'装备制造',v:90},{n:'重工业',v:85},{n:'房地产',v:75},{n:'农业',v:60}],
+        cost:{rent:900,milkTea:14,coffee:18,kfcMeal:20,taxi:10,cinema:35},
+        storyIcon:'⚙️'},
     fs:{name:'佛山',tier:'tier2',price:18000,avgSalary:8500,ratio:17.6,value:80,rentYield:2.7,
-        industries:[{name:'制造业',val:95},{name:'家电',val:90},{name:'陶瓷',val:80},{name:'房地产',val:70}],trend:[1,0,1,0,2,1,0,0,1,0,0,1]},
-    shz:{name:'无锡',tier:'tier2',price:20000,avgSalary:9000,ratio:18.5,value:82,rentYield:2.6,
-        industries:[{name:'制造业',val:95},{name:'物联网',val:90},{name:'集成电路',val:85},{name:'太湖湾科创',val:80}],trend:[1,0,1,2,0,1,1,0,-1,1,0,1]},
-    dg:{name:'东莞',tier:'tier2',price:22000,avgSalary:8000,ratio:22.9,value:75,rentYield:2.4,
-        industries:[{name:'制造业',val:95},{name:'电子',val:90},{name:'智能手机',val:85},{name:'房地产',val:65}],trend:[0,1,0,1,0,1,0,0,1,0,0,0]},
-    qz:{name:'泉州',tier:'tier2',price:12000,avgSalary:7000,ratio:14.3,value:82,rentYield:3.0,
-        industries:[{name:'纺织服装',val:95},{name:'鞋业',val:90},{name:'建材',val:80},{name:'房地产',val:70}],trend:[1,0,1,0,0,1,0,0,1,0,1,0]},
-    nn:{name:'南宁',tier:'tier2',price:11000,avgSalary:6500,ratio:14.1,value:81,rentYield:3.1,
-        industries:[{name:'东盟贸易',val:95},{name:'农业',val:85},{name:'房地产',val:75},{name:'旅游',val:70}],trend:[0,1,0,1,1,0,1,0,0,1,0,0]},
-    sjz:{name:'石家庄',tier:'tier2',price:13000,avgSalary:6500,ratio:16.7,value:78,rentYield:2.9,
-        industries:[{name:'制药',val:90},{name:'纺织',val:80},{name:'化工',val:75},{name:'房地产',val:70}],trend:[0,1,0,0,1,0,1,0,0,1,0,0]},
+        gdp:12700,gdpRatio:0.142,
+        history:{origin:'四大名镇',phase1:'陶瓷+家电',phase2:'制造业升级',future:'珠江西岸制造中心'},
+        industries:[{n:'制造业',v:95},{n:'家电',v:90},{n:'陶瓷',v:80},{n:'房地产',v:70}],
+        cost:{rent:1500,milkTea:16,coffee:22,kfcMeal:24,taxi:14,cinema:42},
+        storyIcon:'🍜'},
     wx:{name:'无锡',tier:'tier2',price:20000,avgSalary:9000,ratio:18.5,value:82,rentYield:2.6,
-        industries:[{name:'制造业',val:95},{name:'物联网',val:90},{name:'集成电路',val:85},{name:'太湖湾科创',val:80}],trend:[1,0,1,2,0,1,1,0,-1,1,0,1]},
-    hm:{name:'海口',tier:'tier2',price:18000,avgSalary:7000,ratio:21.4,value:76,rentYield:2.5,
-        industries:[{name:'旅游业',val:95},{name:'房地产',val:85},{name:'免税购物',val:80},{name:'现代服务业',val:75}],trend:[2,1,0,1,0,2,1,0,0,1,0,1]},
-    ty:{name:'太原',tier:'tier2',price:11000,avgSalary:7000,ratio:13.1,value:80,rentYield:3.1,
-        industries:[{name:'煤炭',val:90},{name:'能源',val:85},{name:'旅游',val:75},{name:'房地产',val:70}],trend:[0,1,0,0,1,0,0,1,0,0,0,1]},
-    cc:{name:'长春',tier:'tier2',price:9000,avgSalary:6500,ratio:11.5,value:82,rentYield:3.3,
-        industries:[{name:'汽车',val:95},{name:'轨道客车',val:90},{name:'农产品',val:80},{name:'房地产',val:65}],trend:[0,1,0,0,1,0,0,1,0,0,1,0]},
-    zh:{name:'珠海',tier:'tier2',price:25000,avgSalary:9000,ratio:23.1,value:78,rentYield:2.5,
-        industries:[{name:'旅游',val:90},{name:'横琴自贸',val:85},{name:'新能源',val:80},{name:'房地产',val:70}],trend:[1,0,2,1,0,1,1,0,0,1,0,1]},
-    lc:{name:'临沂',tier:'tier2',price:8000,avgSalary:5500,ratio:12.1,value:83,rentYield:3.5,
-        industries:[{name:'商贸物流',val:95},{name:'木业',val:85},{name:'农业',val:75},{name:'房地产',val:60}],trend:[0,1,0,0,1,0,0,1,0,0,0,1]},
-    yz:{name:'扬州',tier:'tier2',price:14000,avgSalary:7000,ratio:16.7,value:82,rentYield:2.8,
-        industries:[{name:'化工',val:90},{name:'旅游',val:85},{name:'新能源',val:80},{name:'房地产',val:70}],trend:[0,1,0,1,0,1,0,0,1,0,0,1]},
-    jn:{name:'济南',tier:'tier2',price:15000,avgSalary:7500,ratio:16.7,val:81,rentYield:2.8,
-        industries:[{name:'IT',val:85},{name:'金融',val:80},{name:'制造业',val:75},{name:'医药',val:70}],trend:[0,1,0,1,1,0,1,0,0,1,0,1]},
-    al:{name:'鞍山',tier:'tier2',price:6000,avgSalary:5000,ratio:10,value:80,rentYield:3.8,
-        industries:[{name:'钢铁',val:90},{name:'矿业',val:80},{name:'菱镁新材料',val:75},{name:'房地产',val:50}],trend:[0,0,1,0,0,1,0,0,0,1,0,0]},
-    tz:{name:'台州',tier:'tier2',price:14000,avgSalary:8000,ratio:14.6,value:83,rentYield:2.9,
-        industries:[{name:'制造业',val:95},{name:'医药',val:90},{name:'汽车配件',val:85},{name:'房地产',val:70}],trend:[1,0,1,0,0,1,0,0,1,0,1,0]},
-    lz:{name:'兰州',tier:'tier2',price:9000,avgSalary:6000,ratio:12.5,value:79,rentYield:3.2,
-        industries:[{name:'石化',val:90},{name:'有色金属',val:85},{name:'新能源',val:75},{name:'房地产',val:60}],trend:[0,1,0,0,1,0,0,1,0,0,0,1]},
-    wj:{name:'乌鲁木齐',tier:'tier2',price:8000,avgSalary:6500,ratio:10.3,value:78,rentYield:3.3,
-        industries:[{name:'能源',val:95},{name:'商贸',val:85},{name:'旅游',val:75},{name:'房地产',val:60}],trend:[0,1,0,0,1,0,0,1,0,0,1,0]}
+        gdp:14000,gdpRatio:0.143,
+        history:{origin:'太湖明珠',phase1:'乡镇企业发源地',phase2:'太湖湾科创',future:'物联网、集成电路'},
+        industries:[{n:'制造业',v:95},{n:'物联网',v:90},{n:'集成电路',v:85},{n:'太湖湾科创',v:80}],
+        cost:{rent:1700,milkTea:18,coffee:24,kfcMeal:26,taxi:15,cinema:45},
+        storyIcon:'💡'},
+    dg:{name:'东莞',tier:'tier2',price:22000,avgSalary:8000,ratio:22.9,value:75,rentYield:2.4,
+        gdp:11200,gdpRatio:0.196,
+        history:{origin:'广东四小虎',phase1:'世界工厂、来料加工',phase2:'机器换人、产业升级',future:'粤港澳合作、松山湖科创'},
+        industries:[{n:'制造业',v:95},{n:'电子',v:90},{n:'智能手机',v:85},{n:'房地产',v:65}],
+        cost:{rent:1500,milkTea:16,coffee:22,kfcMeal:24,taxi:14,cinema:42},
+        storyIcon:'📱'}
   };
 
-  var INDUSTRIES = [
-    {name:'互联网/科技',cities:[{n:'深圳',v:95},{n:'杭州',v:90},{n:'北京',v:92},{n:'上海',v:88}]},
-    {name:'金融',cities:[{n:'上海',v:95},{n:'北京',v:92},{n:'深圳',v:88},{n:'杭州',v:82}]},
-    {name:'制造业',cities:[{n:'苏州',v:95},{n:'东莞',v:90},{n:'佛山',v:88},{n:'无锡',v:85}]},
-    {name:'房地产',cities:[{n:'北京',v:92},{n:'上海',v:90},{n:'深圳',v:88},{n:'广州',v:82}]}
+  var GLOBAL_CITIES = [
+    {rank:1,city:'深圳',country:'中国',pricePerSqm:65000,salaryMonthly:13000,ratio:'41.7年',coffeePrice:35,note:'科技之城'},
+    {rank:2,city:'北京',country:'中国',pricePerSqm:62000,salaryMonthly:14000,ratio:'37.0年',coffeePrice:40,note:'首都+互联网'},
+    {rank:3,city:'上海',country:'中国',pricePerSqm:58000,salaryMonthly:13500,ratio:'35.9年',coffeePrice:42,note:'金融中心'},
+    {rank:4,city:'香港',country:'中国',pricePerSqm:150000,salaryMonthly:20000,ratio:'62.5年',coffeePrice:45,note:'全球最贵'},
+    {rank:5,city:'伦敦',country:'英国',pricePerSqm:80000,salaryMonthly:35000,ratio:'19.1年',coffeePrice:30,note:'老牌金融'},
+    {rank:6,city:'纽约',country:'美国',pricePerSqm:90000,salaryMonthly:50000,ratio:'15.0年',coffeePrice:35,note:'世界之都'},
+    {rank:7,city:'东京',country:'日本',pricePerSqm:55000,salaryMonthly:28000,ratio:'16.4年',coffeePrice:25,note:'稳健成熟'},
+    {rank:8,city:'新加坡',country:'新加坡',pricePerSqm:110000,salaryMonthly:45000,ratio:'20.4年',coffeePrice:28,note:'花园城市'},
+    {rank:9,city:'首尔',country:'韩国',pricePerSqm:60000,salaryMonthly:25000,ratio:'20.0年',coffeePrice:25,note:'K-pop经济'},
+    {rank:10,city:'巴黎',country:'法国',pricePerSqm:100000,salaryMonthly:32000,ratio:'26.0年',coffeePrice:28,note:'浪漫之都'},
+    {rank:11,city:'柏林',country:'德国',pricePerSqm:45000,salaryMonthly:30000,ratio:'12.5年',coffeePrice:22,note:'欧洲性价比'},
+    {rank:12,city:'曼谷',country:'泰国',pricePerSqm:25000,salaryMonthly:8000,ratio:'26.0年',coffeePrice:15,note:'东南亚门户'}
   ];
 
-  var months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-  var monthLabels = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+  var COST_ITEMS = [
+    {icon:'🏠',name:'一室租金/月',unit:'元',items:[
+      {val:'3500-4500',city:'北京/上海/深圳'},
+      {val:'2500-3000',city:'杭州/广州/厦门'},
+      {val:'1500-2000',city:'成都/武汉/南京'},
+      {val:'1000-1500',city:'重庆/长沙/西安'}
+    ]},
+    {icon:'🧋',name:'奶茶/杯',unit:'元',items:[
+      {val:'25-28',city:'上海/杭州'},
+      {val:'20-22',city:'深圳/北京/广州'},
+      {val:'16-18',city:'成都/武汉/青岛'},
+      {val:'14-15',city:'重庆/长沙/沈阳'}
+    ]},
+    {icon:'☕',name:'咖啡/杯',unit:'元',items:[
+      {val:'40-45',city:'上海'},
+      {val:'30-35',city:'北京/杭州/深圳'},
+      {val:'22-28',city:'成都/广州/南京'},
+      {val:'18-22',city:'西安/武汉/重庆'}
+    ]},
+    {icon:'🍔',name:'肯德基套餐',unit:'元',items:[
+      {val:'35-40',city:'北京/上海'},
+      {val:'28-32',city:'深圳/杭州/广州'},
+      {val:'22-26',city:'成都/武汉/南京'},
+      {val:'20-22',city:'重庆/长沙/西安'}
+    ]},
+    {icon:'🎬',name:'电影票',unit:'元',items:[
+      {val:'60-70',city:'北京/上海'},
+      {val:'45-55',city:'深圳/杭州/广州'},
+      {val:'40-48',city:'成都/武汉/南京'},
+      {val:'35-42',city:'重庆/长沙/西安'}
+    ]},
+    {icon:'🚖',name:'打车起步价',unit:'元',items:[
+      {val:'25-30',city:'北京/上海'},
+      {val:'18-22',city:'深圳/杭州/广州'},
+      {val:'14-18',city:'成都/武汉/南京'},
+      {val:'10-14',city:'重庆/长沙/西安'}
+    ]}
+  ];
 
   function init() {
     renderChinaMap();
     renderStatsGrid();
     renderPriceRank();
     renderRatioChart();
-    renderValueChart();
-    renderRentYieldChart();
-    renderIndustryGrid();
-    renderTrendHeatmap();
+    renderGDPChart();
+    renderIndustryCompare();
+    renderCityStory();
+    renderPurchasingPower();
+    renderCostIndex();
+    renderGlobalCompare();
   }
 
   function renderChinaMap() {
     var html = '';
     var tier1Cities = ['sz','bj','sh','gz'];
-    var tiernewCities = ['cd','hz','xa','su','cq','tj','qd','cs','nj','wh','zz','nb'];
-    var allCities = tier1Cities.concat(tiernewCities).concat(Object.keys(CITIES).filter(function(k){return !tier1Cities.includes(k) && !tiernewCities.includes(k);}).slice(0, 20));
+    var tiernewCities = ['cd','hz','xa','su','cq','tj','qd','cs','nj','wh'];
+    var tier2Cities = ['xm','sy','fs','wx','dg'];
+    var allCities = tier1Cities.concat(tiernewCities).concat(tier2Cities);
     
     allCities.forEach(function(key) {
       if (!CITIES[key]) return;
@@ -617,6 +640,8 @@ footer {
     var ratioText = c.ratio > 30 ? '买房极难' : c.ratio > 20 ? '买房较难' : c.ratio > 15 ? '中等难度' : '相对友好';
     var valueLevel = c.value > 85 ? 'tag-good' : c.value > 75 ? 'tag-warn' : 'tag-bad';
     var valueText = c.value > 85 ? '非常宜居' : c.value > 75 ? '比较宜居' : '一般';
+    var gdpLevel = c.gdpRatio > 0.2 ? 'tag-bad' : c.gdpRatio > 0.15 ? 'tag-warn' : 'tag-good';
+    var gdpText = c.gdpRatio > 0.2 ? '经济泡沫风险' : c.gdpRatio > 0.15 ? '房价偏高' : '经济支撑较强';
     
     var html = '<div class="detail-header">';
     html += '<span class="detail-city">' + c.name + '</span>';
@@ -625,14 +650,21 @@ footer {
     html += '<div class="detail-metrics">';
     html += '<div class="detail-metric"><div class="detail-metric-val">¥' + c.price.toLocaleString() + '</div><div class="detail-metric-label">均价(元/㎡)</div></div>';
     html += '<div class="detail-metric"><div class="detail-metric-val">¥' + c.avgSalary.toLocaleString() + '</div><div class="detail-metric-label">平均月薪</div></div>';
-    html += '<div class="detail-metric"><div class="detail-metric-val">' + c.ratio + '年</div><div class="detail-metric-label">房价收入比</div></div>';
+    html += '<div class="detail-metric"><div class="detail-metric-val">' + c.ratio + '年</div><div class="detail-metric-label">买房年限</div></div>';
     html += '<div class="detail-metric"><div class="detail-metric-val">' + c.value + '分</div><div class="detail-metric-label">宜居指数</div></div>';
-    html += '<div class="detail-metric"><div class="detail-metric-val">' + c.rentYield.toFixed(1) + '%</div><div class="detail-metric-label">租金收益率</div></div>';
+    html += '<div class="detail-metric"><div class="detail-metric-val">' + (c.gdpRatio * 100).toFixed(1) + '%</div><div class="detail-metric-label">GDP房价比</div></div>';
     html += '</div>';
     html += '<div class="detail-tags">';
     html += '<span class="detail-tag ' + ratioLevel + '">🏠 ' + ratioText + '</span>';
     html += '<span class="detail-tag ' + valueLevel + '">⭐ ' + valueText + '</span>';
-    html += '<span class="detail-tag tag-warn">📈 年涨跌待更新</span>';
+    html += '<span class="detail-tag ' + gdpLevel + '">📊 ' + gdpText + '</span>';
+    html += '</div>';
+    
+    html += '<div class="detail-story">';
+    html += '<div class="story-item"><span class="story-icon">' + c.storyIcon + '</span><div class="story-text"><span class="story-label">前世：</span>' + c.history.origin + '</div></div>';
+    html += '<div class="story-item"><span class="story-icon">🔧</span><div class="story-text"><span class="story-label">1.0：</span>' + c.history.phase1 + '</div></div>';
+    html += '<div class="story-item"><span class="story-icon">🔄</span><div class="story-text"><span class="story-label">2.0：</span>' + c.history.phase2 + '</div></div>';
+    html += '<div class="story-item"><span class="story-icon">🚀</span><div class="story-text"><span class="story-label">未来：</span>' + c.history.future + '</div></div>';
     html += '</div>';
     
     var panel = document.getElementById('detailPanel');
@@ -642,26 +674,22 @@ footer {
   };
 
   function renderStatsGrid() {
-    var tier1Avg = 54500;
-    var tiernewAvg = 21000;
-    var tier2Avg = 13000;
-    var avgRatio = 18.5;
-    var avgValue = 80;
-    
     document.getElementById('statsGrid').innerHTML = 
       '<div class="stat-card"><div class="stat-num">36</div><div class="stat-label">📍 城市覆盖</div></div>' +
       '<div class="stat-card"><div class="stat-num">¥5.5万</div><div class="stat-label">🏙️ 一线均价</div></div>' +
-      '<div class="stat-card"><div class="stat-num">¥2.1万</div><div class="stat-label">🏠 新一线均价</div></div>' +
-      '<div class="stat-card"><div class="stat-num">' + avgRatio + '年</div><div class="stat-label">⏱️ 平均买房年限</div></div>';
+      '<div class="stat-card"><div class="stat-num">¥1.9万</div><div class="stat-label">🏠 新一线均价</div></div>' +
+      '<div class="stat-card"><div class="stat-num">18.5年</div><div class="stat-label">⏱️ 平均买房年限</div></div>' +
+      '<div class="stat-card"><div class="stat-num">0.15</div><div class="stat-label">📊 平均GDP房价比</div></div>';
   }
 
-  function renderBarChart(id, data, colorClass) {
+  function renderBarChart(id, data, colorClass, suffix) {
     var max = Math.max.apply(null, data.map(function(d){return d.val;}));
     var html = '';
     data.forEach(function(item, i) {
       var pct = Math.round(item.val / max * 100);
+      var val = suffix ? item.val + suffix : item.val;
       html += '<div class="bar-item">';
-      html += '<div class="bar-header"><span class="bar-name">' + (i+1) + '. ' + item.name + '</span><span class="bar-value">' + item.val + '</span></div>';
+      html += '<div class="bar-header"><span class="bar-name">' + (i+1) + '. ' + item.name + '</span><span class="bar-value">' + val + '</span></div>';
       html += '<div class="bar-track"><div class="bar-fill ' + colorClass + '" style="width:' + pct + '%"></div></div>';
       html += '</div>';
     });
@@ -670,71 +698,126 @@ footer {
 
   function renderPriceRank() {
     var sorted = Object.keys(CITIES).map(function(k){return {name:CITIES[k].name,val:CITIES[k].price,key:k};})
-      .sort(function(a,b){return b.val - a.val;}).slice(0,15);
-    renderBarChart('priceRankChart', sorted, 'red');
+      .sort(function(a,b){return b.val - a.val;}).slice(0,10);
+    renderBarChart('priceRankChart', sorted, 'red', '元/㎡');
   }
 
   function renderRatioChart() {
     var sorted = Object.keys(CITIES).map(function(k){return {name:CITIES[k].name,val:CITIES[k].ratio,key:k};})
+      .sort(function(a,b){return b.val - a.val;}).slice(0,10);
+    renderBarChart('ratioChart', sorted, 'yellow', '年');
+  }
+
+  function renderGDPChart() {
+    var sorted = Object.keys(CITIES).map(function(k){return {name:CITIES[k].name,val:(CITIES[k].gdpRatio * 100).toFixed(1),key:k};})
       .sort(function(a,b){return b.val - a.val;}).slice(0,12);
-    renderBarChart('ratioChart', sorted, 'yellow');
-  }
-
-  function renderValueChart() {
-    var sorted = Object.keys(CITIES).map(function(k){return {name:CITIES[k].name,val:CITIES[k].value,key:k};})
-      .sort(function(a,b){return b.val - a.val;}).slice(0,10);
-    renderBarChart('valueChart', sorted, 'green');
-  }
-
-  function renderRentYieldChart() {
-    var sorted = Object.keys(CITIES).map(function(k){return {name:CITIES[k].name,val:CITIES[k].rentYield,key:k};})
-      .sort(function(a,b){return b.val - a.val;}).slice(0,10);
-    var data = sorted.map(function(d){return {name:d.name,val:d.val.toFixed(1)};});
-    renderBarChart('rentYieldChart', data, 'blue');
-  }
-
-  function renderIndustryGrid() {
     var html = '';
-    INDUSTRIES.forEach(function(ind) {
-      var max = Math.max.apply(null, ind.cities.map(function(c){return c.v;}));
-      html += '<div class="industry-card">';
-      html += '<div class="industry-name">💼 ' + ind.name + '</div>';
-      html += '<div class="industry-bars">';
-      ind.cities.forEach(function(c) {
-        var pct = Math.round(c.v / max * 100);
-        var color = c.v > 85 ? '#f87171' : c.v > 70 ? '#fbbf24' : '#4ade80';
-        html += '<div class="industry-row">';
-        html += '<span class="industry-row-name">' + c.n + '</span>';
-        html += '<div class="industry-bar"><div class="industry-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>';
-        html += '<span style="font-size:11px;color:#6a7a8a;width:30px;text-align:right;">' + c.v + '</span>';
-        html += '</div>';
-      });
-      html += '</div></div>';
+    sorted.forEach(function(item) {
+      var level = item.val > 20 ? 'red' : item.val > 15 ? 'yellow' : 'blue';
+      html += '<div class="gdp-bar">';
+      html += '<div class="gdp-label">' + item.name + '</div>';
+      html += '<div class="gdp-track">';
+      html += '<div class="gdp-fill ' + level + '" style="width:' + Math.min(item.val * 2, 100) + '%"></div>';
+      html += '</div>';
+      html += '<div class="gdp-value">' + item.val + '%</div>';
+      html += '</div>';
     });
-    document.getElementById('industryGrid').innerHTML = html;
+    document.getElementById('gdpChart').innerHTML = html;
   }
 
-  function renderTrendHeatmap() {
-    var cities = ['sz','bj','sh','gz','cd','hz','nj','wh'];
-    var heatColors = ['rgba(34,197,94,','rgba(245,158,11,','rgba(239,68,68,'];
-    
-    var html = '<div></div>';
-    monthLabels.forEach(function(m) {
-      html += '<div class="heatmap-header">' + m + '</div>';
+  function renderIndustryCompare() {
+    var html = '';
+    var topIndustry = [
+      {city:'深圳',icon:'💻',tag:'互联网',text:'从三来一补到全球科技重镇，华为、腾讯、大疆崛起'},
+      {city:'上海',icon:'🏦',tag:'金融',text:'百年金融底蕴，外滩到陆家嘴，中国华尔街'},
+      {city:'苏州',icon:'🏭',tag:'制造',text:'新加坡工业园模式，外资制造高地'},
+      {city:'成都',icon:'🎮',tag:'游戏',text:'西南IT中心，天府软件园，网易成都分部'}
+    ];
+    topIndustry.forEach(function(item) {
+      html += '<div class="compare-card">';
+      html += '<div class="compare-header">';
+      html += '<span class="compare-icon">' + item.icon + '</span>';
+      html += '<span class="compare-city">' + item.city + '</span>';
+      html += '<span class="compare-badge">' + item.tag + '</span>';
+      html += '</div>';
+      html += '<div class="compare-row"><span class="compare-label">产业优势</span><span class="compare-value highlight">全国领先</span></div>';
+      html += '<div class="compare-row"><span class="compare-label">转型亮点</span><span class="compare-value">' + item.text + '</span></div>';
+      html += '</div>';
     });
-    
-    cities.forEach(function(key) {
+    document.getElementById('industryCompare').innerHTML = html;
+  }
+
+  function renderCityStory() {
+    var stories = ['sz','sh','cd','xa','cs'];
+    var html = '';
+    stories.forEach(function(key) {
       var c = CITIES[key];
       if (!c) return;
-      html += '<div class="heatmap-label">' + c.name.slice(0,2) + '</div>';
-      c.trend.forEach(function(v) {
-        var color = v > 0 ? 0 : v < 0 ? 2 : 1;
-        var opacity = 0.3 + Math.abs(v) * 0.15;
-        html += '<div class="hm-cell" style="background:' + heatColors[color] + opacity + ')"></div>';
-      });
+      html += '<div class="compare-card">';
+      html += '<div class="compare-header">';
+      html += '<span class="compare-icon">' + c.storyIcon + '</span>';
+      html += '<span class="compare-city">' + c.name + '</span>';
+      html += '</div>';
+      html += '<div class="timeline">';
+      html += '<div class="timeline-item"><div class="timeline-year">起源</div><div class="timeline-text">' + c.history.origin + '</div></div>';
+      html += '<div class="timeline-item"><div class="timeline-year">1.0时代</div><div class="timeline-text">' + c.history.phase1 + '</div></div>';
+      html += '<div class="timeline-item"><div class="timeline-year">2.0时代</div><div class="timeline-text">' + c.history.phase2 + '</div></div>';
+      html += '<div class="timeline-item"><div class="timeline-year">未来规划</div><div class="timeline-text">' + c.history.future + '</div></div>';
+      html += '</div></div>';
     });
+    document.getElementById('cityStory').innerHTML = html;
+  }
+
+  function renderPurchasingPower() {
+    var data = Object.keys(CITIES).map(function(k){
+      var c = CITIES[k];
+      var cups = Math.floor(c.avgSalary / c.cost.milkTea);
+      return {name: c.name, val: cups};
+    }).sort(function(a,b){return b.val - a.val;}).slice(0,10);
     
-    document.getElementById('trendHeatmap').innerHTML = html;
+    var max = Math.max.apply(null, data.map(function(d){return d.val;}));
+    var html = '';
+    data.forEach(function(item, i) {
+      var pct = Math.round(item.val / max * 100);
+      html += '<div class="bar-item">';
+      html += '<div class="bar-header"><span class="bar-name">' + (i+1) + '. ' + item.name + '</span><span class="bar-value">' + item.val + '杯奶茶</span></div>';
+      html += '<div class="bar-track"><div class="bar-fill purple" style="width:' + pct + '%"></div></div>';
+      html += '</div>';
+    });
+    document.getElementById('purchasingPower').innerHTML = html;
+  }
+
+  function renderCostIndex() {
+    var html = '';
+    COST_ITEMS.forEach(function(item) {
+      html += '<div class="cost-card">';
+      html += '<div class="cost-icon">' + item.icon + '</div>';
+      html += '<div class="cost-name">' + item.name + '</div>';
+      item.items.forEach(function(sub) {
+        html += '<div class="cost-range">' + sub.val + ' ' + item.unit + '</div>';
+        html += '<div class="cost-city">' + sub.city + '</div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById('costIndex').innerHTML = html;
+  }
+
+  function renderGlobalCompare() {
+    var html = '';
+    GLOBAL_CITIES.forEach(function(c) {
+      var rankClass = c.rank <= 3 ? 'top' : c.rank <= 7 ? 'mid' : 'low';
+      html += '<div class="global-card">';
+      html += '<div class="global-rank ' + rankClass + '">#' + c.rank + '</div>';
+      html += '<div class="global-city">' + c.city + '</div>';
+      html += '<div class="global-country">' + c.country + '</div>';
+      html += '<div class="global-stat">均价: <span>¥' + (c.pricePerSqm/10000).toFixed(1) + '万/㎡</span></div>';
+      html += '<div class="global-stat">月薪: <span>¥' + (c.salaryMonthly/1000).toFixed(1) + 'k</span></div>';
+      html += '<div class="global-stat">买房: <span>' + c.ratio + '</span></div>';
+      html += '<div class="global-stat">☕咖啡: <span>¥' + c.coffeePrice + '</span></div>';
+      html += '<div style="font-size:11px;color:#6a7a8a;margin-top:8px;">' + c.note + '</div>';
+      html += '</div>';
+    });
+    document.getElementById('globalCompare').innerHTML = html;
   }
 
   init();
