@@ -545,7 +545,7 @@
         <span data-i18n="ageTitle">深圳在职人员年龄结构</span>
       </h3>
       <p class="chart-desc" data-i18n="ageDesc">深圳是全国年龄结构最年轻的超大城市之一，35岁以下占绝对主体</p>
-      <canvas id="ageChart" height="280"></canvas>
+      <canvas id="ageChart"></canvas>
     </div>
 
     <!-- 学历分布 -->
@@ -676,7 +676,7 @@
         <span data-i18n="growthTitle">互联网职业薪资成长曲线</span>
       </h3>
       <p class="chart-desc" data-i18n="growthDesc">对标大厂 P5-P9 级别，展示 5 年典型成长轨迹</p>
-      <canvas id="growthChart" height="260"></canvas>
+      <canvas id="growthChart"></canvas>
     </div>
 
     <!-- 税后支出结构 -->
@@ -1038,7 +1038,7 @@
         各城市应届生税后到手收入对比（中位数）
       </h3>
       <p class="chart-desc">综合考虑税收、公积金后的实际到手薪资</p>
-      <canvas id="cityIncomeChart" height="260"></canvas>
+      <canvas id="cityIncomeChart"></canvas>
     </div>
     <div class="chart-card">
       <h3>
@@ -1046,7 +1046,7 @@
         薪资租房比：哪里住得更划算？
       </h3>
       <p class="chart-desc">薪资/房租比值越高，生活压力越小（理想值 > 4）</p>
-      <canvas id="rentRatioChart" height="260"></canvas>
+      <canvas id="rentRatioChart"></canvas>
     </div>
   </div>
 </section>
@@ -1105,8 +1105,9 @@
 <script>
 // ========== 全局图表配置 ==========
 Chart.defaults.color = '#7ba3c4';
-Chart.defaults.borderColor = 'rgba(0, 212, 255, 0.08)';
+Chart.defaults.border.color = 'rgba(0, 212, 255, 0.08)';
 Chart.defaults.font.family = "'PingFang SC', 'Microsoft YaHei', sans-serif";
+Chart.defaults.plugins.legend.display = false;
 
 const COLORS = {
   primary: '#00d4ff',
@@ -1125,6 +1126,29 @@ const mkGrad = (ctx, c1, c2) => {
   g.addColorStop(1, c2 || 'rgba(0,0,0,0)');
   return g;
 };
+
+function wrapCanvasForChart(chartId) {
+  const canvas = document.getElementById(chartId);
+  if (!canvas) return null;
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;height:280px;width:100%;';
+  canvas.parentNode.insertBefore(wrap, canvas);
+  wrap.appendChild(canvas);
+  canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%!important;height:100%!important;';
+  return canvas;
+}
+
+wrapCanvasForChart('ageChart');
+wrapCanvasForChart('eduChart');
+wrapCanvasForChart('jobTypeChart');
+wrapCanvasForChart('salaryDistChart');
+wrapCanvasForChart('growthChart');
+wrapCanvasForChart('expenseChart');
+wrapCanvasForChart('migrationChart');
+wrapCanvasForChart('outflowChart');
+wrapCanvasForChart('stayChart');
+wrapCanvasForChart('cityIncomeChart');
+wrapCanvasForChart('rentRatioChart');
 
 // ========== 1. 年龄分布 ==========
 new Chart(document.getElementById('ageChart'), {
