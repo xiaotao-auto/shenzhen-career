@@ -426,9 +426,31 @@
       footerDesc:'Based on public data. Not investment advice. Data as of 2025.',
     }
   };
-  let currentLang = 'zh';
+  
+  function getStoredLang() {
+    try {
+      const stored = localStorage.getItem('shenzhen_career_lang');
+      if (stored && ['zh', 'zt', 'en'].includes(stored)) {
+        return stored;
+      }
+    } catch (e) {
+      console.warn('localStorage not available');
+    }
+    return 'zh';
+  }
+
+  function setStoredLang(lang) {
+    try {
+      localStorage.setItem('shenzhen_career_lang', lang);
+    } catch (e) {
+      console.warn('localStorage not available');
+    }
+  }
+  
+  let currentLang = getStoredLang();
   function setLang(lang){
     currentLang = lang;
+    setStoredLang(lang);
     document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.textContent.trim().toLowerCase().startsWith(lang==='zh'?'简':lang==='zt'?'繁':'e')));
     applyLang();
     renderAll();
@@ -1268,6 +1290,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       populateSearch();
       applyLang();
+      document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.textContent.trim().toLowerCase().startsWith(currentLang==='zh'?'简':currentLang==='zt'?'繁':'e')));
       renderAll();
       renderIndustryAnalysis();
       document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });

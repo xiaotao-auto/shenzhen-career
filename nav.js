@@ -2,7 +2,7 @@
  * nav.js — 唐小涛网站群 · 左侧纵向滑出导航 v5
  * 平时只显示左侧一条细线+小圆点，hover/点击后纵向滑出导航列表
  * 无署名，只保留站点切换功能
- * 支持中英繁三语切换
+ * 支持中英繁三语切换（全网同步）
  */
 (function () {
   const BASE = 'https://xiaotao-auto.github.io/shenzhen-career';
@@ -46,7 +46,27 @@
     en: { lang_zh: 'CN', lang_zt: 'TW', lang_en: 'EN' },
   };
 
-  let currentLang = 'zh';
+  function getStoredLang() {
+    try {
+      const stored = localStorage.getItem('shenzhen_career_lang');
+      if (stored && ['zh', 'zt', 'en'].includes(stored)) {
+        return stored;
+      }
+    } catch (e) {
+      console.warn('localStorage not available');
+    }
+    return 'zh';
+  }
+
+  function setStoredLang(lang) {
+    try {
+      localStorage.setItem('shenzhen_career_lang', lang);
+    } catch (e) {
+      console.warn('localStorage not available');
+    }
+  }
+
+  let currentLang = getStoredLang();
 
   function t(key) {
     const dict = I18N_NAV[currentLang] || I18N_NAV.zh;
@@ -55,6 +75,7 @@
 
   function setLang(lang) {
     currentLang = lang;
+    setStoredLang(lang);
     const langBtns = document.querySelectorAll('.lang-btn');
     if (langBtns.length > 0) {
       langBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
@@ -236,7 +257,7 @@
     }
     #snav-backdrop.show { display: block; }
 
-    /* 移动端：面板变顶部滑出 */
+    /* 移动端：面板变底部滑出 */
     @media (max-width: 600px) {
       #snav-panel {
         left: auto;
@@ -251,6 +272,7 @@
         border-top: 1px solid rgba(88,166,255,0.18);
         transition: bottom 0.32s cubic-bezier(0.22,1,0.36,1);
         box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
       }
       #snav-panel.open { bottom: 0; }
       #snav-panel .snav-panel-title { display: none; }
@@ -262,10 +284,47 @@
         border-top: 3px solid transparent;
         font-size: 12px;
         text-align: center;
+        min-width: 60px;
       }
       #snav-panel .snav-item:hover { padding-left: 14px; }
       #snav-panel .snav-item.active { border-left: none; border-top-color: #58a6ff; }
-      #snav-trigger { display: none; }
+      
+      #snav-trigger {
+        display: none;
+      }
+      
+      #snav-mobile-trigger {
+        display: flex;
+        position: fixed;
+        right: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(88,166,255,0.9);
+        box-shadow: 0 4px 20px rgba(88,166,255,0.4);
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        cursor: pointer;
+        transition: transform 0.2s;
+        border: none;
+        color: white;
+      }
+      #snav-mobile-trigger:hover, #snav-mobile-trigger:active {
+        transform: scale(1.1);
+      }
+      #snav-mobile-trigger svg {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+      }
+    }
+    
+    @media (min-width: 601px) {
+      #snav-mobile-trigger {
+        display: none;
+      }
     }
   `;
   document.head.appendChild(style);
@@ -284,6 +343,15 @@
     <div class="snav-line"></div>
     <div class="snav-dot"></div>
     <span class="snav-emoji-mini">${curPage ? curPage.emoji : '🗂️'}</span>
+  `;
+
+  const mobileTrigger = document.createElement('button');
+  mobileTrigger.id = 'snav-mobile-trigger';
+  mobileTrigger.setAttribute('aria-label', t('nav_triggerLabel'));
+  mobileTrigger.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
   `;
 
   const panel = document.createElement('div');
@@ -319,6 +387,7 @@
   }
 
   trigger.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+  mobileTrigger.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
   backdrop.addEventListener('click', close);
   trigger.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
@@ -353,6 +422,7 @@
   function inject() {
     document.body.appendChild(backdrop);
     document.body.appendChild(trigger);
+    document.body.appendChild(mobileTrigger);
     document.body.appendChild(panel);
   }
   if (document.body) { inject(); }
