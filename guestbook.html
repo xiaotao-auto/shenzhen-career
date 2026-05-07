@@ -295,10 +295,30 @@
     <span style="margin:0 8px;">|</span>
     <a href="mailto:xiao.tao.123.ok@outlook.com">📧 xiao.tao.123.ok@outlook.com</a>
   </div>
+  <div style="font-size:13px;color:var(--blue);margin:10px 0;" id="total-visitors">
+    👁️ 总访问量：<span id="visitor-count">加载中...</span> 次
+  </div>
   <div style="font-size:11px;color:rgba(139,148,158,.5);margin-top:6px;">
     留言数据存储在浏览器 localStorage，不会上传至任何服务器 · © 2025 Tang Xiaotao
   </div>
 </footer>
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+(function() {
+  var KEY = 'xtao_total_visitors_v1';
+  var visits = parseInt(localStorage.getItem(KEY) || '0');
+  visits++;
+  localStorage.setItem(KEY, visits);
+  document.getElementById('visitor-count').textContent = visits;
+  var busuanziCount = parseInt(busuanziVariable.site_pv) || 0;
+  if (busuanziCount > 0) {
+    var merged = Math.max(visits, busuanziCount);
+    document.getElementById('visitor-count').textContent = merged;
+    localStorage.setItem(KEY, merged);
+  }
+})();
+</script>
 
 <div id="toast"></div>
 
