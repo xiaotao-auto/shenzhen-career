@@ -308,7 +308,7 @@ footer {
   <!-- Part 1: 国内城市 -->
   <div class="section">
     <div class="section-title"><span class="section-icon">🏙️</span> 国内城市选择指南</div>
-    <p class="section-desc">从租金、通勤、消费、竞争等多维度帮你选出最适合的城市</p>
+    <p class="section-desc">一线城市4个 + 新一线城市15个，共19城数据对比</p>
     
     <div class="city-tabs" id="cityTabs"></div>
     
@@ -523,7 +523,7 @@ footer {
         population:[{name:'常住人口(万)',val:950,color:'blue'},{name:'外来人口占比',val:62,color:'purple'},{name:'落户率',val:52,color:'teal'},{name:'城市留存率',val:82,color:'green'}],
         edu:[{name:'重点学校数量',val:55,color:'blue'},{name:'高考竞争指数',val:9,color:'yellow'},{name:'985/211录取率',val:12,color:'purple'},{name:'教育资源评分',val:80,color:'green'}]
     },
-    wh:{name:'武汉',pop:1365,avgAge:35,single:46,stayRate:85,immigrateRate:58,school:62,gaoKiaoRank:11,
+    wh:{name:'武汉',pop:1365,avgAge:35,single:46,stayRate:85,immigrateRate:58,school:62,gaoKaoRank:11,
         rent:[{name:'光谷',val:1800},{name:'武昌中心',val:1600},{name:'汉口',val:1500},{name:'洪山',val:1400},{name:'青山',val:1200}],
         commute:[{name:'光谷→东湖高新',time:30,cost:4},{name:'武昌→武昌区',time:25,cost:3},{name:'汉口→江汉',time:25,cost:3},{name:'洪山→洪山区',time:30,cost:4}],
         cost:[{name:'午饭(工作日)',val:20},{name:'奶茶/咖啡',val:18},{name:'超市物价指数',val:85},{name:'理发',val:25},{name:'健身月卡',val:90}],
@@ -532,6 +532,116 @@ footer {
         compet:[{name:'互联网/科技',val:68,color:'yellow'},{name:'金融',val:58,color:'green'},{name:'体制内',val:62,color:'blue'},{name:'制造业',val:52,color:'green'},{name:'房地产',val:55,color:'green'}],
         population:[{name:'常住人口(万)',val:1365,color:'blue'},{name:'外来人口占比',val:58,color:'purple'},{name:'落户率',val:48,color:'teal'},{name:'城市留存率',val:85,color:'green'}],
         edu:[{name:'重点学校数量',val:62,color:'blue'},{name:'高考竞争指数',val:11,color:'yellow'},{name:'985/211录取率',val:10,color:'purple'},{name:'教育资源评分',val:78,color:'green'}]
+    },
+    xa:{name:'西安',pop:1300,avgAge:36,single:42,stayRate:78,immigrateRate:55,school:58,gaoKaoRank:13,
+        rent:[{name:'高新科技路',val:2200},{name:'曲江新区',val:2000},{name:'小寨',val:1800},{name:'城北',val:1500},{name:'长安大学城',val:1200}],
+        commute:[{name:'科技路→高新',time:30,cost:4},{name:'小寨→雁塔',time:25,cost:3},{name:'曲江→雁塔',time:30,cost:4},{name:'大学城→长安',time:35,cost:4}],
+        cost:[{name:'午饭(工作日)',val:18},{name:'奶茶/咖啡',val:16},{name:'超市物价指数',val:82},{name:'理发',val:25},{name:'健身月卡',val:80}],
+        facility:[{name:'免费公园',val:108,icon:'🌳'},{name:'图书馆',val:18,icon:'📚'},{name:'博物馆',val:22,icon:'🏛️'},{name:'三甲医院',val:35,icon:'🏥'}],
+        heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[3,2,4,5,6,5,4,5,6,5,4,3]],
+        compet:[{name:'互联网/科技',val:65,color:'yellow'},{name:'金融',val:55,color:'green'},{name:'体制内',val:68,color:'blue'},{name:'制造业',val:58,color:'green'},{name:'房地产',val:60,color:'green'}],
+        population:[{name:'常住人口(万)',val:1300,color:'blue'},{name:'外来人口占比',val:55,color:'purple'},{name:'落户率',val:45,color:'teal'},{name:'城市留存率',val:78,color:'green'}],
+        edu:[{name:'重点学校数量',val:58,color:'blue'},{name:'高考竞争指数',val:13,color:'yellow'},{name:'985/211录取率',val:8,color:'purple'},{name:'教育资源评分',val:82,color:'green'}]
+    },
+    su:{name:'苏州',pop:1285,avgAge:34,single:44,stayRate:82,immigrateRate:65,school:42,gaoKaoRank:14,
+        rent:[{name:'园区湖西',val:3200},{name:'新区狮山',val:2800},{name:'姑苏观前',val:2500},{name:'吴中',val:2000},{name:'相城',val:1800}],
+        commute:[{name:'湖西→园区',time:20,cost:4},{name:'狮山→新区',time:25,cost:4},{name:'观前→姑苏',time:20,cost:3},{name:'吴中→吴中区',time:30,cost:4}],
+        cost:[{name:'午饭(工作日)',val:28},{name:'奶茶/咖啡',val:25},{name:'超市物价指数',val:98},{name:'理发',val:35},{name:'健身月卡',val:140}],
+        facility:[{name:'免费公园',val:88,icon:'🌳'},{name:'图书馆',val:12,icon:'📚'},{name:'博物馆',val:8,icon:'🏛️'},{name:'三甲医院',val:22,icon:'🏥'}],
+        heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[5,4,6,7,8,7,6,7,8,7,6,5],[6,5,7,8,9,8,7,8,9,8,7,5],[4,3,5,6,7,6,5,6,7,6,5,4]],
+        compet:[{name:'互联网/科技',val:78,color:'yellow'},{name:'金融',val:72,color:'yellow'},{name:'体制内',val:65,color:'blue'},{name:'制造业',val:85,color:'red'},{name:'房地产',val:68,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:1285,color:'blue'},{name:'外来人口占比',val:65,color:'purple'},{name:'落户率',val:52,color:'teal'},{name:'城市留存率',val:82,color:'green'}],
+        edu:[{name:'重点学校数量',val:42,color:'blue'},{name:'高考竞争指数',val:14,color:'yellow'},{name:'985/211录取率',val:6,color:'purple'},{name:'教育资源评分',val:72,color:'green'}]
+    },
+    cq:{name:'重庆',pop:3212,avgAge:35,single:48,stayRate:75,immigrateRate:58,school:55,gaoKaoRank:18,
+        rent:[{name:'渝北光电园',val:1800},{name:'江北观音桥',val:2000},{name:'渝中解放碑',val:2200},{name:'沙坪坝',val:1500},{name:'南岸',val:1400}],
+        commute:[{name:'光电园→渝北',time:35,cost:5},{name:'观音桥→江北',time:30,cost:4},{name:'解放碑→渝中',time:25,cost:3},{name:'沙坪坝→沙坪坝区',time:30,cost:4}],
+        cost:[{name:'午饭(工作日)',val:20},{name:'奶茶/咖啡',val:18},{name:'超市物价指数',val:85},{name:'理发',val:28},{name:'健身月卡',val:100}],
+        facility:[{name:'免费公园',val:168,icon:'🌳'},{name:'图书馆',val:15,icon:'📚'},{name:'博物馆',val:12,icon:'🏛️'},{name:'三甲医院',val:42,icon:'🏥'}],
+        heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]],
+        compet:[{name:'互联网/科技',val:72,color:'yellow'},{name:'金融',val:65,color:'yellow'},{name:'体制内',val:70,color:'blue'},{name:'制造业',val:75,color:'yellow'},{name:'房地产',val:72,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:3212,color:'blue'},{name:'外来人口占比',val:58,color:'purple'},{name:'落户率',val:42,color:'teal'},{name:'城市留存率',val:75,color:'green'}],
+        edu:[{name:'重点学校数量',val:55,color:'blue'},{name:'高考竞争指数',val:18,color:'red'},{name:'985/211录取率',val:5,color:'purple'},{name:'教育资源评分',val:70,color:'green'}]
+    },
+    tj:{name:'天津',pop:1386,avgAge:38,single:40,stayRate:80,immigrateRate:52,school:52,gaoKaoRank:5,
+        rent:[{name:'和平南京路',val:2800},{name:'河西小白楼',val:2500},{name:'南开老城',val:2200},{name:'滨海新区',val:1800},{name:'西青',val:1500}],
+        commute:[{name:'南京路→和平',time:25,cost:4},{name:'小白楼→河西',time:20,cost:3},{name:'老城厢→南开',time:25,cost:3},{name:'滨海→滨海新区',time:45,cost:6}],
+        cost:[{name:'午饭(工作日)',val:25},{name:'奶茶/咖啡',val:22},{name:'超市物价指数',val:92},{name:'理发',val:30},{name:'健身月卡',val:120}],
+        facility:[{name:'免费公园',val:88,icon:'🌳'},{name:'图书馆',val:16,icon:'📚'},{name:'博物馆',val:18,icon:'🏛️'},{name:'三甲医院',val:38,icon:'🏥'}],
+        heat:[[5,4,6,7,8,9,8,7,6,7,5,3],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[5,4,6,7,8,7,6,7,8,7,6,5]],
+        compet:[{name:'互联网/科技',val:70,color:'yellow'},{name:'金融',val:75,color:'yellow'},{name:'体制内',val:78,color:'blue'},{name:'制造业',val:65,color:'yellow'},{name:'房地产',val:68,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:1386,color:'blue'},{name:'外来人口占比',val:52,color:'purple'},{name:'落户率',val:48,color:'teal'},{name:'城市留存率',val:80,color:'green'}],
+        edu:[{name:'重点学校数量',val:52,color:'blue'},{name:'高考竞争指数',val:5,color:'green'},{name:'985/211录取率',val:22,color:'purple'},{name:'教育资源评分',val:88,color:'green'}]
+    },
+    qd:{name:'青岛',pop:1034,avgAge:37,single:38,stayRate:85,immigrateRate:62,school:35,gaoKaoRank:16,
+        rent:[{name:'市南香港路',val:2500},{name:'崂山金家岭',val:2800},{name:'李沧',val:1800},{name:'城阳',val:1500},{name:'黄岛',val:1400}],
+        commute:[{name:'香港路→市南',time:25,cost:4},{name:'金家岭→崂山',time:20,cost:3},{name:'李沧→李沧区',time:20,cost:3},{name:'黄岛→黄岛区',time:40,cost:6}],
+        cost:[{name:'午饭(工作日)',val:25},{name:'奶茶/咖啡',val:22},{name:'超市物价指数',val:95},{name:'理发',val:30},{name:'健身月卡',val:120}],
+        facility:[{name:'免费公园',val:78,icon:'🌳'},{name:'图书馆',val:10,icon:'📚'},{name:'博物馆',val:8,icon:'🏛️'},{name:'三甲医院',val:18,icon:'🏥'}],
+        heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[6,5,7,8,9,8,7,8,9,8,7,5],[4,3,5,6,7,6,5,6,7,6,5,4]],
+        compet:[{name:'互联网/科技',val:65,color:'yellow'},{name:'金融',val:60,color:'green'},{name:'体制内',val:68,color:'blue'},{name:'制造业',val:72,color:'yellow'},{name:'房地产',val:65,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:1034,color:'blue'},{name:'外来人口占比',val:62,color:'purple'},{name:'落户率',val:55,color:'teal'},{name:'城市留存率',val:85,color:'green'}],
+        edu:[{name:'重点学校数量',val:35,color:'blue'},{name:'高考竞争指数',val:16,color:'yellow'},{name:'985/211录取率',val:7,color:'purple'},{name:'教育资源评分',val:68,color:'green'}]
+    },
+    cs:{name:'长沙',pop:1042,avgAge:33,single:52,stayRate:80,immigrateRate:68,school:45,gaoKaoRank:17,
+        rent:[{name:'岳麓梅溪湖',val:2000},{name:'芙蓉五一',val:2200},{name:'天心省政府',val:1800},{name:'雨花高铁南',val:1600},{name:'开福',val:1500}],
+        commute:[{name:'梅溪湖→岳麓',time:25,cost:3},{name:'五一→芙蓉',time:20,cost:3},{name:'省政府→天心',time:20,cost:3},{name:'高铁南→雨花',time:30,cost:4}],
+        cost:[{name:'午饭(工作日)',val:18},{name:'奶茶/咖啡',val:16},{name:'超市物价指数',val:80},{name:'理发',val:25},{name:'健身月卡',val:90}],
+        facility:[{name:'免费公园',val:85,icon:'🌳'},{name:'图书馆',val:12,icon:'📚'},{name:'博物馆',val:10,icon:'🏛️'},{name:'三甲医院',val:25,icon:'🏥'}],
+        heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[5,4,6,7,8,7,6,7,8,7,6,5],[4,3,5,6,7,8,7,6,5,4,3,3],[4,3,5,6,7,6,5,6,7,6,5,4]],
+        compet:[{name:'互联网/科技',val:72,color:'yellow'},{name:'金融',val:65,color:'yellow'},{name:'体制内',val:70,color:'blue'},{name:'制造业',val:60,color:'green'},{name:'房地产',val:68,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:1042,color:'blue'},{name:'外来人口占比',val:68,color:'purple'},{name:'落户率',val:58,color:'teal'},{name:'城市留存率',val:80,color:'green'}],
+        edu:[{name:'重点学校数量',val:45,color:'blue'},{name:'高考竞争指数',val:17,color:'red'},{name:'985/211录取率',val:5,color:'purple'},{name:'教育资源评分',val:78,color:'green'}]
+    },
+    zz:{name:'郑州',pop:1282,avgAge:34,single:45,stayRate:72,immigrateRate:52,school:48,gaoKaoRank:19,
+        rent:[{name:'郑东新区',val:2000},{name:'金水区',val:1800},{name:'中原区',val:1500},{name:'二七区',val:1400},{name:'高新区',val:1200}],
+        commute:[{name:'CBD→郑东',time:25,cost:3},{name:'金水→金水区',time:20,cost:3},{name:'中原→中原区',time:20,cost:3},{name:'高新区→高新区',time:30,cost:4}],
+        cost:[{name:'午饭(工作日)',val:18},{name:'奶茶/咖啡',val:15},{name:'超市物价指数',val:82},{name:'理发',val:22},{name:'健身月卡',val:80}],
+        facility:[{name:'免费公园',val:72,icon:'🌳'},{name:'图书馆',val:12,icon:'📚'},{name:'博物馆',val:8,icon:'🏛️'},{name:'三甲医院',val:32,icon:'🏥'}],
+        heat:[[4,3,5,6,7,8,7,6,5,6,4,3],[4,3,5,6,7,6,5,6,7,6,5,4],[5,4,6,7,8,9,8,7,6,5,4,4],[3,2,4,5,6,5,4,5,6,5,4,3]],
+        compet:[{name:'互联网/科技',val:68,color:'yellow'},{name:'金融',val:60,color:'green'},{name:'体制内',val:72,color:'blue'},{name:'制造业',val:70,color:'yellow'},{name:'房地产',val:65,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:1282,color:'blue'},{name:'外来人口占比',val:52,color:'purple'},{name:'落户率',val:40,color:'teal'},{name:'城市留存率',val:72,color:'green'}],
+        edu:[{name:'重点学校数量',val:48,color:'blue'},{name:'高考竞争指数',val:19,color:'red'},{name:'985/211录取率',val:4,color:'purple'},{name:'教育资源评分',val:68,color:'green'}]
+    },
+    dg:{name:'东莞',pop:1053,avgAge:32,single:55,stayRate:70,immigrateRate:72,school:28,gaoKaoRank:20,
+        rent:[{name:'南城鸿福路',val:2200},{name:'东城万达',val:1800},{name:'莞城',val:1500},{name:'松山湖',val:2500},{name:'长安',val:1600}],
+        commute:[{name:'鸿福路→南城',time:25,cost:4},{name:'万达→东城',time:20,cost:3},{name:'莞城→莞城街道',time:15,cost:2},{name:'松山湖→松山湖',time:30,cost:4}],
+        cost:[{name:'午饭(工作日)',val:22},{name:'奶茶/咖啡',val:18},{name:'超市物价指数',val:90},{name:'理发',val:28},{name:'健身月卡',val:100}],
+        facility:[{name:'免费公园',val:65,icon:'🌳'},{name:'图书馆',val:8,icon:'📚'},{name:'博物馆',val:5,icon:'🏛️'},{name:'三甲医院',val:15,icon:'🏥'}],
+        heat:[[2,2,3,4,5,6,5,4,4,5,3,2],[4,3,5,6,7,6,5,6,7,6,5,4],[7,6,8,9,9,8,7,8,9,8,7,6],[3,2,4,5,6,5,4,5,6,5,4,3]],
+        compet:[{name:'互联网/科技',val:70,color:'yellow'},{name:'金融',val:58,color:'green'},{name:'体制内',val:55,color:'blue'},{name:'制造业',val:88,color:'red'},{name:'房地产',val:65,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:1053,color:'blue'},{name:'外来人口占比',val:72,color:'purple'},{name:'落户率',val:38,color:'teal'},{name:'城市留存率',val:70,color:'green'}],
+        edu:[{name:'重点学校数量',val:28,color:'blue'},{name:'高考竞争指数',val:20,color:'red'},{name:'985/211录取率',val:3,color:'purple'},{name:'教育资源评分',val:55,color:'yellow'}]
+    },
+    sy:{name:'沈阳',pop:914,avgAge:38,single:38,stayRate:82,immigrateRate:48,school:42,gaoKaoRank:7,
+        rent:[{name:'和平太原街',val:1800},{name:'沈河五爱',val:2000},{name:'皇姑北行',val:1600},{name:'铁西',val:1400},{name:'浑南',val:1500}],
+        commute:[{name:'太原街→和平',time:25,cost:3},{name:'五爱→沈河',time:20,cost:3},{name:'北行→皇姑',time:20,cost:3},{name:'浑南→浑南区',time:35,cost:4}],
+        cost:[{name:'午饭(工作日)',val:18},{name:'奶茶/咖啡',val:15},{name:'超市物价指数',val:85},{name:'理发',val:22},{name:'健身月卡',val:80}],
+        facility:[{name:'免费公园',val:72,icon:'🌳'},{name:'图书馆',val:12,icon:'📚'},{name:'博物馆',val:8,icon:'🏛️'},{name:'三甲医院',val:28,icon:'🏥'}],
+        heat:[[5,4,6,7,8,9,8,7,6,7,5,3],[3,2,4,5,6,5,4,5,6,5,4,3],[4,3,5,6,7,8,7,6,5,4,3,3],[4,3,5,6,7,6,5,6,7,6,5,4]],
+        compet:[{name:'互联网/科技',val:58,color:'green'},{name:'金融',val:62,color:'green'},{name:'体制内',val:72,color:'blue'},{name:'制造业',val:68,color:'yellow'},{name:'房地产',val:60,color:'green'}],
+        population:[{name:'常住人口(万)',val:914,color:'blue'},{name:'外来人口占比',val:48,color:'purple'},{name:'落户率',val:45,color:'teal'},{name:'城市留存率',val:82,color:'green'}],
+        edu:[{name:'重点学校数量',val:42,color:'blue'},{name:'高考竞争指数',val:7,color:'green'},{name:'985/211录取率',val:18,color:'purple'},{name:'教育资源评分',val:80,color:'green'}]
+    },
+    nb:{name:'宁波',pop:969,avgAge:35,single:42,stayRate:80,immigrateRate:65,school:32,gaoKaoRank:15,
+        rent:[{name:'鄞州南部',val:2800},{name:'海曙老城',val:2200},{name:'江北',val:2000},{name:'镇海',val:1600},{name:'北仑',val:1500}],
+        commute:[{name:'南部商务区→鄞州',time:25,cost:4},{name:'老城→海曙',time:20,cost:3},{name:'江北→江北区',time:20,cost:3},{name:'镇海→镇海区',time:30,cost:4}],
+        cost:[{name:'午饭(工作日)',val:28},{name:'奶茶/咖啡',val:24},{name:'超市物价指数',val:95},{name:'理发',val:35},{name:'健身月卡',val:130}],
+        facility:[{name:'免费公园',val:62,icon:'🌳'},{name:'图书馆',val:10,icon:'📚'},{name:'博物馆',val:6,icon:'🏛️'},{name:'三甲医院',val:18,icon:'🏥'}],
+        heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[5,4,6,7,8,7,6,7,8,7,6,5],[5,4,6,7,8,9,8,7,6,5,4,4],[4,3,5,6,7,6,5,6,7,6,5,4]],
+        compet:[{name:'互联网/科技',val:72,color:'yellow'},{name:'金融',val:70,color:'yellow'},{name:'体制内',val:65,color:'blue'},{name:'制造业',val:80,color:'red'},{name:'房地产',val:68,color:'yellow'}],
+        population:[{name:'常住人口(万)',val:969,color:'blue'},{name:'外来人口占比',val:65,color:'purple'},{name:'落户率',val:52,color:'teal'},{name:'城市留存率',val:80,color:'green'}],
+        edu:[{name:'重点学校数量',val:32,color:'blue'},{name:'高考竞争指数',val:15,color:'yellow'},{name:'985/211录取率',val:6,color:'purple'},{name:'教育资源评分',val:68,color:'green'}]
+    },
+    km:{name:'昆明',pop:868,avgAge:35,single:48,stayRate:78,immigrateRate:62,school:35,gaoKaoRank:21,
+        rent:[{name:'五华翠湖',val:1800},{name:'西山滇池',val:1600},{name:'官渡',val:1400},{name:'盘龙',val:1500},{name:'呈贡大学城',val:1000}],
+        commute:[{name:'翠湖→五华',time:20,cost:3},{name:'滇池→西山',time:30,cost:4},{name:'官渡→官渡区',time:25,cost:3},{name:'大学城→呈贡',time:35,cost:4}],
+        cost:[{name:'午饭(工作日)',val:15},{name:'奶茶/咖啡',val:14},{name:'超市物价指数',val:78},{name:'理发',val:20},{name:'健身月卡',val:70}],
+        facility:[{name:'免费公园',val:88,icon:'🌳'},{name:'图书馆',val:10,icon:'📚'},{name:'博物馆',val:6,icon:'🏛️'},{name:'三甲医院',val:18,icon:'🏥'}],
+        heat:[[3,2,4,5,6,7,6,5,4,5,3,2],[3,2,4,5,6,5,4,5,6,5,4,3],[4,3,5,6,7,8,7,6,5,4,3,3],[2,2,3,4,5,5,4,4,5,4,3,2]],
+        compet:[{name:'互联网/科技',val:55,color:'green'},{name:'金融',val:52,color:'green'},{name:'体制内',val:65,color:'blue'},{name:'制造业',val:52,color:'green'},{name:'房地产',val:58,color:'green'}],
+        population:[{name:'常住人口(万)',val:868,color:'blue'},{name:'外来人口占比',val:62,color:'purple'},{name:'落户率',val:48,color:'teal'},{name:'城市留存率',val:78,color:'green'}],
+        edu:[{name:'重点学校数量',val:35,color:'blue'},{name:'高考竞争指数',val:21,color:'red'},{name:'985/211录取率',val:3,color:'purple'},{name:'教育资源评分',val:62,color:'yellow'}]
     }
   };
 
