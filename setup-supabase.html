@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>一键设置 Supabase</title>
+  <style>
+    body { font-family: sans-serif; padding: 40px; max-width: 700px; margin: 0 auto; }
+    .success { color: green; }
+    .error { color: red; }
+    .info { color: blue; }
+    .step { margin: 20px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+    button { padding: 12px 24px; font-size: 16px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+    button:hover { background: #45a049; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    button.secondary { background: #2196F3; }
+    button.secondary:hover { background: #0b7dda; }
+    pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    textarea { width: 100%; height: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h1>🚀 Supabase 一键设置</h1>
+  
+  <div class="step">
+    <h3>方法一：如果你还没建表（推荐）</h3>
+    <p>复制下面的 SQL，去 Supabase 后台的 SQL Editor 里执行：</p>
+    <textarea id="sqlCode" readonly></textarea>
+    <button class="secondary" onclick="copySql()">📋 复制 SQL</button>
+    <a href="https://supabase.com/dashboard" target="_blank" style="display:inline-block; padding:12px 24px; background:#666; color:white; text-decoration:none; border-radius:5px; margin:5px;">
+      🔗 打开 Supabase 后台
+    </a>
+  </div>
+  
+  <div class="step">
+    <h3>方法二：表已建好？直接添加留言</h3>
+    <p>如果已经在 Supabase 后台建好表了，直接点击下面按钮：</p>
+    <button onclick="addDemoMessages()">✨ 一键添加 50 条留言</button>
+  </div>
+
+  <div id="result"></div>
+
+  <hr>
+  <p><a href="guestbook.html">← 返回留言板</a></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://fuejxbihvekyhmkrfjsb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const sqlToCreate = `
+create table guestbook (
+  id uuid default uuid_generate_v4() primary key,
+  name text not null,
+  city text,
+  mood text,
+  text text not null,
+  ts bigint not null,
+  likes integer default 0,
+  liked_by jsonb default '[]'::jsonb
+);
+
+alter table guestbook enable row level security;
+
+create policy "allow_read" on guestbook for select using (true);
+create policy "allow_insert" on guestbook for insert with check (true);
+create policy "allow_update" on guestbook for update using (true);
+`.trim();
+
+    document.getElementById('sqlCode').value = sqlToCreate;
+
+    function copySql() {
+      const textarea = document.getElementById('sqlCode');
+      textarea.select();
+      document.execCommand('copy');
+      alert('已复制！去 Supabase 后台粘贴运行即可');
+    }
+
+    const demo = [
+      { name:'来自杭州的小明', city:'杭州', mood:'🤩 超赞', text:'刚看完深圳职业图谱，数据真的太细了！互联网岗位的分布一目了然，对我选城市帮助很大 👍', likes:7 },
+      { name:'应届生小红', city:'武汉', mood:'🥺 迷茫', text:'毕业找工作真的好难，看了毕业生指南之后感觉思路清晰了很多，谢谢博主的整理！', likes:12 },
+      { name:'深漂三年老张', city:'深圳', mood:'😄 开心', text:'深圳确实是一座来了就不想走的城市，租金虽然贵但机会真的多，坚持住就好。', likes:5 },
+      { name:'理财新手', city:'上海', mood:'🔥 燃起来了', text:'城市房价地图做得很专业，34个城市的数据对比一目了然，收藏了反复研究！', likes:9 },
+      { name:'考虑去深圳的小周', city:'成都', mood:'🤔 思考中', text:'想问一下大家，互联网行业去深圳还是杭州更好啊？', likes:15 },
+      { name:'深圳程序员阿强', city:'深圳', mood:'😌 淡定', text:'@考虑去深圳的小周 我觉得看你具体做什么方向，深圳偏硬件和出海，杭州偏电商，各有优势', likes:22 },
+      { name:'准备考公的小李', city:'南京', mood:'😅 破防了', text:'看了房价地图，感觉深圳的房价真的让人窒息，还是准备回老家考公算了…', likes:8 },
+      { name:'乐观的阿花', city:'广州', mood:'😄 开心', text:'@准备考公的小李 广州其实也不错啊！房价是深圳的一半，美食还多~', likes:11 },
+      { name:'长沙人在深圳', city:'深圳', mood:'🤩 超赞', text:'长沙房价真的太友好了！有时候真想回去躺平，但深圳的工作机会又舍不得…', likes:18 },
+      { name:'纠结中', city:'重庆', mood:'🥺 迷茫', text:'有没有同样在纠结的朋友？一线城市机会多但压力大，新一线舒服但怕错过机会', likes:25 },
+    ];
+
+    async function addDemoMessages() {
+      const result = document.getElementById('result');
+      result.innerHTML = '<p class="info">正在添加...</p>';
+      
+      const now = Date.now();
+      const data = demo.map((d, i) => ({
+        name: d.name,
+        city: d.city,
+        mood: d.mood,
+        text: d.text,
+        ts: now - (i + 1) * 86400000 * 0.5,
+        likes: d.likes,
+        liked_by: []
+      }));
+      
+      try {
+        const { error } = await supabase.from('guestbook').insert(data);
+        
+        if (error) {
+          result.innerHTML = `
+            <p class="error"><b>❌ 失败！</b></p>
+            <p class="error">错误: ${error.message}</p>
+            <p class="info">是不是还没建表？用上面的"方法一"先建表！</p>
+          `;
+        } else {
+          result.innerHTML = `
+            <p class="success"><b>✅ 成功添加了 ${demo.length} 条留言！</b></p>
+            <p><a href="guestbook.html">🎉 去留言板看看 →</a></p>
+          `;
+        }
+      } catch (e) {
+        result.innerHTML = `<p class="error">异常: ${e}</p>`;
+      }
+    }
+    
+    // 页面加载时检查
+    async function checkStatus() {
+      try {
+        const { data, error } = await supabase.from('guestbook').select('*', { count: 'exact' }).limit(3);
+        const result = document.getElementById('result');
+        
+        if (!error && data) {
+          result.innerHTML = `<p class="info">✅ 表已存在！当前有 <b>${data.length}</b> 条留言</p>`;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    
+    checkStatus();
+  </script>
+</body>
+</html>
