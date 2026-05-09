@@ -35,56 +35,71 @@
 </script>
 <script src="nav.js" defer></script>
 <style>
+:root {
+  --primary: #00d4ff;
+  --primary-dark: #0099cc;
+  --accent: #ff6b35;
+  --accent2: #7c3aed;
+  --bg-dark: #050b1a;
+  --bg-card: #0d1b2e;
+  --bg-card2: #0f2342;
+  --text: #e8f0f8;
+  --text-muted: #7ba3c4;
+  --border: rgba(0, 212, 255, 0.15);
+  --glow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 body {
-  background: linear-gradient(180deg, #0a0f1a 0%, #0d1520 50%, #0a1018 100%);
-  color: #e8f0f8;
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
   min-height: 100vh;
   line-height: 1.6;
+  padding-top: 0;
 }
 
 /* Header */
 .header {
   text-align: center;
   padding: 60px 16px 40px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.25) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,100,200,0.15) 0%, transparent 60%);
 }
 .header h1 {
   font-size: clamp(26px, 6vw, 48px);
   font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 0%, #00e5ff 30%, #ff6b9d 70%, #a855f7 100%);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary) 60%, var(--accent2) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 10px;
-  text-shadow: 0 0 30px rgba(0,212,255,0.3);
+  background-clip: text;
 }
-.header p { color: #c8d8e8; font-size: clamp(14px, 2vw, 16px); font-weight: 500; }
+.header p { color: var(--text-muted); font-size: clamp(14px, 2vw, 16px); font-weight: 500; max-width: 600px; margin: 0 auto; line-height: 1.8; }
 
 /* Main Choices */
 .main-choices {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(192px, 1fr));
-  gap: 13px;
+  gap: 16px;
   margin-bottom: 20px;
 }
 .main-choice {
-  background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(168,85,247,0.1));
-  border: 2px solid rgba(0,212,255,0.3);
-  border-radius: 12px;
-  padding: 20px 13px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
 }
 .main-choice:hover {
-  border-color: #00d4ff;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0,212,255,0.2);
+  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
 }
 .main-choice.active {
-  border-color: #00d4ff;
+  border-color: var(--primary);
   background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(168,85,247,0.2));
 }
 .main-choice-icon {
@@ -105,18 +120,20 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  color: #00d4ff;
+  padding: 12px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--primary);
   cursor: pointer;
   margin-bottom: 20px;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  font-size: 14px;
 }
 .back-button:hover {
   background: rgba(0,212,255,0.1);
-  border-color: #00d4ff;
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .content-section {
   display: none;
@@ -130,40 +147,66 @@ body {
 .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
 /* Section */
-.section { padding: 40px 0; }
+.section { padding: 60px 0; }
+.section-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+.section-tag {
+  display: inline-block;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: var(--primary);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 .section-title {
-  font-size: clamp(18px, 3vw, 22px);
+  font-size: clamp(24px, 4vw, 36px);
   font-weight: 700;
-  margin-bottom: 6px;
+  color: #fff;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
 }
-.section-icon { font-size: clamp(22px, 4vw, 28px); }
-.section-desc { color: #7a8a9a; font-size: 14px; margin-bottom: 20px; }
+.section-icon { font-size: clamp(24px, 4vw, 32px); }
+.section-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
 
 /* City Tabs */
 .city-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
 .city-tab {
   padding: 10px 18px;
-  border-radius: 24px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.03);
-  color: #8ba3b8;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: rgba(0,212,255,0.08);
+  color: var(--primary);
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s;
 }
-.city-tab:hover { border-color: #00d4ff; color: #00d4ff; }
-.city-tab.active { background: #00d4ff; border-color: #00d4ff; color: #0a0f1a; font-weight: 600; }
+.city-tab:hover { border-color: var(--primary); background: rgba(0,212,255,0.15); }
+.city-tab.active { background: var(--primary); border-color: var(--primary); color: var(--bg-dark); font-weight: 600; }
 
 /* Card */
 .card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 16px;
+  transition: all 0.3s;
+}
+
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .card-title {
   font-size: 15px;
@@ -184,11 +227,17 @@ body {
   margin-bottom: 20px;
 }
 .stat-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
   text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .stat-num { font-size: clamp(18px, 3vw, 24px); font-weight: 800; color: #00d4ff; }
 .stat-label { font-size: 11px; color: #6a7a8a; margin-top: 3px; }
@@ -251,27 +300,27 @@ body {
 /* Country Grid */
 .country-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
 .country-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
   text-align: center;
 }
-.country-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
-.country-card.selected { border-color: #00d4ff; background: rgba(0,212,255,0.08); }
+.country-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--glow); }
+.country-card.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(168,85,247,0.15)); }
 .country-flag { font-size: 28px; margin-bottom: 6px; }
 .country-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
 .country-type { font-size: 11px; color: #6a7a8a; }
 
 /* Detail Panel */
 .detail-panel {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
-  padding: 20px;
-  margin-top: 16px;
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
   display: none;
 }
 .detail-panel.show { display: block; animation: fadeIn 0.3s ease; }
@@ -338,12 +387,18 @@ footer {
 .author-card {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(168,85,247,0.1));
-  border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 14px;
-  padding: 16px 24px;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 32px;
   margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+.author-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .author-avatar {
   width: 50px;
@@ -372,15 +427,22 @@ footer {
 .quick-compare {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 20px;
 }
 .compare-item {
-  background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(168,85,247,0.1));
-  border: 1px solid rgba(0,212,255,0.3);
-  border-radius: 12px;
-  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
   text-align: center;
+  transition: all 0.3s;
+}
+
+.compare-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
+  transform: translateY(-2px);
 }
 .compare-label {
   font-size: 11px;
@@ -397,13 +459,19 @@ footer {
 .visa-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 16px;
 }
 .visa-item {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.visa-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .visa-name {
   font-size: 14px;
@@ -499,13 +567,19 @@ footer {
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 16px;
 }
 .tool-item {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.tool-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .tool-name {
   font-size: 13px;
@@ -520,12 +594,18 @@ footer {
 }
 
 /* FAQ */
-.faq-list { display: flex; flex-direction: column; gap: 12px; }
+.faq-list { display: flex; flex-direction: column; gap: 16px; }
 .faq-item {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 10px;
-  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.faq-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .faq-q {
   font-size: 13px;
@@ -602,8 +682,11 @@ footer {
   <div class="content-section" id="domesticSection">
     <button class="back-button" onclick="goBack()">← 返回选择</button>
     <div class="section">
-      <div class="section-title"><span class="section-icon">🏙️</span> 国内城市选择指南</div>
-      <p class="section-desc">一线城市4个 + 新一线城市15个，共19城数据对比</p>
+      <div class="section-header">
+        <div class="section-tag">国内发展</div>
+        <div class="section-title"><span class="section-icon">🏙️</span> 国内城市选择指南</div>
+        <p class="section-desc">一线城市4个 + 新一线城市15个，共19城数据对比</p>
+      </div>
     
     <div class="city-tabs" id="cityTabs"></div>
     
@@ -699,8 +782,11 @@ footer {
   <div class="content-section" id="abroadSection">
     <button class="back-button" onclick="goBack()">← 返回选择</button>
     <div class="section">
-      <div class="section-title"><span class="section-icon">✈️</span> 出国留学 / 打工指南</div>
-      <p class="section-desc">签证类型 · 申请条件 · 费用明细 · 真实案例 · 性价比分析</p>
+      <div class="section-header">
+        <div class="section-tag">出国留学</div>
+        <div class="section-title"><span class="section-icon">✈️</span> 出国留学 / 打工指南</div>
+        <p class="section-desc">签证类型 · 申请条件 · 费用明细 · 真实案例 · 性价比分析</p>
+      </div>
     
     <!-- 快速对比卡片 -->
     <div class="quick-compare">
@@ -883,8 +969,11 @@ footer {
   <div class="content-section" id="wildSection">
     <button class="back-button" onclick="goBack()">← 返回选择</button>
     <div class="section">
-      <div class="section-title"><span class="section-icon">🔥</span> 野路子 - 没上大学也能成功</div>
-      <p class="section-desc">学历不代表一切 · 实用职业与生存指南</p>
+      <div class="section-header">
+        <div class="section-tag">野路子</div>
+        <div class="section-title"><span class="section-icon">🔥</span> 没上大学也能成功</div>
+        <p class="section-desc">学历不代表一切 · 实用职业与生存指南</p>
+      </div>
       
       <!-- 开篇鼓励 -->
       <div class="card">
