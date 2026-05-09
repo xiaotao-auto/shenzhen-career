@@ -116,6 +116,66 @@
 
       let successCount = 0;
       let failCount = 0;
+      
+      // 先测试一条，看看问题
+      log.innerHTML += `<div class="item"><b>第一步：先测试连接...</b></div>`;
+      try {
+        const testData = {
+          name: '测试用户',
+          city: '测试城市',
+          mood: '🤩 超赞',
+          text: '这是一条测试留言',
+          ts: Date.now(),
+          likes: 0,
+          liked_by: []
+        };
+        
+        log.innerHTML += `<div class="item">正在插入测试数据...</div>`;
+        const { error: testError } = await supabase.from('guestbook').insert(testData);
+        
+        if (testError) {
+          log.innerHTML += `<div class="item error"><b>❌ 测试失败！请先解决这个问题</b></div>`;
+          log.innerHTML += `<div class="item error">错误信息: ${JSON.stringify(testError, null, 2)}</div>`;
+          
+          if (testError.message.includes('does not exist')) {
+            log.innerHTML += `
+              <div style="margin-top: 20px; padding: 15px; background: #ffe; border: 1px solid #cc9;">
+                <h3>⚠️ 需要在 Supabase 后台创建表</h3>
+                <p>请在 Supabase 的 SQL Editor 中执行以下 SQL：</p>
+                <pre>
+create table guestbook (
+  id uuid default uuid_generate_v4() primary key,
+  name text not null,
+  city text,
+  mood text,
+  text text not null,
+  ts bigint not null,
+  likes integer default 0,
+  liked_by jsonb default '[]'::jsonb
+);
+
+alter table guestbook enable row level security;
+
+create policy "allow_read" on guestbook for select using (true);
+create policy "allow_insert" on guestbook for insert with check (true);
+create policy "allow_update" on guestbook for update using (true);
+                </pre>
+              </div>
+            `;
+          }
+          
+          btn.disabled = false;
+          btn.innerHTML = '重试';
+          return;
+        }
+        
+        log.innerHTML += `<div class="item success">✅ 测试成功！开始批量添加...</div>`;
+      } catch (e) {
+        log.innerHTML += `<div class="item error">测试异常: ${e}</div>`;
+        btn.disabled = false;
+        btn.innerHTML = '重试';
+        return;
+      }
 
       // 分批插入，每次5条
       for (let i = 0; i < dataToInsert.length; i += 5) {
