@@ -1105,8 +1105,32 @@ footer {
 <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <script>
+// 音效播放函数
+function playClickSound() {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  } catch(e) {
+    console.log('音频不支持');
+  }
+}
+
 // Main Choice Navigation
 function goBack() {
+  playClickSound();
   document.getElementById('mainChoices').style.display = 'grid';
   document.getElementById('domesticSection').classList.remove('show');
   document.getElementById('abroadSection').classList.remove('show');
@@ -1116,6 +1140,7 @@ function goBack() {
 }
 
 function showSection(choice) {
+  playClickSound();
   document.getElementById('mainChoices').style.display = 'none';
   document.querySelectorAll('.main-choice').forEach(c => {
     if (c.dataset.choice === choice) c.classList.add('active');
@@ -1146,6 +1171,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 野路子 - 技能型职业详情
 function showSkillDetail(skill) {
+  playClickSound();
   const data = {
     electrician: {
       name: '⚡ 电工',
@@ -1215,6 +1241,7 @@ function showSkillDetail(skill) {
 
 // 野路子 - 服务型职业详情
 function showServiceDetail(service) {
+  playClickSound();
   const data = {
     sales: {
       name: '📦 销售',
@@ -1268,6 +1295,7 @@ function showServiceDetail(service) {
 
 // 野路子 - 互联网新职业详情
 function showInternetDetail(job) {
+  playClickSound();
   const data = {
     livestream: {
       name: '🎥 直播/短视频',
@@ -1321,6 +1349,7 @@ function showInternetDetail(job) {
 
 // 野路子 - 小本创业详情
 function showBusinessDetail(business) {
+  playClickSound();
   const data = {
     stall: {
       name: '🥘 摆摊/小吃',
@@ -1633,6 +1662,7 @@ function showBusinessDetail(business) {
   }
 
   window.selectCity = function(key) {
+    playClickSound();
     currentCity = key;
     document.querySelectorAll('.city-tab').forEach(function(t) {
       t.classList.toggle('active', t.textContent === CITIES[key].name);
@@ -1761,6 +1791,7 @@ function showBusinessDetail(business) {
   }
 
   window.showCountryDetail = function(id) {
+    playClickSound();
     var c = COUNTRIES.find(function(x) { return x.id === id; });
     if (!c) return;
     document.querySelectorAll('.country-card').forEach(function(el) { el.classList.remove('selected'); });
