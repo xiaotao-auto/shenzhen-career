@@ -590,6 +590,11 @@ footer {
       <div class="main-choice-title">出国留学 / 打工</div>
       <div class="main-choice-desc">9国全面攻略 · 费用移民性价比对比</div>
     </div>
+    <div class="main-choice" data-choice="wild">
+      <div class="main-choice-icon">🔥</div>
+      <div class="main-choice-title">野路子</div>
+      <div class="main-choice-desc">没上大学也能成功 · 实用职业与生存指南</div>
+    </div>
   </div>
 
   <!-- Part 1: 国内城市 -->
@@ -872,6 +877,234 @@ footer {
     </div>
     </div>
   </div>
+
+  <!-- Part 3: 野路子 -->
+  <div class="content-section" id="wildSection">
+    <button class="back-button" onclick="goBack()">← 返回选择</button>
+    <div class="section">
+      <div class="section-title"><span class="section-icon">🔥</span> 野路子 - 没上大学也能成功</div>
+      <p class="section-desc">学历不代表一切 · 实用职业与生存指南</p>
+      
+      <!-- 开篇鼓励 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">💪</span> 开篇 - 你并不孤单</div>
+        <div style="background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(0,212,255,0.1)); padding: 20px; border-radius: 12px; margin-bottom: 15px;">
+          <p style="font-size: 16px; margin-bottom: 10px;"><strong>记住：</strong>这个社会真正看重的是能力，不是一纸文凭。</p>
+          <p style="color: #9ab; font-size: 14px;">很多成功的企业家、艺术家、技术大牛都没有大学文凭。你可以的！</p>
+        </div>
+        <div class="stats-grid" style="margin-top: 15px;">
+          <div class="stat-card">
+            <div class="stat-num" style="color: #22c55e;">80%</div>
+            <div class="stat-label">岗位不要求学历</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" style="color: #00d4ff;">∞</div>
+            <div class="stat-label">可能性无限</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" style="color: #a855f7;">3年</div>
+            <div class="stat-label">成为熟手</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第一类：技能型职业 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🛠️</span> 技能型职业 - 靠手艺吃饭</div>
+        <p style="color: #9ab; margin-bottom: 15px;">学一门技术，越老越吃香</p>
+        
+        <div class="country-grid" id="skillJobs">
+          <div class="country-card" onclick="showSkillDetail('electrician')">
+            <div class="country-flag">⚡</div>
+            <div class="country-name">电工</div>
+            <div class="country-type">月薪 6k-15k</div>
+          </div>
+          <div class="country-card" onclick="showSkillDetail('plumber')">
+            <div class="country-flag">🔧</div>
+            <div class="country-name">水暖/管道</div>
+            <div class="country-type">月薪 7k-18k</div>
+          </div>
+          <div class="country-card" onclick="showSkillDetail('carpenter')">
+            <div class="country-flag">🪵</div>
+            <div class="country-name">木工/装修</div>
+            <div class="country-type">月薪 8k-20k</div>
+          </div>
+          <div class="country-card" onclick="showSkillDetail('auto')">
+            <div class="country-flag">🚗</div>
+            <div class="country-name">汽车维修</div>
+            <div class="country-type">月薪 7k-25k</div>
+          </div>
+          <div class="country-card" onclick="showSkillDetail('cook')">
+            <div class="country-flag">🍳</div>
+            <div class="country-name">厨师/餐饮</div>
+            <div class="country-type">月薪 6k-30k</div>
+          </div>
+          <div class="country-card" onclick="showSkillDetail('hairdresser')">
+            <div class="country-flag">💇</div>
+            <div class="country-name">美发/美容</div>
+            <div class="country-type">月薪 5k-20k</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="skillDetail"></div>
+      </div>
+      
+      <!-- 第二类：服务型职业 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🤝</span> 服务型职业 - 积累人脉与经验</div>
+        <p style="color: #9ab; margin-bottom: 15px;">门槛低，但是可以学到很多东西</p>
+        
+        <div class="country-grid" id="serviceJobs">
+          <div class="country-card" onclick="showServiceDetail('sales')">
+            <div class="country-flag">📦</div>
+            <div class="country-name">销售</div>
+            <div class="country-type">底薪+提成 上不封顶</div>
+          </div>
+          <div class="country-card" onclick="showServiceDetail('property')">
+            <div class="country-flag">🏠</div>
+            <div class="country-name">房产中介</div>
+            <div class="country-type">成单就有高佣金</div>
+          </div>
+          <div class="country-card" onclick="showServiceDetail('logistics')">
+            <div class="country-flag">📦</div>
+            <div class="country-name">快递/物流</div>
+            <div class="country-type">辛苦但赚钱稳定</div>
+          </div>
+          <div class="country-card" onclick="showServiceDetail('driver')">
+            <div class="country-flag">🚕</div>
+            <div class="country-name">网约车/货车</div>
+            <div class="country-type">时间灵活 多劳多得</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="serviceDetail"></div>
+      </div>
+      
+      <!-- 第三类：互联网新职业 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">💻</span> 互联网新职业 - 时代的红利</div>
+        <p style="color: #9ab; margin-bottom: 15px;">网络让每个人都有机会</p>
+        
+        <div class="country-grid" id="internetJobs">
+          <div class="country-card" onclick="showInternetDetail('livestream')">
+            <div class="country-flag">🎥</div>
+            <div class="country-name">直播/短视频</div>
+            <div class="country-type">做得好收入惊人</div>
+          </div>
+          <div class="country-card" onclick="showInternetDetail('ecommerce')">
+            <div class="country-flag">🛒</div>
+            <div class="country-name">电商/拼多多</div>
+            <div class="country-type">低门槛创业机会</div>
+          </div>
+          <div class="country-card" onclick="showInternetDetail('design')">
+            <div class="country-flag">🎨</div>
+            <div class="country-name">美工/设计</div>
+            <div class="country-type">网上接单自由职业</div>
+          </div>
+          <div class="country-card" onclick="showInternetDetail('game')">
+            <div class="country-flag">🎮</div>
+            <div class="country-name">游戏代练/陪玩</div>
+            <div class="country-type">边玩边赚钱</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="internetDetail"></div>
+      </div>
+      
+      <!-- 第四类：小本创业 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🏪</span> 小本创业 - 给自己打工</div>
+        <p style="color: #9ab; margin-bottom: 15px;">风险可控，积累经验</p>
+        
+        <div class="country-grid" id="businessIdeas">
+          <div class="country-card" onclick="showBusinessDetail('stall')">
+            <div class="country-flag">🥘</div>
+            <div class="country-name">摆摊/小吃</div>
+            <div class="country-type">成本低 现金流好</div>
+          </div>
+          <div class="country-card" onclick="showBusinessDetail('store')">
+            <div class="country-flag">🏪</div>
+            <div class="country-name">社区小店</div>
+            <div class="country-type">稳定的长期生意</div>
+          </div>
+          <div class="country-card" onclick="showBusinessDetail('service')">
+            <div class="country-flag">🧹</div>
+            <div class="country-name">家政服务</div>
+            <div class="country-type">需求大 易上手</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="businessDetail"></div>
+      </div>
+      
+      <!-- 生存建议 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📚</span> 生存建议 - 少走弯路</div>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">第1年</div>
+            <div class="timeline-content"><strong>学本事：</strong>找一个能学到东西的工作，工资低一点没关系</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">第2-3年</div>
+            <div class="timeline-content"><strong>攒经验：</strong>成为这个领域的熟手，开始攒钱</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">3年后</div>
+            <div class="timeline-content"><strong>谋发展：</strong>要么成为师傅，要么自己单干</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 避坑指南 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">⚠️</span> 避坑指南 - 这些不要碰</div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-q">❌ 不要碰：传销/资金盘/刷单</div>
+            <div class="faq-a">都是骗局，只会让你血本无归</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">❌ 不要碰：高消费/超前消费</div>
+            <div class="faq-a">信用卡、网贷要慎用，存钱才是硬道理</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">❌ 不要碰：赌博/彩票</div>
+            <div class="faq-a">这是无底洞，只会让你越来越穷</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">✅ 要去做：学一门技能、攒钱、积累人脉</div>
+            <div class="faq-a">这些才是真正属于你的东西</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 真实故事 -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> 真实故事 - 他们的经历</div>
+        <div class="compare-table">
+          <div class="compare-row">
+            <span>🍜 小王，28岁，初中毕业</span>
+          </div>
+          <div class="compare-row" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <span style="color: #9ab;">在深圳摆摊卖煎饼果子，每天早上5点出摊，现在月入2万+，准备开店</span>
+          </div>
+          <div class="compare-row">
+            <span>🚗 小李，32岁，高中毕业</span>
+          </div>
+          <div class="compare-row" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <span style="color: #9ab;">开了一家汽车美容店，带了3个徒弟，旺季月入5万+</span>
+          </div>
+          <div class="compare-row">
+            <span>💄 小张，25岁，中专毕业</span>
+          </div>
+          <div class="compare-row">
+            <span style="color: #9ab;">做美妆直播，现在粉丝50万+，自己创立了小品牌</span>
+          </div>
+        </div>
+        <div class="detail-success" style="margin-top: 15px;">
+          💡 记住：行动比想法更重要。先开始，再完美！
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Footer -->
@@ -903,6 +1136,7 @@ function goBack() {
   document.getElementById('mainChoices').style.display = 'grid';
   document.getElementById('domesticSection').classList.remove('show');
   document.getElementById('abroadSection').classList.remove('show');
+  document.getElementById('wildSection').classList.remove('show');
   document.querySelectorAll('.main-choice').forEach(c => c.classList.remove('active'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -913,12 +1147,16 @@ function showSection(choice) {
     if (c.dataset.choice === choice) c.classList.add('active');
   });
   
+  document.getElementById('domesticSection').classList.remove('show');
+  document.getElementById('abroadSection').classList.remove('show');
+  document.getElementById('wildSection').classList.remove('show');
+  
   if (choice === 'domestic') {
     document.getElementById('domesticSection').classList.add('show');
-    document.getElementById('abroadSection').classList.remove('show');
-  } else {
+  } else if (choice === 'abroad') {
     document.getElementById('abroadSection').classList.add('show');
-    document.getElementById('domesticSection').classList.remove('show');
+  } else {
+    document.getElementById('wildSection').classList.add('show');
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -931,6 +1169,226 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// 野路子 - 技能型职业详情
+function showSkillDetail(skill) {
+  const data = {
+    electrician: {
+      name: '⚡ 电工',
+      salary: '6k-15k',
+      pros: '需求稳定，越老越吃香，工作时间相对自由，接私单收入高',
+      cons: '需要考证，有一定危险性，工作环境有时比较差',
+      steps: ['考低压电工证（1-2个月）', '找师傅带或装修公司做学徒', '积累经验后可以接装修/维修私单', '可以考高压证，收入更高'],
+      tips: '建议先从装修电工做起，门槛低，需求大。积累3年经验后，月入过万不难'
+    },
+    plumber: {
+      name: '🔧 水暖/管道',
+      salary: '7k-18k',
+      pros: '家家户户都需要，上门服务费用高，工作时间自由',
+      cons: '工作环境有时比较脏，需要体力',
+      steps: ['找装修公司或物业做学徒', '学习水电安装维修', '积累客户资源，自己接活'],
+      tips: '和装修公司合作，活会很多。熟手一天能赚500-1000'
+    },
+    carpenter: {
+      name: '🪵 木工/装修',
+      salary: '8k-20k',
+      pros: '收入高，装修旺季忙不过来，可自己包工',
+      cons: '工作辛苦，灰尘大，需要学习时间',
+      steps: ['找装修队做学徒（包吃住）', '学习1-2年成为师傅', '自己包工或开装修公司'],
+      tips: '现在定制家具很火，学这个方向更好。木工师傅一天300-800很正常'
+    },
+    auto: {
+      name: '🚗 汽车维修',
+      salary: '7k-25k',
+      pros: '汽车越来越多，生意不愁，以后可以自己开店',
+      cons: '工作环境比较脏，需要长期学习',
+      steps: ['去汽修店做学徒', '学习2-3年成为师傅', '积累经验和客户后自己开店'],
+      tips: '汽车美容、快修快保是很好的方向，比大修更赚钱也更轻松'
+    },
+    cook: {
+      name: '🍳 厨师/餐饮',
+      salary: '6k-30k',
+      pros: '包吃住，积累经验后可自己开店，美食永远有市场',
+      cons: '工作时间长，比较辛苦，周末节假日更忙',
+      steps: ['去餐馆做打荷/切配', '跟着师傅学炒菜', '成为主厨或自己开小店'],
+      tips: '学做特色小吃，比如烧烤、小龙虾、煎饼等，小本创业好选择'
+    },
+    hairdresser: {
+      name: '💇 美发/美容',
+      salary: '5k-20k',
+      pros: '工作环境干净，学会后可以自己开个小店',
+      cons: '学习时间较长，需要审美能力',
+      steps: ['去美发店做学徒', '学习烫染剪发技术', '积累客源后自己开店'],
+      tips: '女士发型、接发、烫染更赚钱。积累老客户很重要'
+    }
+  };
+  
+  const d = data[skill];
+  document.getElementById('skillDetail').innerHTML = `
+    <h3>${d.name}</h3>
+    <div class="detail-info detail-pros">✅ 优点：${d.pros}</div>
+    <div class="detail-info detail-cons">❌ 缺点：${d.cons}</div>
+    <div class="detail-steps">
+      <div class="detail-steps-title">怎么做：</div>
+      <ul class="step-list">
+        ${d.steps.map((s, i) => `<li class="step-item"><span class="step-num">${i+1}</span>${s}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="detail-success">💡 ${d.tips}</div>
+  `;
+  document.getElementById('skillDetail').classList.add('show');
+}
+
+// 野路子 - 服务型职业详情
+function showServiceDetail(service) {
+  const data = {
+    sales: {
+      name: '📦 销售',
+      salary: '底薪+提成 上不封顶',
+      pros: '门槛低，做得好收入很高，锻炼人，可以积累人脉',
+      cons: '压力大，需要脸皮厚，不稳定',
+      steps: ['选择一个行业（房产、汽车、贷款、保险等）', '从基层销售做起', '学习话术和沟通技巧', '积累客户资源'],
+      tips: '选择高佣金的行业，比如房产、汽车。销售是最容易白手起家的职业之一'
+    },
+    property: {
+      name: '🏠 房产中介',
+      salary: '成单就有高佣金',
+      pros: '收入无上限，接触各行业人，学会了可自己开店',
+      cons: '前期难开单，需要时间积累，工作时间长',
+      steps: ['去中介公司上班', '学习房源和客户沟通', '多带看，争取开单', '积累经验和资源'],
+      tips: '选择住宅或商铺租赁，成交更快。一个月租单提成可能几千上万'
+    },
+    logistics: {
+      name: '📦 快递/物流',
+      salary: '辛苦但赚钱稳定',
+      pros: '工作好找，包吃住的多，收入稳定，不需要经验',
+      cons: '辛苦，风吹日晒，工作时间长',
+      steps: ['去顺丰/京东/三通一达应聘', '熟悉片区后，快递员收入会提高', '可以转做站点管理或自己承包片区'],
+      tips: '顺丰京东待遇好一些。熟悉片区后，一个月8k-12k很正常'
+    },
+    driver: {
+      name: '🚕 网约车/货车',
+      salary: '时间灵活 多劳多得',
+      pros: '时间自由，有车就能做，不想做了随时可以停',
+      cons: '久坐伤身，长期开车对腰不好，竞争激烈',
+      steps: ['跑滴滴/高德/花小猪', '或者找货源跑货运', '积累经验和技巧后收入会提高'],
+      tips: '在一二线城市跑网约车，勤奋点一个月8k-15k。货运可以考虑货拉拉'
+    }
+  };
+  
+  const d = data[service];
+  document.getElementById('serviceDetail').innerHTML = `
+    <h3>${d.name}</h3>
+    <div class="detail-info detail-pros">✅ 优点：${d.pros}</div>
+    <div class="detail-info detail-cons">❌ 缺点：${d.cons}</div>
+    <div class="detail-steps">
+      <div class="detail-steps-title">怎么做：</div>
+      <ul class="step-list">
+        ${d.steps.map((s, i) => `<li class="step-item"><span class="step-num">${i+1}</span>${s}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="detail-success">💡 ${d.tips}</div>
+  `;
+  document.getElementById('serviceDetail').classList.add('show');
+}
+
+// 野路子 - 互联网新职业详情
+function showInternetDetail(job) {
+  const data = {
+    livestream: {
+      name: '🎥 直播/短视频',
+      salary: '做得好收入惊人',
+      pros: '门槛极低，手机就能做，做好了收入无上限',
+      cons: '成功概率低，需要坚持，初期可能没收入',
+      steps: ['确定自己的方向（搞笑、美食、才艺、游戏等）', '每天更新作品，坚持3个月', '积累粉丝后开直播或带货', '变现方式：打赏、带货、广告'],
+      tips: '不要想着一夜成名。先拍100条视频再说。农村/工厂/真实生活题材现在很火'
+    },
+    ecommerce: {
+      name: '🛒 电商/拼多多',
+      salary: '低门槛创业机会',
+      pros: '开网店成本低，在家就能做，可以做无货源',
+      cons: '需要学习运营，竞争激烈，可能会亏',
+      steps: ['在拼多多/淘宝/抖音小店开店', '学习选品和运营', '可以先做一件代发，风险低', '做起来后扩大规模'],
+      tips: '拼多多现在对新手友好，从低价小商品做起。多学习，多测试'
+    },
+    design: {
+      name: '🎨 美工/设计',
+      salary: '网上接单自由职业',
+      pros: '在家就能做，自由职业，接单平台多',
+      cons: '需要学习设计软件，审美很重要',
+      steps: ['自学PS/AI（B站有教程）', '在淘宝/猪八戒/花瓣接单', '作品多了可以提价', '可以做平面设计或短视频剪辑'],
+      tips: '现在短视频剪辑需求很大，比平面设计更容易接单。学习2-3个月就能接单'
+    },
+    game: {
+      name: '🎮 游戏代练/陪玩',
+      salary: '边玩边赚钱',
+      pros: '边玩边赚钱，适合喜欢游戏的人',
+      cons: '伤身体，不长久，收入不稳定',
+      steps: ['在比心/代练通等平台接单', '技术好可以当代练，声音好可以做陪玩', '也可以做游戏直播'],
+      tips: '这是青春饭，建议作为过渡，同时学个其他技能'
+    }
+  };
+  
+  const d = data[job];
+  document.getElementById('internetDetail').innerHTML = `
+    <h3>${d.name}</h3>
+    <div class="detail-info detail-pros">✅ 优点：${d.pros}</div>
+    <div class="detail-info detail-cons">❌ 缺点：${d.cons}</div>
+    <div class="detail-steps">
+      <div class="detail-steps-title">怎么做：</div>
+      <ul class="step-list">
+        ${d.steps.map((s, i) => `<li class="step-item"><span class="step-num">${i+1}</span>${s}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="detail-success">💡 ${d.tips}</div>
+  `;
+  document.getElementById('internetDetail').classList.add('show');
+}
+
+// 野路子 - 小本创业详情
+function showBusinessDetail(business) {
+  const data = {
+    stall: {
+      name: '🥘 摆摊/小吃',
+      salary: '成本低 现金流好',
+      pros: '成本低，几千块就能起步，现金流好，利润高',
+      cons: '辛苦，早起晚归，可能会被城管赶',
+      steps: ['选品：煎饼果子、烧烤、卤味、早餐等', '学技术（加盟或找师傅学）', '在工业区、学校、商场附近摆摊', '生意好后可以开店'],
+      tips: '选品很重要！早餐、夜宵最稳。一个摊位做得好月入2万+很正常'
+    },
+    store: {
+      name: '🏪 社区小店',
+      salary: '稳定的长期生意',
+      pros: '稳定，客户都是周边的，越做越轻松',
+      cons: '需要一定投资，好的店铺租金贵',
+      steps: ['选择方向：水果店、便利店、干洗店、生鲜店等', '找好位置（大型社区门口）', '用心经营，积累老客户', '慢慢扩大规模'],
+      tips: '社区生意，口碑最重要。生鲜店现在是趋势，线上线下结合'
+    },
+    service: {
+      name: '🧹 家政服务',
+      salary: '需求大 易上手',
+      pros: '需求巨大，投入少，做起来后可以雇人做',
+      cons: '刚开始需要自己干，比较辛苦',
+      steps: ['从保洁/家电清洗/搬家开始做', '做好服务，积累老客户', '注册个小家政公司，雇人做', '业务多了就轻松了'],
+      tips: '家电清洗、除甲醛利润更高。和小区物业合作，业务源源不断'
+    }
+  };
+  
+  const d = data[business];
+  document.getElementById('businessDetail').innerHTML = `
+    <h3>${d.name}</h3>
+    <div class="detail-info detail-pros">✅ 优点：${d.pros}</div>
+    <div class="detail-info detail-cons">❌ 缺点：${d.cons}</div>
+    <div class="detail-steps">
+      <div class="detail-steps-title">怎么做：</div>
+      <ul class="step-list">
+        ${d.steps.map((s, i) => `<li class="step-item"><span class="step-num">${i+1}</span>${s}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="detail-success">💡 ${d.tips}</div>
+  `;
+  document.getElementById('businessDetail').classList.add('show');
+}
 
 (function() {
   var CITIES = {
