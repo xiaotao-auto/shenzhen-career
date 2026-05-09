@@ -7,14 +7,28 @@
 <meta name="description" content="全国一二线城市房价可视化分析，含GDP房价比、城市转型、消费指数、全球对比">
 <script src="../nav.js" defer></script>
 <style>
+:root {
+  --primary: #00d4ff;
+  --primary-dark: #0099cc;
+  --accent: #ff6b35;
+  --accent2: #7c3aed;
+  --bg-dark: #050b1a;
+  --bg-card: #0d1b2e;
+  --bg-card2: #0f2342;
+  --text: #e8f0f8;
+  --text-muted: #7ba3c4;
+  --border: rgba(0, 212, 255, 0.15);
+  --glow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 body {
-  background: linear-gradient(180deg, #0a0f1a 0%, #0d1520 100%);
-  color: #e8f0f8;
-  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
   min-height: 100vh;
   line-height: 1.6;
+  padding-top: 0;
 }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
@@ -22,39 +36,61 @@ body {
 .hero {
   text-align: center;
   padding: 60px 16px 30px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.1) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,100,200,0.15) 0%, transparent 60%);
 }
 .hero h1 {
   font-size: clamp(24px, 6vw, 42px);
   font-weight: 800;
-  background: linear-gradient(135deg, #fff 0%, #00d4ff 50%, #a855f7 100%);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary) 60%, var(--accent2) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
+  background-clip: text;
 }
-.hero p { color: #8ba3c4; font-size: 14px; }
+.hero p { color: var(--text-muted); font-size: 14px; max-width: 600px; margin: 0 auto; line-height: 1.8; }
 
 /* Section */
-.section { padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.section { padding: 60px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .section:last-child { border-bottom: none; }
+.section-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+.section-tag {
+  display: inline-block;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: var(--primary);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 .section-title {
-  font-size: clamp(16px, 3vw, 20px);
+  font-size: clamp(24px, 4vw, 36px);
   font-weight: 700;
-  margin-bottom: 16px;
+  color: #fff;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
 }
-.section-icon { font-size: 22px; }
-.section-desc { color: #6a7a8a; font-size: 13px; margin-bottom: 16px; }
+.section-icon { font-size: clamp(24px, 4vw, 32px); }
+.section-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
 
 /* China Map */
 .china-map-container {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
+  transition: all 0.3s;
 }
+.china-map-container:hover { border-color: var(--primary); box-shadow: var(--glow); }
 .map-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; text-align: center; }
 .china-map { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 700px; margin: 0 auto; }
 .map-cell {
@@ -88,10 +124,10 @@ body {
 
 /* Detail Panel */
 .detail-panel {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 20px;
+  padding: 24px;
   margin-top: 20px;
   display: none;
 }
@@ -107,26 +143,29 @@ body {
 /* Detail Metrics Grid */
 .detail-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; margin-bottom: 16px; }
 .detail-metric { 
-  background: rgba(255,255,255,0.03); 
-  border-radius: 10px; 
-  padding: 12px 8px; 
+  background: var(--bg-card); 
+  border: 1px solid var(--border);
+  border-radius: 16px; 
+  padding: 20px 12px; 
   text-align: center;
+  transition: all 0.3s;
 }
-.detail-metric-val { font-size: 16px; font-weight: 700; color: #00d4ff; }
-.detail-metric-label { font-size: 10px; color: #6a7a8a; margin-top: 2px; }
+.detail-metric:hover { border-color: var(--primary); box-shadow: var(--glow); }
+.detail-metric-val { font-size: 16px; font-weight: 700; color: var(--primary); }
+.detail-metric-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 
 /* Mini Bar Chart in Detail */
 .mini-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
 .mini-bar-item { display: flex; align-items: center; gap: 10px; font-size: 12px; }
-.mini-bar-label { width: 60px; color: #9aafc4; text-align: right; flex-shrink: 0; }
+.mini-bar-label { width: 60px; color: var(--text-muted); text-align: right; flex-shrink: 0; }
 .mini-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
 .mini-bar-fill { height: 100%; border-radius: 4px; }
 .mini-bar-fill.red { background: linear-gradient(90deg, #f87171, #ef4444); }
 .mini-bar-fill.green { background: linear-gradient(90deg, #4ade80, #22c55e); }
 .mini-bar-fill.yellow { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
-.mini-bar-fill.blue { background: linear-gradient(90deg, #00d4ff, #0099cc); }
+.mini-bar-fill.blue { background: linear-gradient(90deg, var(--primary), var(--primary-dark)); }
 .mini-bar-fill.purple { background: linear-gradient(90deg, #c084fc, #a855f7); }
-.mini-bar-val { width: 45px; font-weight: 600; color: #00d4ff; text-align: left; }
+.mini-bar-val { width: 45px; font-weight: 600; color: var(--primary); text-align: left; }
 
 /* Detail Tags */
 .detail-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
@@ -137,11 +176,13 @@ body {
 
 /* Story Timeline */
 .detail-story { 
-  background: rgba(255,255,255,0.02); 
-  border-radius: 12px; 
-  padding: 16px;
-  border: 1px solid rgba(255,255,255,0.05);
+  background: var(--bg-card); 
+  border: 1px solid var(--border);
+  border-radius: 16px; 
+  padding: 20px;
+  transition: all 0.3s;
 }
+.detail-story:hover { border-color: var(--primary); box-shadow: var(--glow); }
 .story-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: #fff; }
 .timeline { position: relative; padding-left: 24px; }
 .timeline::before {
@@ -151,7 +192,7 @@ body {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(180deg, #00d4ff, #a855f7);
+  background: linear-gradient(180deg, var(--primary), #a855f7);
 }
 .timeline-item { position: relative; margin-bottom: 12px; }
 .timeline-item:last-child { margin-bottom: 0; }
@@ -163,75 +204,86 @@ body {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #00d4ff;
+  background: var(--primary);
   border: 2px solid #0a0f1a;
 }
-.timeline-year { font-size: 12px; font-weight: 700; color: #00d4ff; margin-bottom: 2px; }
-.timeline-text { font-size: 12px; color: #9aafc4; line-height: 1.4; }
+.timeline-year { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+.timeline-text { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
 /* Cost Cards in Detail */
 .detail-cost { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
 .cost-item {
-  background: rgba(255,255,255,0.03);
-  border-radius: 8px;
-  padding: 10px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 12px;
   text-align: center;
+  transition: all 0.3s;
 }
+.cost-item:hover { border-color: var(--primary); box-shadow: var(--glow); }
 .cost-icon { font-size: 18px; margin-bottom: 4px; }
-.cost-val { font-size: 14px; font-weight: 600; color: #00d4ff; }
-.cost-label { font-size: 10px; color: #6a7a8a; margin-top: 2px; }
+.cost-val { font-size: 14px; font-weight: 600; color: var(--primary); }
+.cost-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 
 /* Card */
 .card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 20px;
+  padding: 24px;
   margin-bottom: 16px;
+  transition: all 0.3s;
 }
-.card-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; color: #fff; display: flex; align-items: center; gap: 8px; }
-.card-title .icon { font-size: 16px; }
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
+}
+.card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: #fff; display: flex; align-items: center; gap: 8px; }
+.card-title .icon { font-size: 18px; }
 
 /* Bar Chart */
 .bar-chart { display: flex; flex-direction: column; gap: 12px; }
 .bar-item { }
-.bar-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
-.bar-name { color: #9aafc4; display: flex; align-items: center; gap: 6px; }
-.bar-value { color: #00d4ff; font-weight: 600; }
+.bar-header { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+.bar-name { color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.bar-value { color: var(--primary); font-weight: 600; }
 .bar-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
 .bar-fill.red { background: linear-gradient(90deg, #f87171, #ef4444); }
 .bar-fill.yellow { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
 .bar-fill.green { background: linear-gradient(90deg, #4ade80, #22c55e); }
-.bar-fill.blue { background: linear-gradient(90deg, #00d4ff, #0099cc); }
+.bar-fill.blue { background: linear-gradient(90deg, var(--primary), var(--primary-dark)); }
 .bar-fill.purple { background: linear-gradient(90deg, #c084fc, #a855f7); }
 
 /* Global Map */
 .global-map-container {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
+  transition: all 0.3s;
 }
+.global-map-container:hover { border-color: var(--primary); box-shadow: var(--glow); }
 .world-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 800px; margin: 0 auto; }
 .world-cell {
-  background: rgba(255,255,255,0.03);
-  border-radius: 10px;
-  padding: 12px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 16px;
   text-align: center;
-  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s;
 }
+.world-cell:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: var(--glow); }
 .world-cell.china { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.05); }
 .world-cell.asia { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.05); }
 .world-cell.europe { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.05); }
 .world-cell.america { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.05); }
-.world-cell:hover { transform: translateY(-2px); }
-.world-flag { font-size: 24px; margin-bottom: 4px; }
-.world-city { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-.world-country { font-size: 10px; color: #6a7a8a; margin-bottom: 8px; }
-.world-stat { display: flex; justify-content: space-between; font-size: 10px; padding: 2px 0; }
-.world-stat-label { color: #6a7a8a; }
-.world-stat-val { color: #00d4ff; font-weight: 500; }
+.world-flag { font-size: 28px; margin-bottom: 8px; }
+.world-city { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.world-country { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.world-stat { display: flex; justify-content: space-between; font-size: 11px; padding: 2px 0; }
+.world-stat-label { color: var(--text-muted); }
+.world-stat-val { color: var(--primary); font-weight: 500; }
 .world-stat-val.danger { color: #f87171; }
 .world-stat-val.warning { color: #fbbf24; }
 .world-stat-val.good { color: #4ade80; }
@@ -250,31 +302,37 @@ footer {
 .author-card {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(168,85,247,0.1));
-  border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 14px;
-  padding: 16px 24px;
+  gap: 11.2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 11.2px;
+  padding: 16.8px 22.4px;
   margin-bottom: 20px;
+  transition: all 0.3s;
+}
+.author-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
 }
 .author-avatar {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00d4ff, #a855f7);
+  background: linear-gradient(135deg, var(--primary), #a855f7);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 700;
   color: #0a0f1a;
   flex-shrink: 0;
 }
 .author-info { text-align: left; }
-.author-name { font-size: 16px; font-weight: 700; color: #e8f0f8; }
-.author-email { font-size: 13px; color: #00d4ff; margin-top: 2px; }
+.author-name { font-size: 11.2px; font-weight: 700; color: #e8f0f8; }
+.author-email { font-size: 9.1px; color: var(--primary); margin-top: 1.4px; }
+.author-email:hover { text-decoration: underline; }
 .footer-stats { font-size: 12px; color: #6a7a8a; margin-top: 12px; }
-.footer-stats span { color: #00d4ff; font-weight: 600; }
+.footer-stats span { color: var(--primary); font-weight: 600; }
 .footer-note { font-size: 11px; color: #4a5a6a; margin-top: 16px; line-height: 1.6; }
 
 /* Responsive */
@@ -308,6 +366,12 @@ footer {
 
   <!-- China Map -->
   <div class="section">
+    <div class="section-header">
+      <div class="section-tag">房价地图</div>
+      <div class="section-title"><span class="section-icon">🏠</span> 中国城市房价分布</div>
+      <p class="section-desc">点击城市查看详情 · 房价收入比 · GDP占比 · 消费指数</p>
+    </div>
+    
     <div class="china-map-container">
       <div class="map-title">🏠 中国城市房价分布（点击查看详情）</div>
       <div class="china-map" id="chinaMap"></div>
@@ -324,7 +388,11 @@ footer {
 
   <!-- Rankings -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">📊</span> 房价排行榜</div>
+    <div class="section-header">
+      <div class="section-tag">数据排行</div>
+      <div class="section-title"><span class="section-icon">📊</span> 房价排行榜</div>
+      <p class="section-desc">全面分析各城市房价、收入、购买力等关键指标</p>
+    </div>
     
     <div class="card">
       <div class="card-title">💰 城市房价排行 TOP 10（元/㎡）</div>
@@ -349,7 +417,11 @@ footer {
 
   <!-- Global Comparison -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">🌍</span> 全球城市对比</div>
+    <div class="section-header">
+      <div class="section-tag">全球对比</div>
+      <div class="section-title"><span class="section-icon">🌍</span> 全球城市对比</div>
+      <p class="section-desc">看看世界主要城市的房价和收入水平</p>
+    </div>
     
     <div class="global-map-container">
       <div class="world-grid" id="worldGrid"></div>
