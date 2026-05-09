@@ -281,9 +281,6 @@
         <button class="sort-btn active" id="sort-new" onclick="setSort('new')">最新</button>
         <button class="sort-btn" id="sort-hot" onclick="setSort('hot')">最热</button>
       </div>
-      <button class="sort-btn" onclick="exportData()" title="导出留言备份">📤</button>
-      <button class="sort-btn" onclick="document.getElementById('import-file').click()" title="从文件导入留言">📥</button>
-      <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
     </div>
   </div>
 
@@ -616,56 +613,7 @@ function showToast(msg, isErr = false) {
   window._toastTimer = setTimeout(() => { t.className = ''; }, 2600);
 }
 
-/* ── 导出/导入功能 ── */
-function exportData() {
-  const data = localStorage.getItem(STORAGE_KEY) || '[]';
-  const blob = new Blob([data], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'guestbook-backup.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('导出成功！');
-}
 
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (!Array.isArray(data)) throw new Error('格式错误');
-      
-      // 提示用户确认
-      if (confirm(`确定要导入 ${data.length} 条留言吗？这会添加到现有留言中。`)) {
-        for (const msg of data) {
-          // 防止重复导入
-          const { count } = await supabase.from('guestbook').select('*', { count: 'exact' }).eq('id', msg.id);
-          if (count === 0) {
-            await supabase.from('guestbook').insert({
-              name: msg.name,
-              city: msg.city,
-              mood: msg.mood,
-              text: msg.text,
-              ts: msg.ts,
-              likes: msg.likes || 0,
-              liked_by: msg.likedBy || []
-            });
-          }
-        }
-        await renderAll();
-        showToast('导入成功！');
-      }
-    } catch (err) {
-      showToast('导入失败，请检查文件格式', true);
-    }
-    event.target.value = '';
-  };
-  reader.readAsText(file);
-}
 
 /* ── 预置几条示例留言（首次访问） ── */
 async function seedDemo() {
