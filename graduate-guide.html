@@ -303,6 +303,177 @@ footer {
 .footer-note a { color: #00d4ff; text-decoration: none; }
 .footer-note a:hover { text-decoration: underline; }
 
+/* 快速对比 */
+.quick-compare {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.compare-item {
+  background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(168,85,247,0.1));
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+.compare-label {
+  font-size: 11px;
+  color: #6a7a8a;
+  margin-bottom: 6px;
+}
+.compare-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #00d4ff;
+}
+
+/* 签证网格 */
+.visa-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.visa-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 14px;
+}
+.visa-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e8f0f8;
+  margin-bottom: 6px;
+}
+.visa-desc {
+  font-size: 12px;
+  color: #8a9aaa;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.visa-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.visa-tags span {
+  background: rgba(0,212,255,0.15);
+  color: #00d4ff;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+/* 综合对比表 */
+.compare-table {
+  font-size: 12px;
+  overflow-x: auto;
+}
+.compare-header, .compare-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 1.5fr;
+  gap: 8px;
+  padding: 10px 12px;
+  align-items: center;
+}
+.compare-header {
+  background: rgba(0,212,255,0.1);
+  color: #00d4ff;
+  font-weight: 700;
+  border-radius: 8px 8px 0 0;
+}
+.compare-row {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: #c8d8e8;
+}
+.compare-row:hover { background: rgba(0,212,255,0.05); }
+.compare-row .star { color: #ffd700; }
+
+/* 时间线 */
+.timeline {
+  position: relative;
+  padding-left: 24px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #00d4ff, #a855f7);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 16px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -21px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  background: #00d4ff;
+  border-radius: 50%;
+  border: 2px solid #0a1628;
+}
+.timeline-date {
+  font-size: 12px;
+  font-weight: 700;
+  color: #00d4ff;
+  margin-bottom: 4px;
+}
+.timeline-content {
+  font-size: 13px;
+  color: #a8b8c8;
+}
+
+/* 实用工具 */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.tool-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px;
+}
+.tool-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8f0f8;
+  margin-bottom: 6px;
+}
+.tool-list {
+  font-size: 11px;
+  color: #8a9aaa;
+  line-height: 1.6;
+}
+
+/* FAQ */
+.faq-list { display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 14px;
+}
+.faq-q {
+  font-size: 13px;
+  font-weight: 700;
+  color: #00d4ff;
+  margin-bottom: 8px;
+}
+.faq-a {
+  font-size: 12px;
+  color: #a8b8c8;
+  line-height: 1.6;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .header { padding: 50px 12px 30px; }
@@ -312,6 +483,12 @@ footer {
   .city-tab { padding: 8px 14px; font-size: 13px; }
   .country-grid { grid-template-columns: repeat(3, 1fr); }
   .donut-wrapper { justify-content: center; }
+  .quick-compare { grid-template-columns: repeat(2, 1fr); }
+  .visa-grid { grid-template-columns: 1fr; }
+  .compare-header, .compare-row { grid-template-columns: 1.5fr 1fr 1fr 1fr; font-size: 11px; }
+  .compare-header span:nth-child(5), .compare-row span:nth-child(5),
+  .compare-header span:nth-child(6), .compare-row span:nth-child(6) { display: none; }
+  .tools-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .header h1 { font-size: 24px; }
@@ -320,6 +497,11 @@ footer {
   .country-grid { grid-template-columns: repeat(2, 1fr); }
   .donut-chart { width: 100px; height: 100px; }
   .heatmap { grid-template-columns: 50px repeat(12, 1fr); }
+  .quick-compare { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .compare-header, .compare-row { grid-template-columns: 1.5fr 1fr 1fr; }
+  .compare-header span:nth-child(4), .compare-row span:nth-child(4),
+  .compare-header span:nth-child(5), .compare-row span:nth-child(5),
+  .compare-header span:nth-child(6), .compare-row span:nth-child(6) { display: none; }
 }
 </style>
 </head>
@@ -429,17 +611,146 @@ footer {
   <!-- Part 2: 出国 -->
   <div class="section">
     <div class="section-title"><span class="section-icon">✈️</span> 出国留学 / 打工指南</div>
-    <p class="section-desc">全球人口流向、申请条件、成本估算、真实案例</p>
+    <p class="section-desc">签证类型 · 申请条件 · 费用明细 · 真实案例 · 性价比分析</p>
     
+    <!-- 快速对比卡片 -->
+    <div class="quick-compare">
+      <div class="compare-item">
+        <div class="compare-label">💰 性价比最高</div>
+        <div class="compare-value">德国 / 韩国</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-label">🎯 移民最容易</div>
+        <div class="compare-value">加拿大</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-label">💼 薪资最高</div>
+        <div class="compare-value">美国</div>
+      </div>
+      <div class="compare-item">
+        <div class="compare-label">🏠 离家最近</div>
+        <div class="compare-value">日本 / 新加坡</div>
+      </div>
+    </div>
+
     <!-- 全球流向 -->
     <div class="card">
       <div class="card-title"><span class="icon">🌍</span> 中国留学生全球流向分布</div>
       <div class="bar-chart" id="flowChart"></div>
     </div>
+
+    <!-- 签证类型说明 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span> 常见签证类型一览</div>
+      <div class="visa-grid">
+        <div class="visa-item">
+          <div class="visa-name">🎓 学生签证</div>
+          <div class="visa-desc">留学专用，需学校录取通知书，有效期覆盖学业</div>
+          <div class="visa-tags">
+            <span>可打工</span><span>家属可陪读</span><span>转工作签</span>
+          </div>
+        </div>
+        <div class="visa-item">
+          <div class="visa-name">🛠️ 工作签证</div>
+          <div class="visa-desc">技术/专业人才，需雇主担保或job offer</div>
+          <div class="visa-tags">
+            <span>可长期居留</span><span>可带家属</span><span>可申请永居</span>
+          </div>
+        </div>
+        <div class="visa-item">
+          <div class="visa-name">🌴 打工度假签</div>
+          <div class="visa-desc">澳洲/新西兰/日本等对中国开放，每年限额抽签</div>
+          <div class="visa-tags">
+            <span>1年有效期</span><span>可续签</span><span>需抽签</span>
+          </div>
+        </div>
+        <div class="visa-item">
+          <div class="visa-name">🧑‍💻 实习/打工签</div>
+          <div class="visa-desc">J-1（美国）、青年交流计划等，短期工作体验</div>
+          <div class="visa-tags">
+            <span>短期</span><span>需赞助</span><span>有期限</span>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <!-- 国家选择 -->
     <div class="country-grid" id="countryGrid"></div>
     <div class="detail-panel" id="detailPanel"></div>
+    
+    <!-- 性价比综合对比 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> 九国综合性价比对比</div>
+      <div class="compare-table">
+        <div class="compare-header">
+          <span>国家</span>
+          <span>年费用(万)</span>
+          <span>毕业薪资</span>
+          <span>移民难度</span>
+          <span>语言要求</span>
+          <span>综合评分</span>
+        </div>
+        <div class="compare-row"><span>🇩🇪 德国</span><span>5-8</span><span>€50K</span><span>⭐⭐</span><span>德语B2</span><span class="star">★★★★★</span></div>
+        <div class="compare-row"><span>🇰🇷 韩国</span><span>6-10</span><span>₩4000万</span><span>⭐⭐⭐</span><span>韩语TOPIK4</span><span class="star">★★★★☆</span></div>
+        <div class="compare-row"><span>🇨🇦 加拿大</span><span>15-22</span><span>C$65K</span><span>⭐</span><span>雅思6.5</span><span class="star">★★★★☆</span></div>
+        <div class="compare-row"><span>🇦🇺 澳大利亚</span><span>18-25</span><span>A$65K</span><span>⭐⭐</span><span>雅思6.5</span><span class="star">★★★★☆</span></div>
+        <div class="compare-row"><span>🇯🇵 日本</span><span>10-15</span><span>¥400万</span><span>⭐⭐⭐</span><span>日语N2</span><span class="star">★★★☆☆</span></div>
+        <div class="compare-row"><span>🇳🇿 新西兰</span><span>12-18</span><span>NZ$60K</span><span>⭐⭐</span><span>雅思6.5</span><span class="star">★★★☆☆</span></div>
+        <div class="compare-row"><span>🇬🇧 英国</span><span>25-30</span><span>£35K</span><span>⭐⭐⭐</span><span>雅思6.5</span><span class="star">★★★☆☆</span></div>
+        <div class="compare-row"><span>🇸🇬 新加坡</span><span>18-25</span><span>S$65K</span><span>⭐⭐⭐⭐</span><span>英语</span><span class="star">★★★☆☆</span></div>
+        <div class="compare-row"><span>🇺🇸 美国</span><span>35-50</span><span>$75K</span><span>⭐⭐⭐⭐</span><span>托福100</span><span class="star">★★★☆☆</span></div>
+      </div>
+    </div>
+
+    <!-- 申请时间线 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📅</span> 申请时间线规划</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">提前1.5年</div>
+          <div class="timeline-content">确定目标国家/学校 · 开始准备语言考试</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">提前1年</div>
+          <div class="timeline-content">提交申请 · 准备申请材料 · 获取offer</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">提前6个月</div>
+          <div class="timeline-content">申请签证 · 准备资金证明 · 体检</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">提前3个月</div>
+          <div class="timeline-content">租房安排 · 购买机票 · 行前准备</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">出发!</div>
+          <div class="timeline-content">入境注册 · 开启新生活</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 实用工具 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🛠️</span> 实用工具推荐</div>
+      <div class="tools-grid">
+        <div class="tool-item">
+          <div class="tool-name">📱 找工APP</div>
+          <div class="tool-list">LinkedIn · Indeed · Glassdoor · 当地华人论坛</div>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">🏠 租房APP</div>
+          <div class="tool-list">Zillow · Rent.com · LocalFB群组 · 小程序</div>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">💰 汇款</div>
+          <div class="tool-list">Wise · Revolut · 银行电汇 · 熊猫速汇</div>
+        </div>
+        <div class="tool-item">
+          <div class="tool-name">📚 学习</div>
+          <div class="tool-list">Coursera · Duolingo · YouTube · 语言交换APP</div>
+        </div>
+      </div>
+    </div>
     
     <!-- 后悔率 -->
     <div class="card">
@@ -447,6 +758,33 @@ footer {
       <div class="bar-chart" id="regretChart"></div>
       <div class="detail-success" style="margin-top:12px;">
         💡 超过80%的受访者表示：出去看看世界，即使后悔也值得这段经历
+      </div>
+    </div>
+
+    <!-- 常见问题 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">❓</span> 常见问题解答</div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">Q: 预算有限怎么选？</div>
+          <div class="faq-a">A: 德国（公立免学费）、韩国（学费低）、日本（打工可覆盖生活费）是性价比最高的选择</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Q: 想移民选哪个？</div>
+          <div class="faq-a">A: 加拿大路径最清晰（留学→工作→移民EE通道），其次是澳大利亚和新西兰</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Q: 语言不通怎么办？</div>
+          <div class="faq-a">A: 新加坡/香港（英语环境）、日本/韩国（有语言学校过渡），可以先读语言再转正式课程</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Q: 打工能赚回学费吗？</div>
+          <div class="faq-a">A: 日本/韩国打工时薪较高（70-100元/小时），可覆盖大部分生活费；欧美每周限20小时</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Q: 什么时候申请最好？</div>
+          <div class="faq-a">A: 大学期间开始准备，大三考语言、大四申请；打工度假签提前关注官方开放时间</div>
+        </div>
       </div>
     </div>
   </div>
