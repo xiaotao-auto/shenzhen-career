@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Supabase 测试</title>
+  <style>
+    body { font-family: sans-serif; padding: 40px; max-width: 600px; margin: 0 auto; }
+    .success { color: green; }
+    .error { color: red; }
+    pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>🔌 Supabase 连接测试</h1>
+  <div id="status">正在连接...</div>
+  <hr>
+  <div id="result"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://fuejxbihvekyhmkrfjsb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function test() {
+      const result = document.getElementById('result');
+      const status = document.getElementById('status');
+      
+      try {
+        status.innerHTML = '<span style="color: orange">正在测试连接...</span>';
+        
+        // 尝试读取数据
+        const { data, error } = await supabase.from('guestbook').select('*').limit(3);
+        
+        if (error) {
+          status.innerHTML = '<span class="error">❌ 错误</span>';
+          result.innerHTML = '<h3>错误信息：</h3><pre>' + JSON.stringify(error, null, 2) + '</pre>';
+          
+          if (error.message.includes('does not exist')) {
+            result.innerHTML += `
+              <div style="margin-top: 20px; padding: 15px; background: #ffe; border: 1px solid #cc9;">
+                <h3>⚠️ 需要在 Supabase 后台创建表</h3>
+                <p>请在 Supabase 的 SQL Editor 中执行以下 SQL：</p>
+                <pre>
+create table guestbook (
+  id uuid default uuid_generate_v4() primary key,
+  name text not null,
+  city text,
+  mood text,
+  text text not null,
+  ts bigint not null,
+  likes integer default 0,
+  liked_by jsonb default '[]'::jsonb
+);
+
+alter table guestbook enable row level security;
+
+create policy "allow_read" on guestbook for select using (true);
+create policy "allow_insert" on guestbook for insert with check (true);
+create policy "allow_update" on guestbook for update using (true);
+                </pre>
+              </div>
+            `;
+          }
+        } else {
+          status.innerHTML = '<span class="success">✅ 连接成功！</span>';
+          result.innerHTML = `
+            <h3>当前数据：</h3>
+            <p>共 ${data.length} 条记录</p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #efe; border: 1px solid #9c9;">
+              <h3>🎉 完美！</h3>
+              <p>留言板现在可以使用了！</p>
+              <p><a href="guestbook.html">返回留言板 →</a></p>
+            </div>
+          `;
+        }
+      } catch (e) {
+        status.innerHTML = '<span class="error">❌ 异常</span>';
+        result.innerHTML = '<h3>异常信息：</h3><pre>' + e + '</pre>';
+      }
+    }
+
+    test();
+  </script>
+</body>
+</html>
