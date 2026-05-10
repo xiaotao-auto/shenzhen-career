@@ -39,9 +39,12 @@
   .msg-actions { display: flex; gap: 15px; margin-top: 10px; color: #8b949e; }
   .like-btn { background: transparent; border: 1px solid #30363d; padding: 5px 12px; border-radius: 6px; cursor: pointer; color: #8b949e; }
   .like-btn.liked { color: #f85149; border-color: #f85149; }
+  #debug { background: #161b22; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; color: #3fb950; }
 </style>
 </head>
 <body>
+  <div id="debug">初始化中...</div>
+  
   <h1>💬 访客留言板</h1>
   
   <!-- 表单 -->
@@ -56,9 +59,25 @@
   <div id="msg-list"></div>
 
   <script>
+    const debugEl = document.getElementById('debug');
+    
+    function debug(msg) {
+      debugEl.textContent = msg;
+      console.log(msg);
+    }
+
+    debug('正在加载 Supabase...');
+
     const SUPABASE_URL = 'https://fuejxbihvekyhmkrfjsb.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let supabase;
+    try {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      debug('Supabase 客户端创建成功');
+    } catch (e) {
+      debug('❌ Supabase 创建失败: ' + e.message);
+    }
 
     const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
     
@@ -74,16 +93,25 @@
     }
 
     async function loadMsgs() {
-      const { data, error } = await supabase.from('guestbook').select('*').order('ts', { ascending: false });
-      return data || [];
+      try {
+        const { data, error } = await supabase.from('guestbook').select('*').order('ts', { ascending: false });
+        if (error) throw error;
+        return data || [];
+      } catch (e) {
+        debug('❌ 加载留言失败: ' + e.message);
+        return [];
+      }
     }
 
     async function renderAll() {
       const list = document.getElementById('msg-list');
+      debug('正在加载留言...');
+      
       const msgs = await loadMsgs();
       
       if (msgs.length === 0) {
         list.innerHTML = '<p style="text-align:center;color:#8b949e;">还没有留言，来做第一个吧！</p>';
+        debug('暂无留言');
         return;
       }
 
@@ -103,32 +131,56 @@
           </div>
         </div>
       `).join('');
+      
+      debug(`已加载 ${msgs.length} 条留言`);
     }
 
     async function submitMsg() {
+      debug('按钮点击！正在提交...');
+      
       const name = document.getElementById('inp-name').value.trim();
       const city = document.getElementById('inp-city').value.trim();
       const text = document.getElementById('inp-msg').value.trim();
       
-      if (!name || !text) {
-        alert('请填写昵称和留言内容');
+      debug(`数据: name=${name}, city=${city}, text=${text}`);
+      
+      if (!name) {
+        alert('请填写昵称');
+        debug('❌ 缺少昵称');
+        return;
+      }
+      if (!text) {
+        alert('请填写留言内容');
+        debug('❌ 缺少内容');
         return;
       }
 
-      await supabase.from('guestbook').insert({
-        name: name.slice(0, 20),
-        city: city.slice(0, 20),
-        text: text,
-        ts: Date.now(),
-        likes: 0,
-        liked_by: []
-      });
+      try {
+        debug('正在插入数据...');
+        const { error } = await supabase.from('guestbook').insert({
+          name: name.slice(0, 20),
+          city: city.slice(0, 20),
+          text: text,
+          ts: Date.now(),
+          likes: 0,
+          liked_by: []
+        });
+        
+        if (error) throw error;
+        
+        debug('✅ 提交成功！');
+        alert('留言发布成功！');
+        
+        // 清空表单
+        document.getElementById('inp-name').value = '';
+        document.getElementById('inp-city').value = '';
+        document.getElementById('inp-msg').value = '';
 
-      document.getElementById('inp-name').value = '';
-      document.getElementById('inp-city').value = '';
-      document.getElementById('inp-msg').value = '';
-
-      await renderAll();
+        await renderAll();
+      } catch (e) {
+        debug('❌ 提交失败: ' + e.message);
+        alert('提交失败: ' + e.message);
+      }
     }
 
     async function toggleLike(id) {
@@ -160,6 +212,7 @@
     }
 
     // 初始化
+    debug('页面加载完成，开始渲染...');
     renderAll();
   </script>
 </body>
