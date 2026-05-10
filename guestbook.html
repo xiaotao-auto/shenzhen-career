@@ -41,6 +41,9 @@
   .msg-actions { display: flex; align-items: center; gap: 20px; margin-top: 14px; color: var(--text-secondary); }
   .like-btn { background: transparent; border: 1px solid var(--border-color); padding: 6px 16px; border-radius: 20px; cursor: pointer; color: var(--text-secondary); font-size: 13px; display: flex; align-items: center; gap: 6px; }
   .like-btn.liked { color: var(--accent-red); border-color: var(--accent-red); }
+
+.delete-btn { background: transparent; border: 1px solid var(--accent-red); padding: 6px 16px; border-radius: 20px; cursor: pointer; color: var(--accent-red); font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.delete-btn:hover { background: rgba(248,81,73,0.15); }
   
   .mood-badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; background: rgba(88,166,255,0.15); color: var(--primary-color); }
   
@@ -148,33 +151,54 @@
         return;
       }
 
-      list.innerHTML = msgs.map(msg => `
-        <div class="msg-card">
-          <div class="msg-header">
-            <div class="msg-avatar" style="background:${avatarColor(msg.name)}">${avatarLetter(msg.name)}</div>
-            <div>
-              <div class="msg-name">${escapeHtml(msg.name)}</div>
-              <div class="msg-meta">${msg.city || '未知城市'} · ${fmtTime(msg.ts)}</div>
+      const userToken = localStorage.getItem('guestbook_token');
+      
+      list.innerHTML = msgs.map(msg => {
+        const canDelete = msg.token && userToken === msg.token;
+        return `
+          <div class="msg-card">
+            <div class="msg-header">
+              <div class="msg-avatar" style="background:${avatarColor(msg.name)}">${avatarLetter(msg.name)}</div>
+              <div>
+                <div class="msg-name">${escapeHtml(msg.name)}</div>
+                <div class="msg-meta">${msg.city || '未知城市'} · ${fmtTime(msg.ts)}</div>
+              </div>
+            </div>
+            <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
+            <div class="msg-actions">
+              <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
+              ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
+              ${canDelete ? `<button class="delete-btn" data-id="${msg.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
             </div>
           </div>
-          <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
-          <div class="msg-actions">
-            <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
-            ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
+    let isSubmitting = false;
+    
     async function submitMsg() {
+      if (isSubmitting) return;
+      isSubmitting = true;
+      
+      const btn = document.querySelector('.submit-btn');
+      const originalText = btn.textContent;
+      btn.textContent = '发布中...';
+      
       const name = document.getElementById('inp-name').value.trim();
       const city = document.getElementById('inp-city').value.trim();
       const text = document.getElementById('inp-msg').value.trim();
       
-      if (!name) { alert('请填写昵称'); return; }
-      if (!text) { alert('请填写留言内容'); return; }
-
       try {
+        if (!name) { alert('请填写昵称'); return; }
+        if (!text) { alert('请填写留言内容'); return; }
+
+        let userToken = localStorage.getItem('guestbook_token');
+        if (!userToken) {
+          userToken = 'token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem('guestbook_token', userToken);
+        }
+        
         await fetchData(API_URL, {
           method: 'POST',
           body: JSON.stringify({
@@ -183,7 +207,8 @@
             text: text,
             ts: Date.now(),
             likes: 0,
-            mood: moods[Math.floor(Math.random() * moods.length)]
+            mood: moods[Math.floor(Math.random() * moods.length)],
+            token: userToken
           })
         });
 
@@ -197,6 +222,9 @@
         await updateStats();
       } catch (e) {
         alert('提交失败: ' + e.message);
+      } finally {
+        isSubmitting = false;
+        btn.textContent = originalText;
       }
     }
 
@@ -226,6 +254,24 @@
     async function refreshMsgs() {
       await renderAll();
       await updateStats();
+    }
+
+    async function deleteMsg(event) {
+      if (!confirm('确定要删除这条留言吗？')) return;
+      
+      const btn = event.target;
+      const id = btn.getAttribute('data-id');
+      
+      try {
+        await fetchData(`${API_URL}?id=eq.${id}`, {
+          method: 'DELETE'
+        });
+        await renderAll();
+        await updateStats();
+      } catch (e) {
+        console.error('删除失败:', e);
+        alert('删除失败: ' + e.message);
+      }
     }
 
     function fmtTime(ts) {
