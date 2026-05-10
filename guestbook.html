@@ -317,9 +317,7 @@
 
     async function updateStats() {
       const msgs = await loadMsgs();
-      const totalLikes = msgs.reduce((sum, m) => sum + (m.likes || 0), 0);
       document.getElementById('msg-count').textContent = msgs.length;
-      document.getElementById('like-count').textContent = totalLikes;
     }
 
     async function renderAll() {
