@@ -59,6 +59,22 @@
   .refresh-btn { background: transparent; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; cursor: pointer; color: var(--text-secondary); font-size: 12px; }
   
   .footer { text-align: center; padding: 30px 0; color: var(--text-secondary); font-size: 12px; }
+  
+  .mood-option { 
+    background: #21262d; 
+    border: 2px solid var(--border-color); 
+    border-radius: 10px; 
+    padding: 8px 12px; 
+    cursor: pointer; 
+    font-size: 20px;
+    transition: all 0.2s;
+  }
+  .mood-option:hover { border-color: var(--primary-color); }
+  .mood-option.selected { 
+    border-color: var(--primary-color); 
+    background: rgba(88,166,255,0.15); 
+    box-shadow: 0 0 0 2px rgba(88,166,255,0.3);
+  }
 </style>
 </head>
 <body>
@@ -76,15 +92,27 @@
   </div>
 
   <div class="form-card">
-    <input id="inp-name" placeholder="你的昵称" maxlength="20">
+    <input id="inp-name" placeholder="你的昵称（随便起一个都可以！）" maxlength="20">
     <input id="inp-city" placeholder="来自哪里（选填）" maxlength="20">
-    <textarea id="inp-msg" placeholder="说点什么..." rows="4" maxlength="300"></textarea>
-    <div id="reply-info" style="display:none; padding:10px; background:#21262d; border-radius:8px; margin-bottom:10px; font-size:13px; color:var(--text-secondary);">
-      ↩️ 正在回复 <span id="reply-to-name"></span>
-      <button onclick="cancelReply()" style="float:right; background:none; border:none; color:var(--accent-red); cursor:pointer;">取消</button>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:8px;">选择心情（可选）</label>
+      <div id="mood-selector" style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="mood-option" data-mood="😊 开心" onclick="selectMood(event)">😊</button>
+        <button class="mood-option" data-mood="😢 难过" onclick="selectMood(event)">😢</button>
+        <button class="mood-option" data-mood="😮 惊讶" onclick="selectMood(event)">😮</button>
+        <button class="mood-option" data-mood="🤔 迷茫" onclick="selectMood(event)">🤔</button>
+        <button class="mood-option" data-mood="❤️ 感动" onclick="selectMood(event)">❤️</button>
+        <button class="mood-option" data-mood="🔥 激动" onclick="selectMood(event)">🔥</button>
+        <button class="mood-option" data-mood="✨ 期待" onclick="selectMood(event)">✨</button>
+        <button class="mood-option" data-mood="💪 加油" onclick="selectMood(event)">💪</button>
+        <button class="mood-option" data-mood="😎 酷" onclick="selectMood(event)">😎</button>
+        <button class="mood-option" data-mood="🥳 开心" onclick="selectMood(event)">🥳</button>
+        <button class="mood-option" data-mood="😴 困" onclick="selectMood(event)">😴</button>
+        <button class="mood-option" data-mood="🤩 惊喜" onclick="selectMood(event)">🤩</button>
+      </div>
     </div>
-    <input type="hidden" id="inp-reply-id" value="">
-    <input type="hidden" id="inp-reply-name" value="">
+    <textarea id="inp-msg" placeholder="说点什么..." rows="4" maxlength="300"></textarea>
+    <input type="hidden" id="inp-selected-mood" value="">
     <button class="submit-btn" onclick="submitMsg()">发布留言</button>
   </div>
 
@@ -101,7 +129,7 @@
     const statusBar = document.getElementById('status-bar');
     
     const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
-    const moods = ['😊 开心', '❤️ 感动', '🤔 思考', '🔥 激动', '✨ 期待', '💪 加油'];
+    const moods = ['😊 开心', '😢 难过', '😮 惊讶', '🤔 迷茫', '❤️ 感动', '🔥 激动', '✨ 期待', '💪 加油', '😎 酷', '🥳 开心', '😴 困', '🤩 惊喜'];
     
     function setStatus(isOnline, msg) {
       if (isOnline) {
@@ -167,8 +195,6 @@
       
       list.innerHTML = msgs.map(msg => {
         const canDelete = msg.token && userToken === msg.token;
-        const replyToHtml = msg.reply_to_name ? 
-          `<div class="reply-indicator">↩️ 回复 <a href="#" onclick="scrollToMsg('${msg.reply_to_id}')">@${escapeHtml(msg.reply_to_name)}</a></div>` : '';
         return `
           <div class="msg-card" data-id="${msg.id}">
             <div class="msg-header">
@@ -178,11 +204,9 @@
                 <div class="msg-meta">${msg.city || '未知城市'} · ${fmtTime(msg.ts)}</div>
               </div>
             </div>
-            ${replyToHtml}
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
               <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
-              <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}" onclick="replyToMsg(event)">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
               ${canDelete ? `<button class="delete-btn" data-id="${msg.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
             </div>
@@ -215,22 +239,26 @@
           localStorage.setItem('guestbook_token', userToken);
         }
         
-        const replyId = document.getElementById('inp-reply-id').value;
-        const replyName = document.getElementById('inp-reply-name').value;
+        const selectedMood = document.getElementById('inp-selected-mood').value;
+        
+        const payload = {
+          name: name.slice(0, 20),
+          city: city.slice(0, 20),
+          text: text,
+          ts: Date.now(),
+          likes: 0,
+          token: userToken
+        };
+        
+        if (selectedMood) {
+          payload.mood = selectedMood;
+        } else {
+          payload.mood = moods[Math.floor(Math.random() * moods.length)];
+        }
         
         await fetchData(API_URL, {
           method: 'POST',
-          body: JSON.stringify({
-            name: name.slice(0, 20),
-            city: city.slice(0, 20),
-            text: text,
-            ts: Date.now(),
-            likes: 0,
-            mood: moods[Math.floor(Math.random() * moods.length)],
-            token: userToken,
-            reply_to_id: replyId || null,
-            reply_to_name: replyName || null
-          })
+          body: JSON.stringify(payload)
         });
 
         alert('留言发布成功！所有访客都能看到！');
@@ -238,12 +266,17 @@
         document.getElementById('inp-name').value = '';
         document.getElementById('inp-city').value = '';
         document.getElementById('inp-msg').value = '';
-        cancelReply();
+        document.getElementById('inp-selected-mood').value = '';
+        document.querySelectorAll('.mood-option').forEach(b => b.classList.remove('selected'));
 
         await renderAll();
         await updateStats();
       } catch (e) {
-        alert('提交失败: ' + e.message);
+        if (e.message && e.message.includes('400')) {
+          alert('提交失败，请检查昵称和留言内容是否符合要求！');
+        } else {
+          alert('提交失败: ' + e.message);
+        }
       } finally {
         isSubmitting = false;
         btn.textContent = originalText;
@@ -278,34 +311,13 @@
       await updateStats();
     }
 
-    function replyToMsg(event) {
+    function selectMood(event) {
       const btn = event.target;
-      const replyId = btn.getAttribute('data-id');
-      const replyName = btn.getAttribute('data-name');
+      const mood = btn.getAttribute('data-mood');
       
-      document.getElementById('inp-reply-id').value = replyId;
-      document.getElementById('inp-reply-name').value = replyName;
-      document.getElementById('reply-to-name').textContent = '@' + replyName;
-      document.getElementById('reply-info').style.display = 'block';
-      
-      document.getElementById('inp-msg').focus();
-    }
-
-    function cancelReply() {
-      document.getElementById('inp-reply-id').value = '';
-      document.getElementById('inp-reply-name').value = '';
-      document.getElementById('reply-info').style.display = 'none';
-    }
-
-    function scrollToMsg(msgId) {
-      const element = document.querySelector(`[data-id="${msgId}"]`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        element.style.borderColor = '#58a6ff';
-        setTimeout(() => {
-          element.style.borderColor = '#30363d';
-        }, 2000);
-      }
+      document.querySelectorAll('.mood-option').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('inp-selected-mood').value = mood;
     }
 
     async function deleteMsg(event) {
