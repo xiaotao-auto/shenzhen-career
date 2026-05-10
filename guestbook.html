@@ -200,13 +200,17 @@
     <div>📝 <span id="msg-count">0</span> 条留言</div>
     <div>❤️ <span id="like-count">0</span> 次点赞</div>
     <button class="refresh-btn" onclick="refreshMsgs()">🔄 刷新</button>
+    <button class="refresh-btn" onclick="addSampleComments()" style="background: #3fb950;">🎉 添加示例</button>
   </div>
 
   <div class="form-card">
     <input id="inp-name" placeholder="你的昵称（随便起一个都可以！）" maxlength="20">
     <input id="inp-city" placeholder="来自哪里（选填）" maxlength="20">
     <div style="margin-bottom:10px;">
-      <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:8px;">选择心情（可选）</label>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <label style="font-size:13px; color:var(--text-secondary);">选择心情（可选）</label>
+        <span style="font-size:11px;color:var(--text-secondary);opacity:0.7;">👈 左右滑动查看更多 👉</span>
+      </div>
       <div id="mood-selector" style="display:flex; gap:10px; overflow-x:auto; padding:5px 0; -webkit-overflow-scrolling:touch;">
         <button class="mood-option" data-mood="😊 开心" onclick="selectMood(event)">😊</button>
         <button class="mood-option" data-mood="😢 难过" onclick="selectMood(event)">😢</button>
@@ -569,6 +573,60 @@
 
     function escapeHtml(s) {
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    async function addSampleComments() {
+      const comments = [
+        { name: "小明同学", city: "北京", text: "今天面试了三家公司，最后一家给了我offer！虽然薪资比预期低一点，但团队氛围很好，leader看起来很nice。纠结中...要不要接受呢？", mood: "🤔 迷茫" },
+        { name: "奶茶要少糖", city: "上海", text: "周末去武康路拍了照，人真的好多啊！但阳光很好，拍出了满意的照片。推荐大家下午3-4点去，光线最柔和～", mood: "😊 开心" },
+        { name: "夜跑的程序员", city: "深圳", text: "刚上线完一个大版本，连续加班一周终于结束了！凌晨两点的深圳街头居然还有这么多人，大家都在为生活努力啊。", mood: "😴 困" },
+        { name: "画画的阿美", city: "杭州", text: "今天在西湖边写生，遇到一个老爷爷也在画画，聊了好久。他说他退休后才开始学画，现在已经十年了。突然觉得，只要想开始，什么时候都不晚。", mood: "❤️ 感动" },
+        { name: "健身新手", city: "广州", text: "去健身房第三天，教练说我动作不对，纠正了好久。现在胳膊已经抬不起来了...但看到镜子里的自己，还是很有成就感的！", mood: "💪 加油" },
+        { name: "铲屎官小李", city: "成都", text: "我家猫今天居然自己开了罐头！早上起来看到一地狼藉，它还在旁边打呼噜。又气又好笑，这猫成精了吧！", mood: "🥳 开心" },
+        { name: "北漂的姑娘", city: "北京", text: "今天搬家了，这是来北京第五次搬家。看着满屋的纸箱，突然有点想家。但想想自己的梦想，还是要坚持下去。", mood: "😢 难过" },
+        { name: "咖啡师小王", city: "南京", text: "今天遇到一个客人，说我做的咖啡和他在国外喝的味道一模一样。听到这句话，感觉早起的辛苦都值得了！", mood: "✨ 期待" },
+        { name: "考研党阿凯", city: "武汉", text: "自习室坐我对面的女生，每天都比我早到晚走。今天终于鼓起勇气和她打了招呼，她笑起来好温柔～", mood: "😎 酷" },
+        { name: "做饭新手", city: "重庆", text: "第一次尝试做火锅，底料放多了，辣得我眼泪直流。但室友说好吃，就是费米饭。下次继续努力！", mood: "🔥 激动" },
+        { name: "海边的设计师", city: "厦门", text: "今天把攒了半年的年假用了，买了去云南的机票。28岁了，第一次真正意义上的旅行，有点期待有点紧张。", mood: "🤩 惊喜" },
+        { name: "二手书店主", city: "苏州", text: "今天收到一本客人捐的旧书，里面夹着一张2008年的明信片。原来这本书去过那么多地方，这种感觉真奇妙。", mood: "😮 惊讶" },
+        { name: "养多肉的阿杰", city: "西安", text: "我的多肉居然开花了！养了三年，一度以为它要死了。果然，植物比我想象的要坚强。", mood: "❤️ 感动" },
+        { name: "转行的HR", city: "天津", text: "30岁生日那天，我辞掉了干了5年的HR工作，开始学编程。身边朋友都说我疯了，但我知道，这是我想做的事。", mood: "💪 加油" },
+        { name: "早起遛鸟的老张", city: "长沙", text: "今天在公园遛鸟，遇到一个年轻人向我请教怎么养鸟。他说他奶奶留下一只鸟，他想好好照顾。现在的年轻人，有心了。", mood: "😊 开心" },
+        { name: "探店小达人", city: "青岛", text: "今天去了一家藏在老城区的小店，老板是个台湾人，说话超级温柔。强烈推荐他们家的冬瓜茶！", mood: "✨ 期待" },
+        { name: "写日记的阿花", city: "宁波", text: "整理旧物，翻到高中时的日记。看着以前的自己，觉得好傻但好纯粹。那时候以为天大的事，现在看来都不算什么了。", mood: "😢 难过" },
+        { name: "街舞老师", city: "郑州", text: "今天最小的学生说，她的梦想是像我一样在舞台上跳舞。突然觉得，做老师真的很有意义。", mood: "🥳 开心" },
+        { name: "学日语的小白", city: "大连", text: "今天看动漫，居然能听懂几句台词了！学了半年日语，终于有点成就感了。继续加油！", mood: "💪 加油" },
+        { name: "开花店的小雨", city: "昆明", text: "今天有个男生来买花，说是要送给住院的妈妈。他选了康乃馨，说妈妈最喜欢这个。希望他妈妈早日康复。", mood: "❤️ 感动" }
+      ];
+      
+      let added = 0;
+      for (let i = 0; i < comments.length; i++) {
+        const comment = comments[i];
+        const payload = {
+          name: comment.name,
+          city: comment.city,
+          text: comment.text,
+          ts: Date.now() - (comments.length - i) * 3600000,
+          likes: Math.floor(Math.random() * 50),
+          token: `sample_token_${i}`,
+          mood: comment.mood,
+          replies: []
+        };
+        
+        try {
+          await fetchData(API_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          });
+          added++;
+        } catch (e) {
+          console.error(`Failed to add comment ${i + 1}`, e);
+        }
+      }
+      
+      alert(`成功添加 ${added} 条评论！`);
+      await renderAll();
+      await updateStats();
     }
 
     async function init() {
