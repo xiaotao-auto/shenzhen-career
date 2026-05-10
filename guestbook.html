@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💬 访客留言板</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --bg-page: #0d1117;
@@ -22,6 +23,18 @@
     max-width: 800px; margin: 0 auto; padding: 20px;
     min-height: 100vh;
   }
+  
+  #status-bar {
+    background: #161b22;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    text-align: center;
+  }
+  
+  .status-online { color: var(--accent-green); }
+  .status-offline { color: var(--accent-red); }
   
   .page-header {
     text-align: center;
@@ -88,6 +101,7 @@
     font-size: 16px;
     transition: all 0.3s ease;
     margin-top: 10px;
+    width: 100%;
   }
   
   .submit-btn:hover {
@@ -225,9 +239,28 @@
     align-items: center;
     gap: 6px;
   }
+  
+  .refresh-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 12px;
+    transition: all 0.3s ease;
+  }
+  
+  .refresh-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
 </style>
 </head>
 <body>
+  <!-- 连接状态 -->
+  <div id="status-bar" class="status-offline">🔴 连接中...</div>
+
   <!-- 页面标题 -->
   <div class="page-header">
     <h1 class="page-title">💬 访客留言板</h1>
@@ -235,9 +268,10 @@
   </div>
 
   <!-- 统计信息 -->
-  <div class="stats-bar" id="stats-bar">
+  <div class="stats-bar">
     <div class="stat-item">📝 <span id="msg-count">0</span> 条留言</div>
     <div class="stat-item">❤️ <span id="like-count">0</span> 次点赞</div>
+    <button class="refresh-btn" onclick="refreshMsgs()">🔄 刷新</button>
   </div>
 
   <!-- 表单 -->
@@ -253,15 +287,29 @@
 
   <!-- 页脚 -->
   <div class="footer">
-    <p>💡 留言仅保存在当前浏览器中</p>
+    <p>☁️ 留言存储在云端，所有访客都能看到</p>
   </div>
 
   <script>
-    const STORAGE_KEY = 'guestbook_messages';
+    const SUPABASE_URL = 'https://fuejxbihvekyhmkrfjsb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
+    
+    let supabase;
+    const statusBar = document.getElementById('status-bar');
     
     const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353','#8957e5','#db61a2','#4dabf7'];
     const moods = ['😊 开心', '❤️ 感动', '🤔 思考', '🔥 激动', '✨ 期待', '💪 加油', '🌞 美好', '🎯 专注'];
     
+    function setStatus(isOnline, msg) {
+      if (isOnline) {
+        statusBar.className = 'status-online';
+        statusBar.innerHTML = '🟢 ' + (msg || '已连接到云端');
+      } else {
+        statusBar.className = 'status-offline';
+        statusBar.innerHTML = '🔴 ' + (msg || '连接失败');
+      }
+    }
+
     function avatarColor(name) {
       let h = 0;
       for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
@@ -273,31 +321,28 @@
       return /[\u4e00-\u9fff]/.test(ch) ? ch : ch.toUpperCase();
     }
 
-    function loadMsgs() {
+    async function loadMsgs() {
       try {
-        const data = localStorage.getItem(STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
+        const { data, error } = await supabase.from('guestbook').select('*').order('ts', { ascending: false });
+        if (error) throw error;
+        return data || [];
       } catch (e) {
-        console.error('读取失败:', e);
+        console.error('加载失败:', e);
+        setStatus(false, '加载失败: ' + e.message);
         return [];
       }
     }
 
-    function saveMsgs(msgs) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
-      updateStats();
-    }
-
-    function updateStats() {
-      const msgs = loadMsgs();
+    async function updateStats() {
+      const msgs = await loadMsgs();
       const totalLikes = msgs.reduce((sum, m) => sum + (m.likes || 0), 0);
       document.getElementById('msg-count').textContent = msgs.length;
       document.getElementById('like-count').textContent = totalLikes;
     }
 
-    function renderAll() {
+    async function renderAll() {
       const list = document.getElementById('msg-list');
-      const msgs = loadMsgs();
+      const msgs = await loadMsgs();
       
       if (msgs.length === 0) {
         list.innerHTML = `
@@ -321,14 +366,14 @@
           </div>
           <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
           <div class="msg-actions">
-            <button class="like-btn" onclick="toggleLike('${msg.id}')">🤍 ${msg.likes || 0}</button>
+            <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
             ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
           </div>
         </div>
       `).join('');
     }
 
-    function submitMsg() {
+    async function submitMsg() {
       const name = document.getElementById('inp-name').value.trim();
       const city = document.getElementById('inp-city').value.trim();
       const text = document.getElementById('inp-msg').value.trim();
@@ -342,48 +387,57 @@
         return;
       }
 
-      const newMsg = {
-        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-        name: name.slice(0, 20),
-        city: city.slice(0, 20),
-        text: text,
-        ts: Date.now(),
-        likes: 0,
-        mood: moods[Math.floor(Math.random() * moods.length)]
-      };
+      try {
+        const { error } = await supabase.from('guestbook').insert({
+          name: name.slice(0, 20),
+          city: city.slice(0, 20),
+          text: text,
+          ts: Date.now(),
+          likes: 0,
+          mood: moods[Math.floor(Math.random() * moods.length)]
+        });
+        
+        if (error) throw error;
 
-      const msgs = loadMsgs();
-      msgs.unshift(newMsg);
-      saveMsgs(msgs);
+        alert('留言发布成功！所有访客都能看到！');
+        
+        // 清空表单
+        document.getElementById('inp-name').value = '';
+        document.getElementById('inp-city').value = '';
+        document.getElementById('inp-msg').value = '';
 
-      alert('留言发布成功！');
-      
-      // 清空表单
-      document.getElementById('inp-name').value = '';
-      document.getElementById('inp-city').value = '';
-      document.getElementById('inp-msg').value = '';
-
-      renderAll();
+        await renderAll();
+        await updateStats();
+      } catch (e) {
+        console.error('提交失败:', e);
+        alert('提交失败: ' + e.message);
+      }
     }
 
-    function toggleLike(id) {
+    async function toggleLike(event) {
       const btn = event.target;
+      const id = btn.getAttribute('data-id');
       const currentLikes = parseInt(btn.textContent.split(' ')[1]) || 0;
       
-      const msgs = loadMsgs();
-      const msg = msgs.find(m => m.id === id);
-      if (msg) {
+      try {
         if (btn.classList.contains('liked')) {
-          msg.likes = Math.max(0, msg.likes - 1);
-          btn.textContent = `🤍 ${msg.likes}`;
+          await supabase.from('guestbook').update({ likes: currentLikes - 1 }).eq('id', id);
+          btn.textContent = `🤍 ${currentLikes - 1}`;
           btn.classList.remove('liked');
         } else {
-          msg.likes = (msg.likes || 0) + 1;
-          btn.textContent = `❤️ ${msg.likes}`;
+          await supabase.from('guestbook').update({ likes: currentLikes + 1 }).eq('id', id);
+          btn.textContent = `❤️ ${currentLikes + 1}`;
           btn.classList.add('liked');
         }
-        saveMsgs(msgs);
+        await updateStats();
+      } catch (e) {
+        console.error('点赞失败:', e);
       }
+    }
+
+    async function refreshMsgs() {
+      await renderAll();
+      await updateStats();
     }
 
     function fmtTime(ts) {
@@ -403,8 +457,25 @@
     }
 
     // 初始化
-    updateStats();
-    renderAll();
+    async function init() {
+      try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        setStatus(true, '已连接到云端');
+        
+        await renderAll();
+        await updateStats();
+      } catch (e) {
+        console.error('初始化失败:', e);
+        setStatus(false, '初始化失败: ' + e.message);
+      }
+    }
+
+    // 页面加载完成后初始化
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   </script>
 </body>
 </html>
