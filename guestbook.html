@@ -61,6 +61,67 @@
   
   .footer { text-align: center; padding: 30px 0; color: var(--text-secondary); font-size: 12px; }
   
+  /* 音乐控制按钮 */
+  #music-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: none;
+    cursor: pointer;
+    font-size: 28px;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(88,166,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  #music-control:hover { transform: scale(1.1); }
+  #music-control.playing { animation: pulse 1.5s infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 15px rgba(88,166,255,0.4); }
+    50% { box-shadow: 0 4px 25px rgba(88,166,255,0.7); }
+  }
+  
+  /* 回复相关样式 */
+  .reply-form {
+    margin-top: 10px;
+    padding: 15px;
+    background: rgba(33,38,45,0.5);
+    border-radius: 10px;
+    display: none;
+  }
+  .reply-form.show { display: block; }
+  .reply-btn-inline {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: 12px;
+  }
+  .reply-item {
+    background: rgba(33,38,45,0.3);
+    border-left: 3px solid var(--primary-color);
+    padding: 12px;
+    margin: 10px 0 10px 20px;
+    border-radius: 0 8px 8px 0;
+  }
+  .reply-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .reply-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 14px; color: var(--bg-page);
+  }
+  .reply-name { font-size: 14px; font-weight: 600; }
+  .reply-meta { font-size: 11px; color: var(--text-secondary); }
+  .reply-body { font-size: 14px; line-height: 1.6; }
+  
   .mood-option { 
     background: #21262d; 
     border: 2px solid var(--border-color); 
@@ -126,7 +187,8 @@
 </style>
 </head>
 <body>
-  <audio id="bg-audio" src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c7ff678e.mp3?filename=soft-jazz-132384.mp3" loop style="display:none;"></audio>
+  <audio id="bg-audio" src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c7ff678e.mp3?filename=soft-jazz-132384.mp3" loop></audio>
+  <button id="music-control" title="播放/暂停音乐">🔇</button>
   <div id="status-bar" class="status-offline">🔴 连接中...</div>
   
   <div class="page-header">
@@ -176,34 +238,35 @@
     const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
     
     const statusBar = document.getElementById('status-bar');
+    const musicControl = document.getElementById('music-control');
     
     const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
     const moods = ['😊 开心', '😢 难过', '😮 惊讶', '🤔 迷茫', '❤️ 感动', '🔥 激动', '✨ 期待', '💪 加油', '😎 酷', '🥳 开心', '😴 困', '🤩 惊喜'];
     
-    // 背景音乐播放
-    function playBackgroundMusic() {
+    let isPlaying = false;
+    let currentReplyId = null;
+    
+    // 音乐控制
+    function initMusic() {
       const audio = document.getElementById('bg-audio');
-      if (audio) {
-        audio.volume = 0.7; // 设置音量为 70%
-        audio.loop = true;
-        
-        // 强制用户交互后播放
-        const tryPlay = () => {
+      audio.volume = 0.7;
+      
+      // 用户点击音乐按钮时播放/暂停
+      musicControl.addEventListener('click', () => {
+        if (isPlaying) {
+          audio.pause();
+          musicControl.textContent = '🔇';
+          musicControl.classList.remove('playing');
+        } else {
           audio.play().then(() => {
-            console.log('音乐播放成功');
+            musicControl.textContent = '🎵';
+            musicControl.classList.add('playing');
           }).catch(e => {
-            console.log('等待用户交互...', e);
+            alert('请先点击页面任意位置，然后再点此按钮播放音乐');
           });
-        };
-        
-        // 多种交互事件都尝试播放
-        ['click', 'touchstart', 'scroll', 'keydown'].forEach(event => {
-          document.addEventListener(event, tryPlay, { once: true });
-        });
-        
-        // 立即尝试一次
-        tryPlay();
-      }
+        }
+        isPlaying = !isPlaying;
+      });
     }
     
     function setStatus(isOnline, msg) {
@@ -270,6 +333,8 @@
       
       list.innerHTML = msgs.map(msg => {
         const canDelete = msg.token && userToken === msg.token;
+        const replies = msg.replies || [];
+        
         return `
           <div class="msg-card" data-id="${msg.id}">
             <div class="msg-header">
@@ -282,12 +347,91 @@
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
               <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
+              <button class="reply-btn-inline" data-id="${msg.id}" onclick="showReplyForm(event)">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
               ${canDelete ? `<button class="delete-btn" data-id="${msg.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
             </div>
+            
+            <!-- 回复表单 -->
+            <div class="reply-form" id="reply-form-${msg.id}">
+              <input type="text" placeholder="你的昵称" id="reply-name-${msg.id}" maxlength="20" style="margin-bottom:8px;width:100%;padding:10px;">
+              <textarea placeholder="写下你的回复..." id="reply-text-${msg.id}" style="margin-bottom:10px;min-height:60px;"></textarea>
+              <div style="display:flex;gap:10px;">
+                <button class="submit-btn" style="flex:1;padding:8px;font-size:14px;" onclick="submitReply(${msg.id})">发送回复</button>
+                <button style="padding:8px 20px;border-radius:8px;border:1px solid var(--border-color);background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="hideReplyForm(${msg.id})">取消</button>
+              </div>
+            </div>
+            
+            <!-- 回复列表 -->
+            ${replies.length > 0 ? replies.map(reply => `
+              <div class="reply-item">
+                <div class="reply-header">
+                  <div class="reply-avatar" style="background:${avatarColor(reply.name)}">${avatarLetter(reply.name)}</div>
+                  <div>
+                    <div class="reply-name">${escapeHtml(reply.name)}</div>
+                    <div class="reply-meta">${fmtTime(reply.ts)}</div>
+                  </div>
+                </div>
+                <div class="reply-body">${escapeHtml(reply.text).replace(/\n/g, '<br>')}</div>
+              </div>
+            `).join('') : ''}
           </div>
         `;
       }).join('');
+    }
+    
+    function showReplyForm(event) {
+      const id = event.target.getAttribute('data-id');
+      const form = document.getElementById(`reply-form-${id}`);
+      // 隐藏其他回复表单
+      document.querySelectorAll('.reply-form').forEach(f => f.classList.remove('show'));
+      form.classList.add('show');
+    }
+    
+    function hideReplyForm(id) {
+      document.getElementById(`reply-form-${id}`).classList.remove('show');
+    }
+    
+    async function submitReply(msgId) {
+      const nameInput = document.getElementById(`reply-name-${msgId}`);
+      const textInput = document.getElementById(`reply-text-${msgId}`);
+      
+      const name = nameInput.value.trim();
+      const text = textInput.value.trim();
+      
+      if (!name) { alert('请填写昵称'); return; }
+      if (!text) { alert('请填写回复内容'); return; }
+      
+      try {
+        // 先获取原消息
+        const msgs = await loadMsgs();
+        const msg = msgs.find(m => m.id === msgId);
+        if (!msg) throw new Error('消息不存在');
+        
+        // 准备回复
+        const reply = {
+          name: name.slice(0, 20),
+          text: text,
+          ts: Date.now()
+        };
+        
+        // 合并回复
+        const replies = msg.replies || [];
+        replies.push(reply);
+        
+        // 更新
+        await fetchData(`${API_URL}?id=eq.${msgId}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ replies: replies })
+        });
+        
+        alert('回复成功！');
+        hideReplyForm(msgId);
+        await renderAll();
+      } catch (e) {
+        console.error('回复失败:', e);
+        alert('回复失败: ' + e.message);
+      }
     }
 
     let isSubmitting = false;
@@ -322,7 +466,8 @@
           text: text,
           ts: Date.now(),
           likes: 0,
-          token: userToken
+          token: userToken,
+          replies: []
         };
         
         if (selectedMood) {
@@ -432,7 +577,7 @@
         setStatus(true, '已连接到云端');
         await renderAll();
         await updateStats();
-        playBackgroundMusic(); // 播放背景音乐
+        initMusic();
       } catch (e) {
         console.error('初始化失败:', e);
         setStatus(false, '连接失败: ' + e.message);
