@@ -283,7 +283,7 @@
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
               <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
-              <button class="reply-btn" data-name="${escapeHtml(msg.name)}" onclick="showReplyForm(event)">💬 回复</button>
+              <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}" onclick="showReplyForm(event)">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
             </div>
             
