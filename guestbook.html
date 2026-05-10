@@ -265,7 +265,39 @@
         return;
       }
 
-      list.innerHTML = msgs.map(msg => {
+      // 分离主留言和回复
+      const mainMsgs = [];
+      const replies = {};
+      msgs.forEach(msg => {
+        if (msg.reply_to_id) {
+          if (!replies[msg.reply_to_id]) {
+            replies[msg.reply_to_id] = [];
+          }
+          replies[msg.reply_to_id].push(msg);
+        } else {
+          mainMsgs.push(msg);
+        }
+      });
+
+      // 按时间倒序排列主留言
+      mainMsgs.sort((a, b) => b.ts - a.ts);
+
+      list.innerHTML = mainMsgs.map(msg => {
+        // 获取该留言的回复并按时间正序排列
+        const msgReplies = (replies[msg.id] || []).sort((a, b) => a.ts - b.ts);
+        const repliesHtml = msgReplies.map(reply => `
+          <div class="reply-chain">
+            <div class="msg-header">
+              <div class="msg-avatar" style="background:${avatarColor(reply.name)};width:32px;height:32px;font-size:12px;">${avatarLetter(reply.name)}</div>
+              <div>
+                <div class="msg-name" style="font-size:14px;">${escapeHtml(reply.name)}</div>
+                <div class="msg-meta">${reply.city || '未知城市'} · ${fmtTime(reply.ts)}</div>
+              </div>
+            </div>
+            <div class="msg-body" style="font-size:14px;">${escapeHtml(reply.text).replace(/\n/g, '<br>')}</div>
+          </div>
+        `).join('');
+
         return `
           <div class="msg-card" data-id="${msg.id}">
             <div class="msg-header">
@@ -281,6 +313,8 @@
               <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
             </div>
+            
+            ${repliesHtml}
             
             <div class="reply-form" id="reply-form-${msg.id}" data-name="${escapeHtml(msg.name)}">
               <div style="margin-bottom: 10px; font-size: 13px; color: var(--text-secondary);">回复 @${escapeHtml(msg.name)}</div>
@@ -349,6 +383,7 @@
       const name = document.getElementById('inp-name').value.trim();
       const city = document.getElementById('inp-city').value.trim();
       const text = document.getElementById('inp-msg').value.trim();
+      const mood = document.getElementById('inp-selected-mood').value;
       
       try {
         let submitName = name || '游客';
@@ -360,6 +395,8 @@
         const payload = {
           name: submitName.slice(0, 20),
           text: text,
+          city: city,
+          mood: mood,
           ts: Date.now(),
           likes: 0
         };
@@ -369,10 +406,16 @@
           body: JSON.stringify(payload)
         });
         
+        // 显示刷新提示
+        document.body.style.opacity = '0.5';
+        
         // 成功后完全重新加载页面
-        location.href = location.href;
+        setTimeout(() => {
+          location.href = location.href;
+        }, 300);
       } catch (e) {
         console.error('提交失败:', e);
+        document.body.style.opacity = '1';
       } finally {
         resetBtn();
       }
@@ -461,12 +504,13 @@
       if (!name) name = '游客';
       
       try {
-        const replyText = `@${replyToName} ${text}`;
         const payload = {
           name: name.slice(0, 20),
-          text: replyText,
+          text: text,
           ts: Date.now(),
-          likes: 0
+          likes: 0,
+          reply_to_id: replyToId,
+          reply_to_name: replyToName
         };
         
         await fetchData(API_URL, {
@@ -474,10 +518,16 @@
           body: JSON.stringify(payload)
         });
         
+        // 显示刷新提示
+        document.body.style.opacity = '0.5';
+        
         // 成功后完全重新加载页面
-        location.href = location.href;
+        setTimeout(() => {
+          location.href = location.href;
+        }, 300);
       } catch (e) {
         console.error('回复失败:', e);
+        document.body.style.opacity = '1';
       } finally {
         resetReplyBtn();
       }
