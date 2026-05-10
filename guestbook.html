@@ -337,27 +337,30 @@
     
     async function submitMsg() {
       if (isSubmitting) return;
-      isSubmitting = true;
       
       const btn = document.querySelector('.submit-btn');
       const originalText = btn.textContent;
+      
+      // 立即禁用按钮
+      isSubmitting = true;
+      btn.disabled = true;
       btn.textContent = '发布中...';
+      btn.style.opacity = '0.5';
+      btn.style.cursor = 'not-allowed';
       
       const name = document.getElementById('inp-name').value.trim();
       const city = document.getElementById('inp-city').value.trim();
       const text = document.getElementById('inp-msg').value.trim();
       
       try {
-        if (!name) name = '游客';
+        let submitName = name || '游客';
         if (!text) { 
-          btn.textContent = originalText;
-          isSubmitting = false;
+          resetBtn();
           return;
         }
 
-        // 最简化的payload，只保留绝对必要的字段
         const payload = {
-          name: name.slice(0, 20),
+          name: submitName.slice(0, 20),
           text: text,
           ts: Date.now(),
           likes: 0
@@ -378,11 +381,17 @@
         await renderAll();
         await updateStats();
       } catch (e) {
-        // 静默失败，不弹窗
         console.error('提交失败:', e);
       } finally {
+        resetBtn();
+      }
+      
+      function resetBtn() {
         isSubmitting = false;
+        btn.disabled = false;
         btn.textContent = originalText;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
       }
     }
 
@@ -438,6 +447,7 @@
     }
     
     let isSubmittingReply = false;
+    let activeReplyBtn = null;
     
     async function submitReplyDirect(replyToId, replyToName) {
       if (isSubmittingReply) return;
@@ -447,10 +457,20 @@
       
       if (!text) return;
       
-      let name = document.getElementById('inp-name').value.trim();
-      if (!name) name = '游客';
+      // 找到按钮并禁用
+      const replyForm = document.getElementById('reply-form-' + replyToId);
+      const btn = replyForm.querySelector('.do-reply-btn');
+      const originalText = btn.textContent;
       
       isSubmittingReply = true;
+      activeReplyBtn = btn;
+      btn.disabled = true;
+      btn.textContent = '发布中...';
+      btn.style.opacity = '0.5';
+      btn.style.cursor = 'not-allowed';
+      
+      let name = document.getElementById('inp-name').value.trim();
+      if (!name) name = '游客';
       
       try {
         const replyText = `@${replyToName} ${text}`;
@@ -474,7 +494,18 @@
       } catch (e) {
         console.error('回复失败:', e);
       } finally {
+        resetReplyBtn();
+      }
+      
+      function resetReplyBtn() {
         isSubmittingReply = false;
+        if (activeReplyBtn) {
+          activeReplyBtn.disabled = false;
+          activeReplyBtn.textContent = originalText;
+          activeReplyBtn.style.opacity = '1';
+          activeReplyBtn.style.cursor = 'pointer';
+        }
+        activeReplyBtn = null;
       }
     }
     
@@ -482,16 +513,22 @@
       const id = btn.getAttribute('data-id');
       const currentLikes = parseInt(btn.textContent.trim().split(' ')[1]) || 0;
       
+      // 先更新UI，让用户感觉快
+      const newLikes = currentLikes + 1;
+      btn.textContent = `❤️ ${newLikes}`;
+      
+      // 后台异步提交，不等待
       try {
-        const newLikes = currentLikes + 1;
         await fetchData(`${API_URL}?id=eq.${id}`, {
           method: 'PATCH',
           body: JSON.stringify({ likes: newLikes })
         });
-        
-        btn.textContent = `❤️ ${newLikes}`;
         await updateStats();
-      } catch (e) { console.error('点赞失败:', e); }
+      } catch (e) { 
+        // 失败了也不弹窗，悄悄回退
+        console.error('点赞失败:', e);
+        btn.textContent = `❤️ ${currentLikes}`;
+      }
     }
 
     async function init() {
