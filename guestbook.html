@@ -279,7 +279,7 @@
             </div>
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
-              <button class="like-btn" data-id="${msg.id}">🤍 ${msg.likes || 0}</button>
+              <button class="like-btn" data-id="${msg.id}">❤️ ${msg.likes || 0}</button>
               <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
             </div>
@@ -481,22 +481,15 @@
     async function toggleLikeDirect(btn) {
       const id = btn.getAttribute('data-id');
       const currentLikes = parseInt(btn.textContent.trim().split(' ')[1]) || 0;
-      const isLiked = btn.classList.contains('liked');
       
       try {
-        const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
+        const newLikes = currentLikes + 1;
         await fetchData(`${API_URL}?id=eq.${id}`, {
           method: 'PATCH',
           body: JSON.stringify({ likes: newLikes })
         });
         
-        if (isLiked) {
-          btn.textContent = `🤍 ${newLikes}`;
-          btn.classList.remove('liked');
-        } else {
-          btn.textContent = `❤️ ${newLikes}`;
-          btn.classList.add('liked');
-        }
+        btn.textContent = `❤️ ${newLikes}`;
         await updateStats();
       } catch (e) { console.error('点赞失败:', e); }
     }
