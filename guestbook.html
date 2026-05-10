@@ -64,7 +64,6 @@
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
   
   .stats-bar { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; color: var(--text-secondary); font-size: 13px; }
-  .refresh-btn { background: transparent; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; cursor: pointer; color: var(--text-secondary); font-size: 12px; }
   
   .footer { text-align: center; padding: 30px 0; color: var(--text-secondary); font-size: 12px; }
   
@@ -144,8 +143,6 @@
 
   <div class="stats-bar">
     <div>📝 <span id="msg-count">0</span> 条留言</div>
-    <button class="refresh-btn" onclick="refreshMsgs()">🔄 刷新</button>
-    <button class="refresh-btn" onclick="resetRealMessages()" style="background:#3fb950; border-color:#3fb950;">🆕 重置真实留言</button>
   </div>
 
   <div class="form-card">
@@ -398,10 +395,7 @@
 
 
 
-    async function refreshMsgs() {
-      await renderAll();
-      await updateStats();
-    }
+
 
     function selectMood(event) {
       const btn = event.target;
@@ -530,56 +524,6 @@
         console.error('点赞失败:', e);
         btn.textContent = `❤️ ${currentLikes}`;
       }
-    }
-
-    async function resetRealMessages() {
-      if (!confirm('确定要重置所有留言为真实的内容吗？')) return;
-      
-      // 1. 加载当前所有留言
-      const msgs = await loadMsgs();
-      
-      // 2. 尝试删除（如果能删的话）
-      for (const msg of msgs) {
-        try {
-          await fetchData(`${API_URL}?id=eq.${msg.id}`, { method: 'DELETE' });
-        } catch (e) {}
-      }
-      
-      // 3. 添加真实的留言
-      const realMessages = [
-        { name: "深漂小陈", text: "想搬去佛山养老，深圳卷不动了。", city: "深圳", likes: 12 },
-        { name: "广州土著", text: "@深漂小陈 佛山欢迎你！早茶好吃房价低", city: "广州", likes: 8 },
-        { name: "打工人阿明", text: "今天终于周五了！周末要好好睡一觉", city: "东莞", likes: 15 },
-        { name: "爱猫的小李", text: "@打工人阿明 太懂了！我周末要撸猫两天", city: "深圳", likes: 9 },
-        { name: "失业青年", text: "有人知道现在什么行业好找工作吗？", city: "长沙", likes: 6 },
-        { name: "程序员老张", text: "@失业青年 来写代码吧，虽然累但是饿不死", city: "杭州", likes: 11 },
-        { name: "美食爱好者", text: "周末准备去吃双皮奶，有没有一起的！", city: "顺德", likes: 13 },
-        { name: "加班狗", text: "@美食爱好者 羡慕死了，我周末还要加班...", city: "深圳", likes: 5 },
-        { name: "小确幸", text: "今天天气好好，去西湖走了一圈，心情都变好了", city: "杭州", likes: 18 },
-        { name: "螺蛳粉", text: "什么时候能能有自己的房子", city: "柳州", likes: 7 },
-        { name: "租房党", text: "@螺蛳粉 慢慢来，先从一个小窝开始", city: "深圳", likes: 4 },
-        { name: "摄影小白", text: "今天拍了200张，只选出5张，不过很满意！", city: "成都", likes: 10 },
-        { name: "铲屎官阿花", text: "我家猫今天踩键盘敲了'hello world'！", city: "武汉", likes: 20 },
-      ];
-      
-      // 从旧到新添加
-      for (let i = realMessages.length - 1; i >= 0; i--) {
-        const m = realMessages[i];
-        await fetchData(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            name: m.name,
-            text: m.text,
-            city: m.city,
-            ts: Date.now() - (realMessages.length - i) * 60000, // 间隔一分钟
-            likes: m.likes
-          })
-        });
-      }
-      
-      await renderAll();
-      await updateStats();
-      alert('重置完成！');
     }
 
     async function init() {
