@@ -17,7 +17,7 @@
     --accent-green: #3fb950;
   }
   
-  body { background: var(--bg-page); color: var(--text-primary); font-family: 'PingFang SC','Helvetica Neue','Arial',sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+  body { background: var(--bg-page); color: var(--text-primary); font-family: 'PingFang SC','Helvetica Neue','Arial',sans-serif; max-width: 1400px; margin: 0 auto; padding: 20px; }
   
   #status-bar { background: #161b22; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; text-align: center; }
   .status-online { color: var(--accent-green); }
@@ -32,7 +32,8 @@
   
   .submit-btn { background: var(--primary-color); color: var(--bg-page); padding: 14px; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; width: 100%; }
   
-  .msg-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; margin-bottom: 15px; }
+  .msg-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 20px; }
+  .msg-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; }
   .msg-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
   .msg-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--bg-page); font-size: 16px; }
   .msg-name { font-weight: 700; font-size: 15px; }
@@ -85,15 +86,21 @@
     box-shadow: 0 0 0 2px rgba(88,166,255,0.3);
   }
 
-  /* 平板端响应式 */
-  @media screen and (max-width: 1024px) {
+  /* 电脑端 - 4列布局 */
+  @media screen and (min-width: 1025px) {
+    .msg-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  /* 平板端 - 2列布局 */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
     body { padding: 15px; }
     .page-title { font-size: 28px; }
     .form-card { padding: 20px; }
     .msg-avatar { width: 40px; height: 40px; font-size: 14px; }
+    .msg-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
-  /* 手机端响应式 */
+  /* 手机端 - 1列布局 */
   @media screen and (max-width: 768px) {
     body { padding: 10px; }
     .page-title { font-size: 24px; gap: 8px; }
@@ -101,7 +108,7 @@
     .form-card { padding: 15px; margin-bottom: 20px; }
     input, textarea { padding: 10px; font-size: 14px; }
     .submit-btn { padding: 12px; font-size: 15px; }
-    .msg-card { padding: 15px; margin-bottom: 12px; }
+    .msg-card { padding: 15px; }
     .msg-avatar { width: 36px; height: 36px; font-size: 13px; }
     .msg-name { font-size: 14px; }
     .msg-body { font-size: 13px; line-height: 1.6; }
@@ -117,6 +124,7 @@
     
     .empty-state { padding: 40px 15px; }
     .empty-state div:first-child { font-size: 36px !important; }
+    .msg-grid { grid-template-columns: repeat(1, 1fr); }
   }
 
   /* 小屏手机响应式 */
@@ -173,7 +181,7 @@
     <button class="submit-btn" onclick="submitMsg()">发布留言</button>
   </div>
 
-  <div id="msg-list"></div>
+  <div id="msg-list" class="msg-grid"></div>
 
   <div class="footer">
     <p>☁️ 留言存储在云端，所有访客都能看到</p>
