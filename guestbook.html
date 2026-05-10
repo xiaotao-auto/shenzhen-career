@@ -128,10 +128,184 @@
       grid-template-columns: repeat(3, 1fr) !important;
     }
     .mood-option { padding: 5px 6px; font-size: 16px; }
+    
+    .nav-links { display: none; }
+    .music-panel { width: 280px; right: 10px; }
+  }
+
+  /* 导航栏样式 */
+  .navbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 20px;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  
+  .nav-brand {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .nav-links a:hover {
+    background: rgba(88,166,255,0.1);
+    color: var(--primary-color);
+  }
+  
+  .nav-links a.active {
+    background: rgba(88,166,255,0.15);
+    color: var(--primary-color);
+  }
+
+  /* 音乐播放器样式 */
+  #music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  #music-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s;
+  }
+  
+  #music-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(88,166,255,0.3);
+  }
+  
+  #music-panel {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    width: 220px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  
+  #music-panel.hidden {
+    display: none;
+  }
+  
+  .music-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+  
+  .music-tracks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .music-track {
+    background: #21262d;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 10px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+  
+  .music-track:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+  
+  .music-track.active {
+    background: rgba(88,166,255,0.15);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+  
+  .music-volume {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .music-volume input {
+    flex: 1;
+    height: 4px;
+    cursor: pointer;
   }
 </style>
 </head>
 <body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">🏠 深圳青年</a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="graduate-guide.html">毕业生指南</a>
+        <a href="housing-price-viz.html">房价分析</a>
+        <a href="guestbook.html" class="active">💬 留言板</a>
+      </div>
+    </div>
+  </nav>
+  
+  <div id="music-player">
+    <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+    <div id="music-panel" class="hidden">
+      <div class="music-title">🎶 背景音乐</div>
+      <div class="music-tracks">
+        <button class="music-track" onclick="playTrack('rain')">🌧️ 雨声</button>
+        <button class="music-track" onclick="playTrack('forest')">🌲 森林</button>
+        <button class="music-track" onclick="playTrack('ocean')">🌊 海浪</button>
+        <button class="music-track" onclick="playTrack('cafe')">☕ 咖啡馆</button>
+      </div>
+      <div class="music-volume">
+        音量：<input type="range" min="0" max="100" value="30" id="volume-slider" onchange="setVolume(this.value)">
+      </div>
+      <audio id="bg-audio" loop></audio>
+    </div>
+  </div>
   <div id="status-bar" class="status-offline">🔴 连接中...</div>
   
   <div class="page-header">
@@ -184,6 +358,32 @@
     
     const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
     const moods = ['😊 开心', '😢 难过', '😮 惊讶', '🤔 迷茫', '❤️ 感动', '🔥 激动', '✨ 期待', '💪 加油', '😎 酷', '🥳 开心', '😴 困', '🤩 惊喜'];
+    
+    const musicUrls = {
+      rain: 'https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3',
+      forest: 'https://assets.mixkit.co/active_storage/sfx/1219/1219-preview.mp3',
+      ocean: 'https://assets.mixkit.co/active_storage/sfx/2411/2411-preview.mp3',
+      cafe: 'https://assets.mixkit.co/active_storage/sfx/2189/2189-preview.mp3'
+    };
+    
+    function toggleMusic() {
+      const panel = document.getElementById('music-panel');
+      panel.classList.toggle('hidden');
+    }
+    
+    function playTrack(trackName) {
+      const audio = document.getElementById('bg-audio');
+      document.querySelectorAll('.music-track').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      audio.src = musicUrls[trackName];
+      audio.volume = document.getElementById('volume-slider').value / 100;
+      audio.play().catch(e => console.log('播放失败:', e));
+    }
+    
+    function setVolume(value) {
+      const audio = document.getElementById('bg-audio');
+      audio.volume = value / 100;
+    }
     
     function setStatus(isOnline, msg) {
       if (isOnline) {
