@@ -313,15 +313,18 @@
       const text = document.getElementById('inp-msg').value.trim();
       
       try {
-        if (!name) { alert('请填写昵称'); return; }
-        if (!text) { alert('请填写留言内容'); return; }
-
-        let userToken = localStorage.getItem('guestbook_token');
-        if (!userToken) {
-          userToken = 'token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-          localStorage.setItem('guestbook_token', userToken);
+        if (!name) { 
+          // 不用alert，直接返回
+          btn.textContent = originalText;
+          isSubmitting = false;
+          return;
         }
-        
+        if (!text) { 
+          btn.textContent = originalText;
+          isSubmitting = false;
+          return;
+        }
+
         // 最简化的payload，只保留绝对必要的字段
         const payload = {
           name: name.slice(0, 20),
@@ -335,8 +338,7 @@
           body: JSON.stringify(payload)
         });
         
-        alert('留言发布成功！');
-        
+        // 成功后清空
         document.getElementById('inp-name').value = '';
         document.getElementById('inp-city').value = '';
         document.getElementById('inp-msg').value = '';
@@ -346,8 +348,8 @@
         await renderAll();
         await updateStats();
       } catch (e) {
+        // 静默失败，不弹窗
         console.error('提交失败:', e);
-        alert('提交失败，请稍后重试！');
       } finally {
         isSubmitting = false;
         btn.textContent = originalText;
@@ -443,33 +445,15 @@
       const textarea = document.getElementById('reply-text-' + replyToId);
       const text = textarea.value.trim();
       
-      if (!text) {
-        alert('请填写回复内容');
-        return;
-      }
+      if (!text) return;
       
-      // 获取主表单的昵称和城市
       const name = document.getElementById('inp-name').value.trim();
-      const city = document.getElementById('inp-city').value.trim();
-      
-      if (!name) {
-        alert('请先在顶部填写昵称');
-        return;
-      }
+      if (!name) return;
       
       isSubmittingReply = true;
       
       try {
-        let userToken = localStorage.getItem('guestbook_token');
-        if (!userToken) {
-          userToken = 'token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-          localStorage.setItem('guestbook_token', userToken);
-        }
-        
-        // 简单实现回复：在文本前加上 @用户名 前缀
         const replyText = `@${replyToName} ${text}`;
-        
-        // 最简化的payload
         const payload = {
           name: name.slice(0, 20),
           text: replyText,
@@ -482,7 +466,6 @@
           body: JSON.stringify(payload)
         });
         
-        alert('回复发布成功！');
         textarea.value = '';
         hideReplyForm(replyToId);
         
@@ -490,7 +473,6 @@
         await updateStats();
       } catch (e) {
         console.error('回复失败:', e);
-        alert('回复失败，请稍后重试！');
       } finally {
         isSubmittingReply = false;
       }
