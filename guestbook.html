@@ -133,7 +133,7 @@
 </style>
 </head>
 <body>
-  <audio id="bg-audio" loop src="https://assets.mixkit.co/active_storage/sfx/2189/2189-preview.mp3" style="display:none;"></audio>
+  <audio id="bg-audio" loop src="https://assets.mixkit.co/music/preview/mixkit-coffee-shop-in-milan-01-280.mp3" style="display:none;"></audio>
   <div id="status-bar" class="status-offline">🔴 连接中...</div>
   
   <div class="page-header">
@@ -191,7 +191,7 @@
     function playBackgroundMusic() {
       const audio = document.getElementById('bg-audio');
       if (audio) {
-        audio.volume = 0.3; // 设置音量为 30%
+        audio.volume = 0.7; // 设置音量为 70%
         // 尝试自动播放
         audio.play().catch(e => {
           console.log('需要用户交互后才能播放背景音乐');
