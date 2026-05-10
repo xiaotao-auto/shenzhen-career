@@ -54,6 +54,13 @@
   .reply-indicator { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
   .reply-indicator a { color: var(--primary-color); text-decoration: none; }
   
+  .reply-form { margin-top: 15px; padding: 15px; background: rgba(33,38,45,0.5); border-radius: 10px; border: 1px solid var(--border-color); display: none; }
+  .reply-form textarea { margin-bottom: 10px; min-height: 80px; }
+  .reply-form button { background: var(--primary-color); color: var(--bg-page); padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+  .reply-form .cancel-btn { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); margin-left: 10px; }
+  
+  .reply-chain { border-left: 3px solid var(--primary-color); padding-left: 15px; margin-left: 10px; margin-top: 15px; }
+  
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
   
   .stats-bar { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; color: var(--text-secondary); font-size: 13px; }
@@ -249,6 +256,9 @@
       document.getElementById('msg-count').textContent = msgs.length;
     }
 
+    let replyingToId = null;
+    let replyingToName = null;
+    
     async function renderAll() {
       const list = document.getElementById('msg-list');
       const msgs = await loadMsgs();
@@ -260,8 +270,24 @@
 
       const userToken = localStorage.getItem('guestbook_token');
       
-      list.innerHTML = msgs.map(msg => {
+      // 找出所有回复的关系
+      const repliesMap = {};
+      const mainMsgs = [];
+      
+      msgs.forEach(msg => {
+        if (msg.reply_to_id) {
+          if (!repliesMap[msg.reply_to_id]) {
+            repliesMap[msg.reply_to_id] = [];
+          }
+          repliesMap[msg.reply_to_id].push(msg);
+        } else {
+          mainMsgs.push(msg);
+        }
+      });
+      
+      list.innerHTML = mainMsgs.map(msg => {
         const canDelete = msg.token && userToken === msg.token;
+        const replies = repliesMap[msg.id] || [];
         
         return `
           <div class="msg-card" data-id="${msg.id}">
@@ -275,9 +301,41 @@
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
               <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
+              <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}" onclick="showReplyForm(event)">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
               ${canDelete ? `<button class="delete-btn" data-id="${msg.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
             </div>
+            
+            <div class="reply-form" id="reply-form-${msg.id}">
+              <div style="margin-bottom: 10px; font-size: 13px; color: var(--text-secondary);">回复 @${escapeHtml(msg.name)}</div>
+              <textarea id="reply-text-${msg.id}" placeholder="说点什么..." rows="3" maxlength="200"></textarea>
+              <button onclick="submitReply(${msg.id}, '${escapeHtml(msg.name)}')">发布回复</button>
+              <button class="cancel-btn" onclick="hideReplyForm(${msg.id})">取消</button>
+            </div>
+            
+            ${replies.length > 0 ? `
+              <div class="reply-chain">
+                ${replies.reply ? replies : replies.map(reply => `
+                  <div class="msg-card" style="margin-top:15px; background: rgba(33,38,45,0.3);" data-id="${reply.id}">
+                    <div class="msg-header">
+                      <div class="msg-avatar" style="background:${avatarColor(reply.name)}">${avatarLetter(reply.name)}</div>
+                      <div>
+                        <div class="msg-name">${escapeHtml(reply.name)}</div>
+                        <div class="msg-meta">${reply.city || '未知城市'} · ${fmtTime(reply.ts)}</div>
+                      </div>
+                    </div>
+                    ${reply.reply_to_name ? `<div class="reply-indicator">↳ 回复 @${escapeHtml(reply.reply_to_name)}</div>` : ''}
+                    <div class="msg-body">${escapeHtml(reply.text).replace(/\n/g, '<br>')}</div>
+                    <div class="msg-actions">
+                      <button class="like-btn" data-id="${reply.id}" onclick="toggleLike(event)">🤍 ${reply.likes || 0}</button>
+                      <button class="reply-btn" data-id="${reply.id}" data-name="${escapeHtml(reply.name)}" onclick="showReplyForm(event)">💬 回复</button>
+                      ${reply.mood ? `<span class="mood-badge">${reply.mood}</span>` : ''}
+                      ${(reply.token && userToken === reply.token) ? `<button class="delete-btn" data-id="${reply.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
           </div>
         `;
       }).join('');
@@ -417,6 +475,102 @@
 
     function escapeHtml(s) {
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    
+    function showReplyForm(event) {
+      const btn = event.target;
+      const id = btn.getAttribute('data-id');
+      const name = btn.getAttribute('data-name');
+      
+      // 先隐藏所有回复表单
+      document.querySelectorAll('.reply-form').forEach(form => {
+        form.style.display = 'none';
+      });
+      
+      // 显示当前的回复表单
+      const form = document.getElementById('reply-form-' + id);
+      if (form) {
+        form.style.display = 'block';
+      }
+    }
+    
+    function hideReplyForm(id) {
+      const form = document.getElementById('reply-form-' + id);
+      if (form) {
+        form.style.display = 'none';
+      }
+    }
+    
+    let isSubmittingReply = false;
+    
+    async function submitReply(replyToId, replyToName) {
+      if (isSubmittingReply) return;
+      
+      const textarea = document.getElementById('reply-text-' + replyToId);
+      const text = textarea.value.trim();
+      
+      if (!text) {
+        alert('请填写回复内容');
+        return;
+      }
+      
+      // 获取主表单的昵称和城市
+      const name = document.getElementById('inp-name').value.trim();
+      const city = document.getElementById('inp-city').value.trim();
+      
+      if (!name) {
+        alert('请先在顶部填写昵称');
+        return;
+      }
+      
+      isSubmittingReply = true;
+      
+      try {
+        let userToken = localStorage.getItem('guestbook_token');
+        if (!userToken) {
+          userToken = 'token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem('guestbook_token', userToken);
+        }
+        
+        const selectedMood = document.getElementById('inp-selected-mood').value;
+        
+        const payload = {
+          name: name.slice(0, 20),
+          city: city.slice(0, 20),
+          text: text,
+          ts: Date.now(),
+          likes: 0,
+          token: userToken,
+          reply_to_id: replyToId,
+          reply_to_name: replyToName
+        };
+        
+        if (selectedMood) {
+          payload.mood = selectedMood;
+        } else {
+          payload.mood = moods[Math.floor(Math.random() * moods.length)];
+        }
+        
+        await fetchData(API_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        
+        alert('回复发布成功！');
+        textarea.value = '';
+        hideReplyForm(replyToId);
+        
+        await renderAll();
+        await updateStats();
+      } catch (e) {
+        if (e.message && e.message.includes('400')) {
+          alert('回复失败，请检查内容是否符合要求！');
+        } else {
+          alert('回复失败: ' + e.message);
+        }
+      } finally {
+        isSubmittingReply = false;
+      }
     }
 
     async function init() {
