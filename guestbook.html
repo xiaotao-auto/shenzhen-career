@@ -369,15 +369,8 @@
           body: JSON.stringify(payload)
         });
         
-        // 成功后清空
-        document.getElementById('inp-name').value = '';
-        document.getElementById('inp-city').value = '';
-        document.getElementById('inp-msg').value = '';
-        document.getElementById('inp-selected-mood').value = '';
-        document.querySelectorAll('.mood-option').forEach(b => b.classList.remove('selected'));
-        
-        await renderAll();
-        await updateStats();
+        // 成功后刷新页面
+        location.reload();
       } catch (e) {
         console.error('提交失败:', e);
       } finally {
@@ -481,11 +474,8 @@
           body: JSON.stringify(payload)
         });
         
-        textarea.value = '';
-        hideReplyForm(replyToId);
-        
-        await renderAll();
-        await updateStats();
+        // 成功后刷新页面
+        location.reload();
       } catch (e) {
         console.error('回复失败:', e);
       } finally {
