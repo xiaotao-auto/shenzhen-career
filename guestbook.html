@@ -65,10 +65,11 @@
     background: #21262d; 
     border: 2px solid var(--border-color); 
     border-radius: 10px; 
-    padding: 8px 12px; 
+    padding: 8px 16px; 
     cursor: pointer; 
-    font-size: 20px;
+    font-size: 22px;
     transition: all 0.2s;
+    flex-shrink: 0;
   }
   .mood-option:hover { border-color: var(--primary-color); }
   .mood-option.selected { 
@@ -105,12 +106,7 @@
     #status-bar { font-size: 12px; padding: 8px 12px; }
     .footer { padding: 20px 0; font-size: 11px; }
     
-    #mood-selector {
-      display: grid !important;
-      grid-template-columns: repeat(4, 1fr) !important;
-      gap: 8px !important;
-    }
-    .mood-option { padding: 6px 8px; font-size: 18px; }
+    .mood-option { padding: 10px 16px; font-size: 20px; }
     
     .empty-state { padding: 40px 15px; }
     .empty-state div:first-child { font-size: 36px !important; }
@@ -125,10 +121,7 @@
     .msg-avatar { width: 32px; height: 32px; font-size: 12px; }
     .msg-meta { font-size: 11px; }
     
-    #mood-selector {
-      grid-template-columns: repeat(3, 1fr) !important;
-    }
-    .mood-option { padding: 5px 6px; font-size: 16px; }
+    .mood-option { padding: 10px 14px; font-size: 18px; }
   }
 </style>
 </head>
@@ -152,7 +145,7 @@
     <input id="inp-city" placeholder="来自哪里（选填）" maxlength="20">
     <div style="margin-bottom:10px;">
       <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:8px;">选择心情（可选）</label>
-      <div id="mood-selector" style="display:flex; gap:8px; flex-wrap:wrap;">
+      <div id="mood-selector" style="display:flex; gap:10px; overflow-x:auto; padding:5px 0; -webkit-overflow-scrolling:touch;">
         <button class="mood-option" data-mood="😊 开心" onclick="selectMood(event)">😊</button>
         <button class="mood-option" data-mood="😢 难过" onclick="selectMood(event)">😢</button>
         <button class="mood-option" data-mood="😮 惊讶" onclick="selectMood(event)">😮</button>
