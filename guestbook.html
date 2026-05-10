@@ -256,7 +256,6 @@
       document.getElementById('msg-count').textContent = msgs.length;
     }
 
-    let replyingToId = null;
     let replyingToName = null;
     
     async function renderAll() {
@@ -270,24 +269,8 @@
 
       const userToken = localStorage.getItem('guestbook_token');
       
-      // 找出所有回复的关系
-      const repliesMap = {};
-      const mainMsgs = [];
-      
-      msgs.forEach(msg => {
-        if (msg.reply_to_id) {
-          if (!repliesMap[msg.reply_to_id]) {
-            repliesMap[msg.reply_to_id] = [];
-          }
-          repliesMap[msg.reply_to_id].push(msg);
-        } else {
-          mainMsgs.push(msg);
-        }
-      });
-      
-      list.innerHTML = mainMsgs.map(msg => {
+      list.innerHTML = msgs.map(msg => {
         const canDelete = msg.token && userToken === msg.token;
-        const replies = repliesMap[msg.id] || [];
         
         return `
           <div class="msg-card" data-id="${msg.id}">
@@ -301,7 +284,7 @@
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
               <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
-              <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}" onclick="showReplyForm(event)">💬 回复</button>
+              <button class="reply-btn" data-name="${escapeHtml(msg.name)}" onclick="showReplyForm(event)">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
               ${canDelete ? `<button class="delete-btn" data-id="${msg.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
             </div>
@@ -309,33 +292,9 @@
             <div class="reply-form" id="reply-form-${msg.id}">
               <div style="margin-bottom: 10px; font-size: 13px; color: var(--text-secondary);">回复 @${escapeHtml(msg.name)}</div>
               <textarea id="reply-text-${msg.id}" placeholder="说点什么..." rows="3" maxlength="200"></textarea>
-              <button onclick="submitReply(${msg.id}, '${escapeHtml(msg.name)}')">发布回复</button>
-              <button class="cancel-btn" onclick="hideReplyForm(${msg.id})">取消</button>
+              <button onclick="submitReply('${msg.id}', '${escapeHtml(msg.name)}')">发布回复</button>
+              <button class="cancel-btn" onclick="hideReplyForm('${msg.id}')">取消</button>
             </div>
-            
-            ${replies.length > 0 ? `
-              <div class="reply-chain">
-                ${replies.reply ? replies : replies.map(reply => `
-                  <div class="msg-card" style="margin-top:15px; background: rgba(33,38,45,0.3);" data-id="${reply.id}">
-                    <div class="msg-header">
-                      <div class="msg-avatar" style="background:${avatarColor(reply.name)}">${avatarLetter(reply.name)}</div>
-                      <div>
-                        <div class="msg-name">${escapeHtml(reply.name)}</div>
-                        <div class="msg-meta">${reply.city || '未知城市'} · ${fmtTime(reply.ts)}</div>
-                      </div>
-                    </div>
-                    ${reply.reply_to_name ? `<div class="reply-indicator">↳ 回复 @${escapeHtml(reply.reply_to_name)}</div>` : ''}
-                    <div class="msg-body">${escapeHtml(reply.text).replace(/\n/g, '<br>')}</div>
-                    <div class="msg-actions">
-                      <button class="like-btn" data-id="${reply.id}" onclick="toggleLike(event)">🤍 ${reply.likes || 0}</button>
-                      <button class="reply-btn" data-id="${reply.id}" data-name="${escapeHtml(reply.name)}" onclick="showReplyForm(event)">💬 回复</button>
-                      ${reply.mood ? `<span class="mood-badge">${reply.mood}</span>` : ''}
-                      ${(reply.token && userToken === reply.token) ? `<button class="delete-btn" data-id="${reply.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            ` : ''}
           </div>
         `;
       }).join('');
@@ -479,8 +438,13 @@
     
     function showReplyForm(event) {
       const btn = event.target;
-      const id = btn.getAttribute('data-id');
       const name = btn.getAttribute('data-name');
+      
+      // 找出当前卡片
+      const card = btn.closest('.msg-card');
+      if (!card) return;
+      
+      const id = card.getAttribute('data-id');
       
       // 先隐藏所有回复表单
       document.querySelectorAll('.reply-form').forEach(form => {
@@ -534,15 +498,16 @@
         
         const selectedMood = document.getElementById('inp-selected-mood').value;
         
+        // 简单实现回复：在文本前加上 @用户名 前缀
+        const replyText = `@${replyToName} ${text}`;
+        
         const payload = {
           name: name.slice(0, 20),
           city: city.slice(0, 20),
-          text: text,
+          text: replyText,
           ts: Date.now(),
           likes: 0,
-          token: userToken,
-          reply_to_id: replyToId,
-          reply_to_name: replyToName
+          token: userToken
         };
         
         if (selectedMood) {
@@ -563,11 +528,8 @@
         await renderAll();
         await updateStats();
       } catch (e) {
-        if (e.message && e.message.includes('400')) {
-          alert('回复失败，请检查内容是否符合要求！');
-        } else {
-          alert('回复失败: ' + e.message);
-        }
+        console.error('回复失败:', e);
+        alert('回复失败，请稍后重试！');
       } finally {
         isSubmittingReply = false;
       }
