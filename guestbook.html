@@ -146,8 +146,8 @@
   </div>
 
   <div class="form-card">
-    <input id="inp-name" placeholder="你的昵称（随便起一个都可以！）" maxlength="20">
-    <input id="inp-city" placeholder="来自哪里（选填）" maxlength="20">
+    <input id="inp-name" placeholder="你的昵称（随便起一个都可以！）" maxlength="20" autocomplete="off">
+    <input id="inp-city" placeholder="来自哪里（选填）" maxlength="20" autocomplete="off">
     <div style="margin-bottom:10px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
         <label style="font-size:13px; color:var(--text-secondary);">选择心情（可选）</label>
@@ -168,7 +168,7 @@
         <button class="mood-option" data-mood="🤩 惊喜" onclick="selectMood(event)">🤩</button>
       </div>
     </div>
-    <textarea id="inp-msg" placeholder="说点什么..." rows="4" maxlength="300"></textarea>
+    <textarea id="inp-msg" placeholder="说点什么..." rows="4" maxlength="300" autocomplete="off"></textarea>
     <input type="hidden" id="inp-selected-mood" value="">
     <button class="submit-btn" onclick="submitMsg()">发布留言</button>
   </div>
@@ -369,8 +369,15 @@
           body: JSON.stringify(payload)
         });
         
-        // 成功后刷新页面
-        location.reload();
+        // 清空所有内容
+        document.getElementById('inp-name').value = '';
+        document.getElementById('inp-city').value = '';
+        document.getElementById('inp-msg').value = '';
+        document.getElementById('inp-selected-mood').value = '';
+        document.querySelectorAll('.mood-option').forEach(b => b.classList.remove('selected'));
+        
+        // 成功后强制刷新页面（不使用缓存）
+        location.reload(true);
       } catch (e) {
         console.error('提交失败:', e);
       } finally {
@@ -474,8 +481,15 @@
           body: JSON.stringify(payload)
         });
         
-        // 成功后刷新页面
-        location.reload();
+        // 清空所有内容
+        document.getElementById('inp-name').value = '';
+        document.getElementById('inp-city').value = '';
+        document.getElementById('inp-msg').value = '';
+        document.getElementById('inp-selected-mood').value = '';
+        document.querySelectorAll('.mood-option').forEach(b => b.classList.remove('selected'));
+        
+        // 成功后强制刷新页面（不使用缓存）
+        location.reload(true);
       } catch (e) {
         console.error('回复失败:', e);
       } finally {
