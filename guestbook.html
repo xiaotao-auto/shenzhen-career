@@ -267,10 +267,9 @@
         return;
       }
 
-      const userToken = localStorage.getItem('guestbook_token');
-      
+      // 暂时移除删除权限检查，让页面先正常工作
       list.innerHTML = msgs.map(msg => {
-        const canDelete = msg.token && userToken === msg.token;
+        const canDelete = false;
         
         return `
           <div class="msg-card" data-id="${msg.id}">
@@ -286,7 +285,6 @@
               <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
               <button class="reply-btn" data-name="${escapeHtml(msg.name)}" onclick="showReplyForm(event)">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
-              ${canDelete ? `<button class="delete-btn" data-id="${msg.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
             </div>
             
             <div class="reply-form" id="reply-form-${msg.id}">
@@ -324,20 +322,13 @@
           localStorage.setItem('guestbook_token', userToken);
         }
         
-        const selectedMood = document.getElementById('inp-selected-mood').value;
-        
-        // 简化的payload，只保留必要字段
+        // 最简化的payload，只保留绝对必要的字段
         const payload = {
           name: name.slice(0, 20),
           text: text,
-          ts: Date.now()
+          ts: Date.now(),
+          likes: 0
         };
-        
-        // 可选字段
-        if (city) payload.city = city.slice(0, 20);
-        if (selectedMood) payload.mood = selectedMood;
-        payload.likes = 0;
-        payload.token = userToken;
         
         await fetchData(API_URL, {
           method: 'POST',
@@ -400,23 +391,7 @@
       document.getElementById('inp-selected-mood').value = mood;
     }
 
-    async function deleteMsg(event) {
-      if (!confirm('确定要删除这条留言吗？')) return;
-      
-      const btn = event.target;
-      const id = btn.getAttribute('data-id');
-      
-      try {
-        await fetchData(`${API_URL}?id=eq.${id}`, {
-          method: 'DELETE'
-        });
-        await renderAll();
-        await updateStats();
-      } catch (e) {
-        console.error('删除失败:', e);
-        alert('删除失败: ' + e.message);
-      }
-    }
+
 
     function fmtTime(ts) {
       const d = new Date(ts), now = new Date();
@@ -491,25 +466,16 @@
           localStorage.setItem('guestbook_token', userToken);
         }
         
-        const selectedMood = document.getElementById('inp-selected-mood').value;
-        
         // 简单实现回复：在文本前加上 @用户名 前缀
         const replyText = `@${replyToName} ${text}`;
         
+        // 最简化的payload
         const payload = {
           name: name.slice(0, 20),
-          city: city.slice(0, 20),
           text: replyText,
           ts: Date.now(),
-          likes: 0,
-          token: userToken
+          likes: 0
         };
-        
-        if (selectedMood) {
-          payload.mood = selectedMood;
-        } else {
-          payload.mood = moods[Math.floor(Math.random() * moods.length)];
-        }
         
         await fetchData(API_URL, {
           method: 'POST',
