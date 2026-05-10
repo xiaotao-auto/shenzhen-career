@@ -61,67 +61,7 @@
   
   .footer { text-align: center; padding: 30px 0; color: var(--text-secondary); font-size: 12px; }
   
-  /* 音乐控制按钮 */
-  #music-control {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    border: none;
-    cursor: pointer;
-    font-size: 28px;
-    z-index: 1000;
-    box-shadow: 0 4px 15px rgba(88,166,255,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-  }
-  #music-control:hover { transform: scale(1.1); }
-  #music-control.playing { animation: pulse 1.5s infinite; }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 4px 15px rgba(88,166,255,0.4); }
-    50% { box-shadow: 0 4px 25px rgba(88,166,255,0.7); }
-  }
-  
-  /* 回复相关样式 */
-  .reply-form {
-    margin-top: 10px;
-    padding: 15px;
-    background: rgba(33,38,45,0.5);
-    border-radius: 10px;
-    display: none;
-  }
-  .reply-form.show { display: block; }
-  .reply-btn-inline {
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    padding: 4px 12px;
-    border-radius: 15px;
-    cursor: pointer;
-    color: var(--primary-color);
-    font-size: 12px;
-  }
-  .reply-item {
-    background: rgba(33,38,45,0.3);
-    border-left: 3px solid var(--primary-color);
-    padding: 12px;
-    margin: 10px 0 10px 20px;
-    border-radius: 0 8px 8px 0;
-  }
-  .reply-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .reply-avatar {
-    width: 28px; height: 28px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: bold; font-size: 14px; color: var(--bg-page);
-  }
-  .reply-name { font-size: 14px; font-weight: 600; }
-  .reply-meta { font-size: 11px; color: var(--text-secondary); }
-  .reply-body { font-size: 14px; line-height: 1.6; }
-  
+
   .mood-option { 
     background: #21262d; 
     border: 2px solid var(--border-color); 
@@ -187,8 +127,7 @@
 </style>
 </head>
 <body>
-  <audio id="bg-audio" src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c7ff678e.mp3?filename=soft-jazz-132384.mp3" loop></audio>
-  <button id="music-control" title="播放/暂停音乐">🔇</button>
+  <audio id="bg-audio" src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c7ff678e.mp3?filename=soft-jazz-132384.mp3" loop style="display:none;"></audio>
   <div id="status-bar" class="status-offline">🔴 连接中...</div>
   
   <div class="page-header">
@@ -240,35 +179,25 @@
     const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
     
     const statusBar = document.getElementById('status-bar');
-    const musicControl = document.getElementById('music-control');
     
     const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
     const moods = ['😊 开心', '😢 难过', '😮 惊讶', '🤔 迷茫', '❤️ 感动', '🔥 激动', '✨ 期待', '💪 加油', '😎 酷', '🥳 开心', '😴 困', '🤩 惊喜'];
     
-    let isPlaying = false;
-    let currentReplyId = null;
-    
-    // 音乐控制
+    // 背景音乐自动播放
     function initMusic() {
       const audio = document.getElementById('bg-audio');
       audio.volume = 0.7;
       
-      // 用户点击音乐按钮时播放/暂停
-      musicControl.addEventListener('click', () => {
-        if (isPlaying) {
-          audio.pause();
-          musicControl.textContent = '🔇';
-          musicControl.classList.remove('playing');
-        } else {
-          audio.play().then(() => {
-            musicControl.textContent = '🎵';
-            musicControl.classList.add('playing');
-          }).catch(e => {
-            alert('请先点击页面任意位置，然后再点此按钮播放音乐');
-          });
-        }
-        isPlaying = !isPlaying;
+      // 用户交互后播放
+      const tryPlay = () => {
+        audio.play().catch(e => console.log('等待用户交互...'));
+      };
+      
+      ['click', 'touchstart', 'scroll'].forEach(event => {
+        document.addEventListener(event, tryPlay, { once: true });
       });
+      
+      tryPlay();
     }
     
     function setStatus(isOnline, msg) {
@@ -333,7 +262,6 @@
       
       list.innerHTML = msgs.map(msg => {
         const canDelete = msg.token && userToken === msg.token;
-        const replies = msg.replies || [];
         
         return `
           <div class="msg-card" data-id="${msg.id}">
@@ -347,91 +275,12 @@
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
               <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
-              <button class="reply-btn-inline" data-id="${msg.id}" onclick="showReplyForm(event)">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
               ${canDelete ? `<button class="delete-btn" data-id="${msg.id}" onclick="deleteMsg(event)">🗑️ 删除</button>` : ''}
             </div>
-            
-            <!-- 回复表单 -->
-            <div class="reply-form" id="reply-form-${msg.id}">
-              <input type="text" placeholder="你的昵称" id="reply-name-${msg.id}" maxlength="20" style="margin-bottom:8px;width:100%;padding:10px;">
-              <textarea placeholder="写下你的回复..." id="reply-text-${msg.id}" style="margin-bottom:10px;min-height:60px;"></textarea>
-              <div style="display:flex;gap:10px;">
-                <button class="submit-btn" style="flex:1;padding:8px;font-size:14px;" onclick="submitReply(${msg.id})">发送回复</button>
-                <button style="padding:8px 20px;border-radius:8px;border:1px solid var(--border-color);background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="hideReplyForm(${msg.id})">取消</button>
-              </div>
-            </div>
-            
-            <!-- 回复列表 -->
-            ${replies.length > 0 ? replies.map(reply => `
-              <div class="reply-item">
-                <div class="reply-header">
-                  <div class="reply-avatar" style="background:${avatarColor(reply.name)}">${avatarLetter(reply.name)}</div>
-                  <div>
-                    <div class="reply-name">${escapeHtml(reply.name)}</div>
-                    <div class="reply-meta">${fmtTime(reply.ts)}</div>
-                  </div>
-                </div>
-                <div class="reply-body">${escapeHtml(reply.text).replace(/\n/g, '<br>')}</div>
-              </div>
-            `).join('') : ''}
           </div>
         `;
       }).join('');
-    }
-    
-    function showReplyForm(event) {
-      const id = event.target.getAttribute('data-id');
-      const form = document.getElementById(`reply-form-${id}`);
-      // 隐藏其他回复表单
-      document.querySelectorAll('.reply-form').forEach(f => f.classList.remove('show'));
-      form.classList.add('show');
-    }
-    
-    function hideReplyForm(id) {
-      document.getElementById(`reply-form-${id}`).classList.remove('show');
-    }
-    
-    async function submitReply(msgId) {
-      const nameInput = document.getElementById(`reply-name-${msgId}`);
-      const textInput = document.getElementById(`reply-text-${msgId}`);
-      
-      const name = nameInput.value.trim();
-      const text = textInput.value.trim();
-      
-      if (!name) { alert('请填写昵称'); return; }
-      if (!text) { alert('请填写回复内容'); return; }
-      
-      try {
-        // 先获取原消息
-        const msgs = await loadMsgs();
-        const msg = msgs.find(m => m.id === msgId);
-        if (!msg) throw new Error('消息不存在');
-        
-        // 准备回复
-        const reply = {
-          name: name.slice(0, 20),
-          text: text,
-          ts: Date.now()
-        };
-        
-        // 合并回复
-        const replies = msg.replies || [];
-        replies.push(reply);
-        
-        // 更新
-        await fetchData(`${API_URL}?id=eq.${msgId}`, {
-          method: 'PATCH',
-          body: JSON.stringify({ replies: replies })
-        });
-        
-        alert('回复成功！');
-        hideReplyForm(msgId);
-        await renderAll();
-      } catch (e) {
-        console.error('回复失败:', e);
-        alert('回复失败: ' + e.message);
-      }
     }
 
     let isSubmitting = false;
@@ -466,8 +315,7 @@
           text: text,
           ts: Date.now(),
           likes: 0,
-          token: userToken,
-          replies: []
+          token: userToken
         };
         
         if (selectedMood) {
@@ -569,60 +417,6 @@
 
     function escapeHtml(s) {
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    async function addSampleComments() {
-      const comments = [
-        { name: "小明同学", city: "北京", text: "今天面试了三家公司，最后一家给了我offer！虽然薪资比预期低一点，但团队氛围很好，leader看起来很nice。纠结中...要不要接受呢？", mood: "🤔 迷茫" },
-        { name: "奶茶要少糖", city: "上海", text: "周末去武康路拍了照，人真的好多啊！但阳光很好，拍出了满意的照片。推荐大家下午3-4点去，光线最柔和～", mood: "😊 开心" },
-        { name: "夜跑的程序员", city: "深圳", text: "刚上线完一个大版本，连续加班一周终于结束了！凌晨两点的深圳街头居然还有这么多人，大家都在为生活努力啊。", mood: "😴 困" },
-        { name: "画画的阿美", city: "杭州", text: "今天在西湖边写生，遇到一个老爷爷也在画画，聊了好久。他说他退休后才开始学画，现在已经十年了。突然觉得，只要想开始，什么时候都不晚。", mood: "❤️ 感动" },
-        { name: "健身新手", city: "广州", text: "去健身房第三天，教练说我动作不对，纠正了好久。现在胳膊已经抬不起来了...但看到镜子里的自己，还是很有成就感的！", mood: "💪 加油" },
-        { name: "铲屎官小李", city: "成都", text: "我家猫今天居然自己开了罐头！早上起来看到一地狼藉，它还在旁边打呼噜。又气又好笑，这猫成精了吧！", mood: "🥳 开心" },
-        { name: "北漂的姑娘", city: "北京", text: "今天搬家了，这是来北京第五次搬家。看着满屋的纸箱，突然有点想家。但想想自己的梦想，还是要坚持下去。", mood: "😢 难过" },
-        { name: "咖啡师小王", city: "南京", text: "今天遇到一个客人，说我做的咖啡和他在国外喝的味道一模一样。听到这句话，感觉早起的辛苦都值得了！", mood: "✨ 期待" },
-        { name: "考研党阿凯", city: "武汉", text: "自习室坐我对面的女生，每天都比我早到晚走。今天终于鼓起勇气和她打了招呼，她笑起来好温柔～", mood: "😎 酷" },
-        { name: "做饭新手", city: "重庆", text: "第一次尝试做火锅，底料放多了，辣得我眼泪直流。但室友说好吃，就是费米饭。下次继续努力！", mood: "🔥 激动" },
-        { name: "海边的设计师", city: "厦门", text: "今天把攒了半年的年假用了，买了去云南的机票。28岁了，第一次真正意义上的旅行，有点期待有点紧张。", mood: "🤩 惊喜" },
-        { name: "二手书店主", city: "苏州", text: "今天收到一本客人捐的旧书，里面夹着一张2008年的明信片。原来这本书去过那么多地方，这种感觉真奇妙。", mood: "😮 惊讶" },
-        { name: "养多肉的阿杰", city: "西安", text: "我的多肉居然开花了！养了三年，一度以为它要死了。果然，植物比我想象的要坚强。", mood: "❤️ 感动" },
-        { name: "转行的HR", city: "天津", text: "30岁生日那天，我辞掉了干了5年的HR工作，开始学编程。身边朋友都说我疯了，但我知道，这是我想做的事。", mood: "💪 加油" },
-        { name: "早起遛鸟的老张", city: "长沙", text: "今天在公园遛鸟，遇到一个年轻人向我请教怎么养鸟。他说他奶奶留下一只鸟，他想好好照顾。现在的年轻人，有心了。", mood: "😊 开心" },
-        { name: "探店小达人", city: "青岛", text: "今天去了一家藏在老城区的小店，老板是个台湾人，说话超级温柔。强烈推荐他们家的冬瓜茶！", mood: "✨ 期待" },
-        { name: "写日记的阿花", city: "宁波", text: "整理旧物，翻到高中时的日记。看着以前的自己，觉得好傻但好纯粹。那时候以为天大的事，现在看来都不算什么了。", mood: "😢 难过" },
-        { name: "街舞老师", city: "郑州", text: "今天最小的学生说，她的梦想是像我一样在舞台上跳舞。突然觉得，做老师真的很有意义。", mood: "🥳 开心" },
-        { name: "学日语的小白", city: "大连", text: "今天看动漫，居然能听懂几句台词了！学了半年日语，终于有点成就感了。继续加油！", mood: "💪 加油" },
-        { name: "开花店的小雨", city: "昆明", text: "今天有个男生来买花，说是要送给住院的妈妈。他选了康乃馨，说妈妈最喜欢这个。希望他妈妈早日康复。", mood: "❤️ 感动" }
-      ];
-      
-      let added = 0;
-      for (let i = 0; i < comments.length; i++) {
-        const comment = comments[i];
-        const payload = {
-          name: comment.name,
-          city: comment.city,
-          text: comment.text,
-          ts: Date.now() - (comments.length - i) * 3600000,
-          likes: Math.floor(Math.random() * 50),
-          token: `sample_token_${i}`,
-          mood: comment.mood,
-          replies: []
-        };
-        
-        try {
-          await fetchData(API_URL, {
-            method: 'POST',
-            body: JSON.stringify(payload)
-          });
-          added++;
-        } catch (e) {
-          console.error(`Failed to add comment ${i + 1}`, e);
-        }
-      }
-      
-      alert(`成功添加 ${added} 条评论！`);
-      await renderAll();
-      await updateStats();
     }
 
     async function init() {
