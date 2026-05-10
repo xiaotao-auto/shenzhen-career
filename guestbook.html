@@ -313,12 +313,7 @@
       const text = document.getElementById('inp-msg').value.trim();
       
       try {
-        if (!name) { 
-          // 不用alert，直接返回
-          btn.textContent = originalText;
-          isSubmitting = false;
-          return;
-        }
+        if (!name) name = '游客';
         if (!text) { 
           btn.textContent = originalText;
           isSubmitting = false;
@@ -447,8 +442,9 @@
       
       if (!text) return;
       
-      const name = document.getElementById('inp-name').value.trim();
-      if (!name) return;
+      // 用默认昵称或者用户填写的
+      let name = document.getElementById('inp-name').value.trim();
+      if (!name) name = '游客';
       
       isSubmittingReply = true;
       
