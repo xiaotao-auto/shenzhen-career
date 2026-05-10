@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>留言板诊断</title>
+  <style>
+    body { font-family: monospace; padding: 20px; max-width: 800px; margin: 0 auto; background: #0d1117; color: #e6edf3; }
+    .success { color: #3fb950; }
+    .error { color: #f85149; }
+    .info { color: #58a6ff; }
+    pre { background: #161b22; padding: 15px; border-radius: 5px; overflow-x: auto; margin: 10px 0; }
+    button { padding: 10px 20px; background: #238636; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #2ea043; }
+  </style>
+</head>
+<body>
+  <h1>🔍 留言板问题诊断</h1>
+  
+  <div id="results"></div>
+
+  <hr>
+  <button onclick="runTests()">🔄 重新测试</button>
+  <button onclick="window.close()">关闭</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const results = document.getElementById('results');
+    
+    function log(msg, type = 'info') {
+      const div = document.createElement('div');
+      div.className = type;
+      div.innerHTML = msg;
+      results.appendChild(div);
+    }
+
+    async function runTests() {
+      results.innerHTML = '';
+      
+      log('<h2>1. 检查 Supabase 客户端加载</h2>');
+      if (typeof window.supabase !== 'undefined') {
+        log('✅ Supabase 客户端已加载', 'success');
+      } else {
+        log('❌ Supabase 客户端未加载！CDN 可能有问题', 'error');
+        return;
+      }
+
+      log('<h2>2. 初始化 Supabase 客户端</h2>');
+      const SUPABASE_URL = 'https://fuejxbihvekyhmkrfjsb.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
+      
+      let client;
+      try {
+        client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        log('✅ Supabase 客户端创建成功', 'success');
+      } catch (e) {
+        log('❌ 客户端创建失败: ' + e.message, 'error');
+        return;
+      }
+
+      log('<h2>3. 测试读取数据</h2>');
+      try {
+        log('正在查询 guestbook 表...');
+        const { data, error } = await client.from('guestbook').select('*').limit(1);
+        
+        if (error) {
+          log('❌ 读取失败！', 'error');
+          log('<pre>' + JSON.stringify(error, null, 2) + '</pre>');
+          
+          if (error.message.includes('does not exist')) {
+            log('<h3>🎯 问题：表不存在！</h3>', 'error');
+            log('你需要在 Supabase 后台创建 guestbook 表。请访问：');
+            log('<a href="https://supabase.com/dashboard" target="_blank">https://supabase.com/dashboard</a>');
+            log('<br>然后在 SQL Editor 中执行以下代码：');
+            log('<pre>\
+create table guestbook (\
+  id uuid default uuid_generate_v4() primary key,\
+  name text not null,\
+  city text,\
+  mood text,\
+  text text not null,\
+  ts bigint not null,\
+  likes integer default 0,\
+  liked_by jsonb default \'[]\'::jsonb\
+);\
+\
+alter table guestbook enable row level security;\
+\
+create policy "allow_read" on guestbook for select using (true);\
+create policy "allow_insert" on guestbook for insert with check (true);\
+create policy "allow_update" on guestbook for update using (true);\
+            </pre>');
+          }
+        } else {
+          log('✅ 读取成功！当前有 ' + data.length + ' 条数据', 'success');
+        }
+      } catch (e) {
+        log('❌ 查询异常: ' + e.message, 'error');
+      }
+
+      log('<h2>4. 测试插入数据</h2>');
+      try {
+        log('正在插入测试数据...');
+        const testData = {
+          name: '诊断测试',
+          city: '测试城市',
+          mood: '🤩 超赞',
+          text: '这是一条测试留言，用于检查是否可以正常发布',
+          ts: Date.now(),
+          likes: 0,
+          liked_by: []
+        };
+        
+        const { error } = await client.from('guestbook').insert(testData);
+        
+        if (error) {
+          log('❌ 插入失败！', 'error');
+          log('<pre>' + JSON.stringify(error, null, 2) + '</pre>');
+          
+          if (error.message.includes('does not exist')) {
+            log('<h3>🎯 问题：表不存在！</h3>请先创建 guestbook 表（见上方）', 'error');
+          } else if (error.message.includes('policy')) {
+            log('<h3>🎯 问题：权限不足！</h3>RLS 策略可能配置不正确', 'error');
+          }
+        } else {
+          log('✅ 插入成功！留言功能正常！', 'success');
+          log('正在删除测试数据...');
+          // 获取刚插入的数据并删除
+          const { data } = await client.from('guestbook').select('*').eq('name', '诊断测试');
+          if (data && data.length > 0) {
+            await client.from('guestbook').delete().eq('id', data[0].id);
+            log('✅ 测试数据已清理', 'success');
+          }
+        }
+      } catch (e) {
+        log('❌ 插入异常: ' + e.message, 'error');
+      }
+
+      log('<hr><h2>总结</h2>');
+      log('如果以上测试都通过，留言板应该可以正常工作。');
+      log('如果有任何失败，请根据提示修复问题。');
+    }
+
+    // 自动运行测试
+    runTests();
+  </script>
+</body>
+</html>
