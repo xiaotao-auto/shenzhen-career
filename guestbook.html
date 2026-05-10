@@ -285,6 +285,7 @@
       list.innerHTML = mainMsgs.map(msg => {
         // 获取该留言的回复并按时间正序排列
         const msgReplies = (replies[msg.id] || []).sort((a, b) => a.ts - b.ts);
+        const hasReplies = msgReplies.length > 0;
         const repliesHtml = msgReplies.map(reply => `
           <div class="reply-chain">
             <div class="msg-header">
@@ -314,7 +315,16 @@
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
             </div>
             
-            ${repliesHtml}
+            ${hasReplies ? `
+              <div class="view-replies" style="margin-top:10px;">
+                <button class="toggle-replies-btn" data-id="${msg.id}" style="background:transparent;border:none;color:var(--primary-color);cursor:pointer;font-size:13px;">
+                  📋 查看 ${msgReplies.length} 条回复 ▼
+                </button>
+              </div>
+              <div class="replies-container" id="replies-${msg.id}" style="display:none;margin-top:10px;">
+                ${repliesHtml}
+              </div>
+            ` : ''}
             
             <div class="reply-form" id="reply-form-${msg.id}" data-name="${escapeHtml(msg.name)}">
               <div style="margin-bottom: 10px; font-size: 13px; color: var(--text-secondary);">回复 @${escapeHtml(msg.name)}</div>
@@ -328,6 +338,25 @@
       
       // 添加事件监听器
       bindReplyEvents();
+      
+      // 添加展开/收起回复的事件
+      bindToggleRepliesEvents();
+    }
+    
+    function bindToggleRepliesEvents() {
+      document.querySelectorAll('.toggle-replies-btn').forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute('data-id');
+          const container = document.getElementById('replies-' + id);
+          if (container.style.display === 'none') {
+            container.style.display = 'block';
+            this.innerHTML = this.innerHTML.replace('▼', '▲');
+          } else {
+            container.style.display = 'none';
+            this.innerHTML = this.innerHTML.replace('▲', '▼');
+          }
+        };
+      });
     }
     
     function bindReplyEvents() {
