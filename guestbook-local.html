@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💬 访客留言板</title>
+<style>
+  body { 
+    background: #0d1117; color: #e6edf3; 
+    font-family: 'PingFang SC','Helvetica Neue','Arial',sans-serif;
+    max-width: 800px; margin: 0 auto; padding: 20px;
+  }
+  .form-card {
+    background: #161b22; border: 1px solid #30363d; border-radius: 16px;
+    padding: 28px; margin-bottom: 30px;
+  }
+  input, textarea {
+    width: 100%; padding: 10px; margin: 8px 0;
+    background: #21262d; border: 1px solid #30363d; border-radius: 8px;
+    color: #e6edf3;
+  }
+  button {
+    background: #58a6ff; color: #0d1117; padding: 12px 30px;
+    border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+  }
+  .msg-card {
+    background: #161b22; border: 1px solid #30363d; border-radius: 12px;
+    padding: 18px; margin-bottom: 12px;
+  }
+  .msg-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .msg-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #0d1117;
+  }
+  .msg-name { font-weight: 700; }
+  .msg-body { line-height: 1.6; }
+  .msg-actions { display: flex; gap: 15px; margin-top: 10px; color: #8b949e; }
+  .like-btn { background: transparent; border: 1px solid #30363d; padding: 5px 12px; border-radius: 6px; cursor: pointer; color: #8b949e; }
+  .like-btn.liked { color: #f85149; border-color: #f85149; }
+  #debug { background: #161b22; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; color: #3fb950; }
+</style>
+</head>
+<body>
+  <div id="debug">初始化中...</div>
+  
+  <h1>💬 访客留言板</h1>
+  
+  <!-- 表单 -->
+  <div class="form-card">
+    <input id="inp-name" placeholder="你的昵称" maxlength="20"><br>
+    <input id="inp-city" placeholder="来自哪里（选填）" maxlength="20"><br>
+    <textarea id="inp-msg" placeholder="说点什么..." rows="4" maxlength="300"></textarea><br>
+    <button onclick="submitMsg()">发布留言</button>
+  </div>
+
+  <!-- 留言列表 -->
+  <div id="msg-list"></div>
+
+  <script>
+    const debugEl = document.getElementById('debug');
+    const STORAGE_KEY = 'guestbook_messages';
+    
+    function debug(msg) {
+      debugEl.textContent = msg;
+      console.log(msg);
+    }
+
+    debug('页面加载完成');
+
+    const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
+    
+    function avatarColor(name) {
+      let h = 0;
+      for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
+      return colors[Math.abs(h) % colors.length];
+    }
+
+    function avatarLetter(name) {
+      const ch = name.trim()[0] || '?';
+      return /[\u4e00-\u9fff]/.test(ch) ? ch : ch.toUpperCase();
+    }
+
+    function loadMsgs() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        debug('读取失败: ' + e.message);
+        return [];
+      }
+    }
+
+    function saveMsgs(msgs) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
+    }
+
+    function renderAll() {
+      const list = document.getElementById('msg-list');
+      const msgs = loadMsgs();
+      
+      if (msgs.length === 0) {
+        list.innerHTML = '<p style="text-align:center;color:#8b949e;">还没有留言，来做第一个吧！</p>';
+        debug('暂无留言');
+        return;
+      }
+
+      list.innerHTML = msgs.map(msg => `
+        <div class="msg-card">
+          <div class="msg-header">
+            <div class="msg-avatar" style="background:${avatarColor(msg.name)}">${avatarLetter(msg.name)}</div>
+            <div>
+              <div class="msg-name">${escapeHtml(msg.name)}</div>
+              <div style="color:#8b949e;font-size:12px;">${msg.city || '未知城市'} · ${fmtTime(msg.ts)}</div>
+            </div>
+          </div>
+          <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
+          <div class="msg-actions">
+            <button class="like-btn" onclick="toggleLike('${msg.id}')">🤍 ${msg.likes || 0}</button>
+            ${msg.mood ? `<span>${msg.mood}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+      
+      debug(`已加载 ${msgs.length} 条留言`);
+    }
+
+    function submitMsg() {
+      debug('按钮点击！正在提交...');
+      
+      const name = document.getElementById('inp-name').value.trim();
+      const city = document.getElementById('inp-city').value.trim();
+      const text = document.getElementById('inp-msg').value.trim();
+      
+      debug(`数据: name=${name}, text=${text}`);
+      
+      if (!name) {
+        alert('请填写昵称');
+        debug('缺少昵称');
+        return;
+      }
+      if (!text) {
+        alert('请填写留言内容');
+        debug('缺少内容');
+        return;
+      }
+
+      const newMsg = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+        name: name.slice(0, 20),
+        city: city.slice(0, 20),
+        text: text,
+        ts: Date.now(),
+        likes: 0
+      };
+
+      const msgs = loadMsgs();
+      msgs.unshift(newMsg);
+      saveMsgs(msgs);
+
+      debug('✅ 提交成功！');
+      alert('留言发布成功！');
+      
+      // 清空表单
+      document.getElementById('inp-name').value = '';
+      document.getElementById('inp-city').value = '';
+      document.getElementById('inp-msg').value = '';
+
+      renderAll();
+    }
+
+    function toggleLike(id) {
+      const btn = event.target;
+      const currentLikes = parseInt(btn.textContent.split(' ')[1]) || 0;
+      
+      const msgs = loadMsgs();
+      const msg = msgs.find(m => m.id === id);
+      if (msg) {
+        if (btn.classList.contains('liked')) {
+          msg.likes = Math.max(0, msg.likes - 1);
+          btn.textContent = `🤍 ${msg.likes}`;
+          btn.classList.remove('liked');
+        } else {
+          msg.likes = (msg.likes || 0) + 1;
+          btn.textContent = `❤️ ${msg.likes}`;
+          btn.classList.add('liked');
+        }
+        saveMsgs(msgs);
+      }
+    }
+
+    function fmtTime(ts) {
+      const d = new Date(ts), now = new Date();
+      const diff = now - d;
+      if (diff < 60000) return '刚刚';
+      if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
+      if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+      return Math.floor(diff / 86400000) + ' 天前';
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // 初始化
+    debug('开始渲染留言列表...');
+    renderAll();
+  </script>
+</body>
+</html>
