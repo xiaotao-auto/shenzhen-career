@@ -326,42 +326,37 @@
         
         const selectedMood = document.getElementById('inp-selected-mood').value;
         
+        // 简化的payload，只保留必要字段
         const payload = {
           name: name.slice(0, 20),
-          city: city.slice(0, 20),
           text: text,
-          ts: Date.now(),
-          likes: 0,
-          token: userToken
+          ts: Date.now()
         };
         
-        if (selectedMood) {
-          payload.mood = selectedMood;
-        } else {
-          payload.mood = moods[Math.floor(Math.random() * moods.length)];
-        }
+        // 可选字段
+        if (city) payload.city = city.slice(0, 20);
+        if (selectedMood) payload.mood = selectedMood;
+        payload.likes = 0;
+        payload.token = userToken;
         
         await fetchData(API_URL, {
           method: 'POST',
           body: JSON.stringify(payload)
         });
-
-        alert('留言发布成功！所有访客都能看到！');
+        
+        alert('留言发布成功！');
         
         document.getElementById('inp-name').value = '';
         document.getElementById('inp-city').value = '';
         document.getElementById('inp-msg').value = '';
         document.getElementById('inp-selected-mood').value = '';
         document.querySelectorAll('.mood-option').forEach(b => b.classList.remove('selected'));
-
+        
         await renderAll();
         await updateStats();
       } catch (e) {
-        if (e.message && e.message.includes('400')) {
-          alert('提交失败，请检查昵称和留言内容是否符合要求！');
-        } else {
-          alert('提交失败: ' + e.message);
-        }
+        console.error('提交失败:', e);
+        alert('提交失败，请稍后重试！');
       } finally {
         isSubmitting = false;
         btn.textContent = originalText;
