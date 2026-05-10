@@ -133,7 +133,7 @@
 </style>
 </head>
 <body>
-  <audio id="bg-audio" loop src="https://assets.mixkit.co/music/preview/mixkit-coffee-shop-in-milan-01-280.mp3" style="display:none;"></audio>
+  <audio id="bg-audio" src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c7ff678e.mp3?filename=soft-jazz-132384.mp3" loop style="display:none;"></audio>
   <div id="status-bar" class="status-offline">🔴 连接中...</div>
   
   <div class="page-header">
@@ -187,23 +187,29 @@
     const colors = ['#58a6ff','#3fb950','#f0883e','#bc8cff','#f78166','#d29922','#39d353'];
     const moods = ['😊 开心', '😢 难过', '😮 惊讶', '🤔 迷茫', '❤️ 感动', '🔥 激动', '✨ 期待', '💪 加油', '😎 酷', '🥳 开心', '😴 困', '🤩 惊喜'];
     
-    // 背景音乐自动播放
+    // 背景音乐播放
     function playBackgroundMusic() {
       const audio = document.getElementById('bg-audio');
       if (audio) {
         audio.volume = 0.7; // 设置音量为 70%
-        // 尝试自动播放
-        audio.play().catch(e => {
-          console.log('需要用户交互后才能播放背景音乐');
-          // 如果自动播放失败，等待用户第一次交互后播放
-          const playOnce = () => {
-            audio.play().catch(e => console.log('播放失败:', e));
-            document.removeEventListener('click', playOnce);
-            document.removeEventListener('touchstart', playOnce);
-          };
-          document.addEventListener('click', playOnce);
-          document.addEventListener('touchstart', playOnce);
+        audio.loop = true;
+        
+        // 强制用户交互后播放
+        const tryPlay = () => {
+          audio.play().then(() => {
+            console.log('音乐播放成功');
+          }).catch(e => {
+            console.log('等待用户交互...', e);
+          });
+        };
+        
+        // 多种交互事件都尝试播放
+        ['click', 'touchstart', 'scroll', 'keydown'].forEach(event => {
+          document.addEventListener(event, tryPlay, { once: true });
         });
+        
+        // 立即尝试一次
+        tryPlay();
       }
     }
     
