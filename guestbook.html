@@ -267,10 +267,7 @@
         return;
       }
 
-      // 暂时移除删除权限检查，让页面先正常工作
       list.innerHTML = msgs.map(msg => {
-        const canDelete = false;
-        
         return `
           <div class="msg-card" data-id="${msg.id}">
             <div class="msg-header">
@@ -282,20 +279,58 @@
             </div>
             <div class="msg-body">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
             <div class="msg-actions">
-              <button class="like-btn" data-id="${msg.id}" onclick="toggleLike(event)">🤍 ${msg.likes || 0}</button>
-              <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}" onclick="showReplyForm(event)">💬 回复</button>
+              <button class="like-btn" data-id="${msg.id}">🤍 ${msg.likes || 0}</button>
+              <button class="reply-btn" data-id="${msg.id}" data-name="${escapeHtml(msg.name)}">💬 回复</button>
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
             </div>
             
-            <div class="reply-form" id="reply-form-${msg.id}">
+            <div class="reply-form" id="reply-form-${msg.id}" data-name="${escapeHtml(msg.name)}">
               <div style="margin-bottom: 10px; font-size: 13px; color: var(--text-secondary);">回复 @${escapeHtml(msg.name)}</div>
               <textarea id="reply-text-${msg.id}" placeholder="说点什么..." rows="3" maxlength="200"></textarea>
-              <button onclick="submitReply('${msg.id}', '${escapeHtml(msg.name)}')">发布回复</button>
-              <button class="cancel-btn" onclick="hideReplyForm('${msg.id}')">取消</button>
+              <button class="do-reply-btn" data-id="${msg.id}">发布回复</button>
+              <button class="cancel-reply-btn" data-id="${msg.id}">取消</button>
             </div>
           </div>
         `;
       }).join('');
+      
+      // 添加事件监听器
+      bindReplyEvents();
+    }
+    
+    function bindReplyEvents() {
+      // 回复按钮
+      document.querySelectorAll('.reply-btn').forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute('data-id');
+          const name = this.getAttribute('data-name');
+          showReplyFormDirect(id, name);
+        };
+      });
+      
+      // 发布回复按钮
+      document.querySelectorAll('.do-reply-btn').forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute('data-id');
+          const name = document.getElementById('reply-form-' + id).getAttribute('data-name');
+          submitReplyDirect(id, name);
+        };
+      });
+      
+      // 取消按钮
+      document.querySelectorAll('.cancel-reply-btn').forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute('data-id');
+          hideReplyForm(id);
+        };
+      });
+      
+      // 点赞按钮
+      document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.onclick = function() {
+          toggleLikeDirect(this);
+        };
+      });
     }
 
     let isSubmitting = false;
@@ -351,28 +386,7 @@
       }
     }
 
-    async function toggleLike(event) {
-      const btn = event.target;
-      const id = btn.getAttribute('data-id');
-      const currentLikes = parseInt(btn.textContent.split(' ')[1]) || 0;
-      
-      try {
-        const newLikes = btn.classList.contains('liked') ? currentLikes - 1 : currentLikes + 1;
-        await fetchData(`${API_URL}?id=eq.${id}`, {
-          method: 'PATCH',
-          body: JSON.stringify({ likes: newLikes })
-        });
-        
-        if (btn.classList.contains('liked')) {
-          btn.textContent = `🤍 ${newLikes}`;
-          btn.classList.remove('liked');
-        } else {
-          btn.textContent = `❤️ ${newLikes}`;
-          btn.classList.add('liked');
-        }
-        await updateStats();
-      } catch (e) { console.error('点赞失败:', e); }
-    }
+
 
     async function refreshMsgs() {
       await renderAll();
@@ -403,16 +417,7 @@
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
     
-    function showReplyForm(event) {
-      const btn = event.target;
-      const name = btn.getAttribute('data-name');
-      
-      // 找出当前卡片
-      const card = btn.closest('.msg-card');
-      if (!card) return;
-      
-      const id = card.getAttribute('data-id');
-      
+    function showReplyFormDirect(id, name) {
       // 先隐藏所有回复表单
       document.querySelectorAll('.reply-form').forEach(form => {
         form.style.display = 'none';
@@ -434,7 +439,7 @@
     
     let isSubmittingReply = false;
     
-    async function submitReply(replyToId, replyToName) {
+    async function submitReplyDirect(replyToId, replyToName) {
       if (isSubmittingReply) return;
       
       const textarea = document.getElementById('reply-text-' + replyToId);
@@ -442,7 +447,6 @@
       
       if (!text) return;
       
-      // 用默认昵称或者用户填写的
       let name = document.getElementById('inp-name').value.trim();
       if (!name) name = '游客';
       
@@ -472,6 +476,29 @@
       } finally {
         isSubmittingReply = false;
       }
+    }
+    
+    async function toggleLikeDirect(btn) {
+      const id = btn.getAttribute('data-id');
+      const currentLikes = parseInt(btn.textContent.trim().split(' ')[1]) || 0;
+      const isLiked = btn.classList.contains('liked');
+      
+      try {
+        const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
+        await fetchData(`${API_URL}?id=eq.${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ likes: newLikes })
+        });
+        
+        if (isLiked) {
+          btn.textContent = `🤍 ${newLikes}`;
+          btn.classList.remove('liked');
+        } else {
+          btn.textContent = `❤️ ${newLikes}`;
+          btn.classList.add('liked');
+        }
+        await updateStats();
+      } catch (e) { console.error('点赞失败:', e); }
     }
 
     async function init() {
