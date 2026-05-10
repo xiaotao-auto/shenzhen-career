@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase 调试</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { background: #0d1117; color: #e6edf3; padding: 20px; font-family: monospace; font-size: 14px; }
+    .success { color: #3fb950; }
+    .error { color: #f85149; }
+    .info { color: #58a6ff; }
+    #output { white-space: pre-wrap; }
+    button { padding: 10px 20px; background: #58a6ff; color: #0d1117; border: none; border-radius: 6px; cursor: pointer; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>Supabase 调试工具</h1>
+  <button onclick="runTests()">开始测试</button>
+  <div id="output"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://fuejxbihvekyhmkrfjsb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZWp4YmlodmVreWhta3JmanNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNjM2NDQsImV4cCI6MjA5MzkzOTY0NH0.cAhtX--9VUaBpqi84gn0jMyT8b115ZNzWN6JYDMTdnQ';
+    
+    const output = document.getElementById('output');
+    
+    function log(msg, type = 'info') {
+      const color = type === 'success' ? '#3fb950' : type === 'error' ? '#f85149' : '#58a6ff';
+      output.innerHTML += `<span style="color:${color}">${new Date().toLocaleTimeString()} - ${msg}</span>\n`;
+    }
+    
+    async function runTests() {
+      output.innerHTML = '';
+      log('=== 开始 Supabase 调试 ===', 'info');
+      
+      try {
+        log('1. 检查 supabase 对象是否可用...', 'info');
+        if (typeof window.supabase === 'undefined') {
+          throw new Error('supabase 对象未定义，CDN 加载失败');
+        }
+        log('✅ supabase 对象可用', 'success');
+        
+        log('2. 创建 Supabase 客户端...', 'info');
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        log('✅ 客户端创建成功', 'success');
+        
+        log('3. 测试连接状态...', 'info');
+        const status = await client.getSession();
+        log(`✅ 连接状态: ${status ? '已连接' : '未连接'}`, 'success');
+        
+        log('4. 测试查询 guestbook 表...', 'info');
+        const { data, error } = await client.from('guestbook').select('*');
+        if (error) throw error;
+        log(`✅ 查询成功！共 ${data.length} 条数据`, 'success');
+        
+        log('5. 测试插入数据...', 'info');
+        const insertResult = await client.from('guestbook').insert({
+          name: '测试用户',
+          city: '测试城市',
+          text: '测试留言',
+          ts: Date.now(),
+          likes: 0
+        });
+        if (insertResult.error) throw insertResult.error;
+        log('✅ 插入成功！', 'success');
+        
+        log('=== 所有测试通过！===', 'success');
+        
+      } catch (e) {
+        log(`❌ 错误: ${e.message}`, 'error');
+        log(`错误详情: ${JSON.stringify(e, null, 2)}`, 'error');
+        log('=== 测试失败 ===', 'error');
+      }
+    }
+  </script>
+</body>
+</html>
