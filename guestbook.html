@@ -273,40 +273,10 @@
         return;
       }
 
-      // 分离主留言和回复
-      const mainMsgs = [];
-      const replies = {};
-      msgs.forEach(msg => {
-        if (msg.reply_to_id) {
-          if (!replies[msg.reply_to_id]) {
-            replies[msg.reply_to_id] = [];
-          }
-          replies[msg.reply_to_id].push(msg);
-        } else {
-          mainMsgs.push(msg);
-        }
-      });
+      // 按时间倒序排列所有留言
+      msgs.sort((a, b) => b.ts - a.ts);
 
-      // 按时间倒序排列主留言
-      mainMsgs.sort((a, b) => b.ts - a.ts);
-
-      list.innerHTML = mainMsgs.map(msg => {
-        // 获取该留言的回复并按时间正序排列
-        const msgReplies = (replies[msg.id] || []).sort((a, b) => a.ts - b.ts);
-        const hasReplies = msgReplies.length > 0;
-        const repliesHtml = msgReplies.map(reply => `
-          <div class="reply-chain">
-            <div class="msg-header">
-              <div class="msg-avatar" style="background:${avatarColor(reply.name)};width:32px;height:32px;font-size:12px;">${avatarLetter(reply.name)}</div>
-              <div>
-                <div class="msg-name" style="font-size:14px;">${escapeHtml(reply.name)}</div>
-                <div class="msg-meta">${reply.city || '未知城市'} · ${fmtTime(reply.ts)}</div>
-              </div>
-            </div>
-            <div class="msg-body" style="font-size:14px;">${escapeHtml(reply.text).replace(/\n/g, '<br>')}</div>
-          </div>
-        `).join('');
-
+      list.innerHTML = msgs.map(msg => {
         return `
           <div class="msg-card" data-id="${msg.id}">
             <div class="msg-header">
@@ -323,17 +293,6 @@
               ${msg.mood ? `<span class="mood-badge">${msg.mood}</span>` : ''}
             </div>
             
-            ${hasReplies ? `
-              <div class="view-replies" style="margin-top:10px;">
-                <button class="toggle-replies-btn" data-id="${msg.id}" style="background:transparent;border:none;color:var(--primary-color);cursor:pointer;font-size:13px;">
-                  📋 查看 ${msgReplies.length} 条回复 ▼
-                </button>
-              </div>
-              <div class="replies-container" id="replies-${msg.id}" style="display:none;margin-top:10px;">
-                ${repliesHtml}
-              </div>
-            ` : ''}
-            
             <div class="reply-form" id="reply-form-${msg.id}" data-name="${escapeHtml(msg.name)}">
               <div style="margin-bottom: 10px; font-size: 13px; color: var(--text-secondary);">回复 @${escapeHtml(msg.name)}</div>
               <textarea id="reply-text-${msg.id}" placeholder="说点什么..." rows="3" maxlength="200"></textarea>
@@ -346,25 +305,6 @@
       
       // 添加事件监听器
       bindReplyEvents();
-      
-      // 添加展开/收起回复的事件
-      bindToggleRepliesEvents();
-    }
-    
-    function bindToggleRepliesEvents() {
-      document.querySelectorAll('.toggle-replies-btn').forEach(btn => {
-        btn.onclick = function() {
-          const id = this.getAttribute('data-id');
-          const container = document.getElementById('replies-' + id);
-          if (container.style.display === 'none') {
-            container.style.display = 'block';
-            this.innerHTML = this.innerHTML.replace('▼', '▲');
-          } else {
-            container.style.display = 'none';
-            this.innerHTML = this.innerHTML.replace('▲', '▼');
-          }
-        };
-      });
     }
     
     function bindReplyEvents() {
@@ -541,13 +481,12 @@
       if (!name) name = '游客';
       
       try {
+        const replyText = '@' + replyToName + ' ' + text;
         const payload = {
           name: name.slice(0, 20),
-          text: text,
+          text: replyText,
           ts: Date.now(),
-          likes: 0,
-          reply_to_id: replyToId,
-          reply_to_name: replyToName
+          likes: 0
         };
         
         await fetchData(API_URL, {
